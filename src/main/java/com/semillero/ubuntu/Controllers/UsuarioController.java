@@ -17,12 +17,22 @@ public class UsuarioController{
     @Autowired
     private UsuarioService usuarioService;
 
-   @PostMapping("")
+   @PostMapping("/create")
     public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\\\"error\\\":\\\"Error en creacion de usuario.\\\"}");
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarUsuario(@PathVariable Long id,@RequestBody Usuario usuario) {
+       try {
+           usuarioService.update(id, usuario);
+           return ResponseEntity.ok("Actualizacion correcta");
+       } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\\\"error\\\":\\\"Error en actualizar usuario.\\\"}");
+       }
     }
 }
