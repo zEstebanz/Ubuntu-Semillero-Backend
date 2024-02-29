@@ -70,7 +70,7 @@ public class SecurityConfig {
             throws Exception {
         http    .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(Customizer.withDefaults())
                 // Form login handles the redirect to the login page from the
