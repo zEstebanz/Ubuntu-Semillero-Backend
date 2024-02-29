@@ -8,15 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
+@RequestMapping(path = "usuarios")
 public class UsuarioController{
     @Autowired
     private UsuarioService usuarioService;
 
-    /*Post Mapping para crear el usuario*/
+   @PostMapping("")
     public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));

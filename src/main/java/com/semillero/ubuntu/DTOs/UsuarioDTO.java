@@ -10,5 +10,5 @@ public class UsuarioDTO {
     String email;
     int telefono;
     Rol rol;
-
+    Boolean isDeleted;
 }

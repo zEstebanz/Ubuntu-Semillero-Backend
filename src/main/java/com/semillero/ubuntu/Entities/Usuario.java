@@ -9,6 +9,9 @@ import java.io.Serializable;
 
 @Data
 @Entity
+@Table(name="Usuario", uniqueConstraints = {
+
+})
 public class Usuario {
 
     @Id
@@ -21,7 +24,7 @@ public class Usuario {
     @Column(name="apellido", nullable = false)
     private String apellido;
 
-    @Column(name="email", nullable = false)
+    @Column(name="email", unique = true, nullable = false)
     private String email;
 
     @Column(name="Baja", nullable = false)
