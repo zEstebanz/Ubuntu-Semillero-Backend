@@ -22,7 +22,7 @@ public class Usuario {
     @Column(name="apellido", nullable = false)
     private String apellido;
 
-    @Column(name="email", unique = true, nullable = false)
+    @Column(name="email", unique = true, nullable = false) //Agrego el unique también aca para forzar el filtro
     private String email;
 
     @Column(name="Baja", nullable = false)
