@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="Usuario", uniqueConstraints = {
-
+@UniqueConstraint(columnNames = "email")
 })
 public class Usuario {
 
