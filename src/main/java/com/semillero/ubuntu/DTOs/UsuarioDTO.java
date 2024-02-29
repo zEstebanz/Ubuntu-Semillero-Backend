@@ -10,5 +10,5 @@ public class UsuarioDTO {
     String email;
     int telefono;
     Rol rol;
-    Boolean isDeleted;
+    Boolean isDeleted; //Para crear usuario este valor siempre debe estar en 0
 }
