@@ -9,7 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig { //Esta clase se usa para hacer un bypass de seguridad para probar en postman
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
@@ -18,8 +18,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .anyRequest().permitAll()
                 );
-
-
         return http.build();
     }
 }

@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 
-import java.io.Serializable;
-
 @Data
 @Entity
 @Table(name="Usuario", uniqueConstraints = {
