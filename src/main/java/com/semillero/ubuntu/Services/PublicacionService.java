@@ -26,10 +26,17 @@ public class PublicacionService {
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
             Publicacion publicacion = publicacionOptional.get();
-            publicacion.setTitulo();
+            publicacion.setTitulo(publicacionDTO.getTitulo());
+            publicacion.setDescripcion(publicacionDTO.getDescripcion());
+            publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
+            //Falta la edicion de imagenes
+            publicacionRepository.save(publicacion);
         } catch (Exception e) {
-
+            throw new Exception(e.getMessage());
         }
     }
+
+    @Transactional
+    public void bajaLogica(Long id, Publicacion publicacionDTO)
 }
 
