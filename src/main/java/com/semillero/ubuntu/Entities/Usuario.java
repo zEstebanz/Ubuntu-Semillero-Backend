@@ -28,9 +28,6 @@ public class Usuario {
     @Column(name="Baja", nullable = false)
     private Boolean isDeleted;
 
-    @Column(name="telefono", nullable = false)
-    private int telefono;
-
     @Enumerated(EnumType.STRING)
     @Column(name="rol", nullable = false)
     private Rol rol;

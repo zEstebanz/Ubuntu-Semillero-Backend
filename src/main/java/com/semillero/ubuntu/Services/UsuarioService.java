@@ -31,8 +31,7 @@ public class UsuarioService {
             usuario.setNombre(usuarioDTO.getNombre());
             usuario.setApellido(usuarioDTO.getApellido());
             usuario.setRol(usuarioDTO.getRol());
-            usuario.setEmail(usuarioDTO.getEmail());            //Esto puede traer errores despues
-            usuario.setTelefono(usuarioDTO.getTelefono());
+            usuario.setEmail(usuarioDTO.getEmail());            //Esto puede traer errores
             usuarioRepository.save(usuario);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
