@@ -3,12 +3,16 @@ package com.semillero.ubuntu.Entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
+@Builder
 @Entity
 @Data
+@Table(name = "Publicacion")
 public class Publicacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +29,7 @@ public class Publicacion {
     private Boolean isDeleted;
 
     @Column(name="fecha-creacion", nullable = false)
-    private Date fechaCreacion;
+    private LocalDate fechaCreacion;
 
     //List Imagenes
     //private Usuario usuario
