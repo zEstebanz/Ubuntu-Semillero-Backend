@@ -14,6 +14,27 @@ public class PublicacionController {
     @Autowired
     private PublicacionService publicacionService;
 
+    /**
+     Endpoints para las publicaciones (Están sujetos a cambio, ya que hay que asignar los roles)
+     **/
+    @GetMapping("/")
+    public ResponseEntity<?> getAllPublicaciones() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(publicacionService.getAll());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @GetMapping("/permitidas")
+    public ResponseEntity<?> getAllPublisPermitidas() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(publicacionService.traerPublisNoOcultas());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> crearPublicacion(@RequestBody Publicacion publicacion) {
         try {
@@ -23,7 +44,7 @@ public class PublicacionController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<?> actualizarPublicacion(@PathVariable Long id, @RequestBody Publicacion publicacion) {
         try {
             publicacionService.update(id, publicacion);
@@ -45,10 +66,9 @@ public class PublicacionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?>verPublicacion(@PathVariable Long id) { //Esta funcion solo debe activarla el visitante en teoria
+    public ResponseEntity<?>verPubliVisitante(@PathVariable Long id) { //Esta funcion solo debe activarla el visitante en teoria
         try {
-            publicacionService.verPublicacion(id);
-            return ResponseEntity.ok("Vista correcta");
+            return ResponseEntity.status(HttpStatus.OK).body(publicacionService.verPubliVisitante(id));
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
         }

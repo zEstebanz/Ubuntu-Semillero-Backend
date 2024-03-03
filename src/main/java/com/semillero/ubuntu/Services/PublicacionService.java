@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,7 +16,28 @@ public class PublicacionService {
     private PublicacionRepository publicacionRepository;
 
     @Transactional
-    public Publicacion save(Publicacion publicacionDTO) throws Exception { //Utilice un builder para asignarle la fecha mas facil
+    public List<Publicacion> getAll() throws Exception { //Todas las publicaciones (incluidas las que estan ocultas)
+        try {
+            return publicacionRepository.findAll();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public List<Publicacion> traerPublisNoOcultas() throws Exception {
+        try {
+            return publicacionRepository.TraerPublicaciones();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+/**
+ Función de creación de Publicaciones utilizando @Builder para asignar los valores de una forma más sencilla y directa
+ **/
+    @Transactional
+    public Publicacion save(Publicacion publicacionDTO) throws Exception {
         try {
             Publicacion publi = Publicacion.builder()
                     .titulo(publicacionDTO.getTitulo())
@@ -23,6 +45,7 @@ public class PublicacionService {
                     .fechaCreacion(LocalDate.now())
                     .cantVistas(0)
                     .isDeleted(publicacionDTO.getIsDeleted()) //Va a ser cero siempre, de ultima borrar en el DTO y hardcodear el booleano cuando se crea
+                     //Falta la lista de imagenes y la asignacion de usuario
                     .build();
             publicacionRepository.save(publi);
             return publi;
@@ -59,14 +82,14 @@ public class PublicacionService {
     }
 
     @Transactional
-    public void verPublicacion(Long id) throws Exception {        //Esta funcion solo debe activarla el visitante en teoria
+    public Publicacion verPubliVisitante(Long id) throws Exception {        //Esta funcion solo debe activarla el visitante en teoria
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
             Publicacion publicacion = publicacionOptional.get();
             int sumaVista = publicacion.getCantVistas();
             sumaVista++;
             publicacion.setCantVistas(sumaVista);
-            publicacionRepository.save(publicacion);
+            return (publicacion);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
