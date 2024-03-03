@@ -1,5 +1,6 @@
 package com.semillero.ubuntu.Exceptions;
 
+import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,14 @@ public class GlobalHandlerException {
         Map<String,String> resp = new HashMap<>();
 
         resp.put("TOKEN_NOT_FOUND", ex.getMessage());
+
+        return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Map<String,String>> userNotFoundHandler(UserNotFoundException ex){
+        Map<String,String> resp = new HashMap<>();
+
+        resp.put("USER_NOT_FOUND", ex.getMessage());
 
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
