@@ -3,6 +3,7 @@ package com.semillero.ubuntu.Services;
 import com.semillero.ubuntu.DTOs.PublicacionDTO;
 import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Repositories.PublicacionRepository;
+import com.semillero.ubuntu.Utils.MapperUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,20 +17,25 @@ public class PublicacionServiceImpl implements PublicacionService { //Faltan car
     @Autowired
     private PublicacionRepository publicacionRepository;
 
-    //Modificar esta funcion para que coincida con el mapper
+    /**
+     Trae todas las publicaciones guardadas en la base de datos, incluidas las ocultas
+     y las mapea en una lista de tipo DTO
+     **/
     @Transactional
-    public List<Publicacion> getAll() throws Exception { //Todas las publicaciones guardadas en la base de datos (incluidas las que estan ocultas)
+    public List<PublicacionDTO> getAll() throws Exception {
         try {
-            return publicacionRepository.findAll();
+            List<Publicacion> publicaciones = publicacionRepository.findAll();
+            return MapperUtil.toDTOList(publicaciones, PublicacionDTO.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
     @Transactional
-    public List<Publicacion> traerPublisNoOcultas() throws Exception {
+    public List<PublicacionDTO> traerPublisNoOcultas() throws Exception {
         try {
-            return publicacionRepository.TraerPublicaciones();
+            List<Publicacion> publisNoOcultas = publicacionRepository.TraerPublicaciones();
+            return MapperUtil.toDTOList(publisNoOcultas, PublicacionDTO.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -37,6 +43,7 @@ public class PublicacionServiceImpl implements PublicacionService { //Faltan car
 
 /**
  Función de creación de Publicaciones utilizando @Builder para asignar los valores de una forma más sencilla y directa
+ / Rol: ADMINISTRADOR
  **/
     @Transactional
     public PublicacionDTO crearPublcacion(PublicacionDTO publicacionDTO) throws Exception {
@@ -59,6 +66,8 @@ public class PublicacionServiceImpl implements PublicacionService { //Faltan car
     /**
      Función de actualización de Publicación donde el adiministrador realiza cambios en la publicación
      previamente creada
+     /
+     Rol: ADMINISTRADOR
      **/
     @Transactional
     public PublicacionDTO editarPublicacion(Long id, PublicacionDTO publicacionDTO) throws Exception {
@@ -70,14 +79,15 @@ public class PublicacionServiceImpl implements PublicacionService { //Faltan car
             publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
             //Falta la edicion de imagenes
             publicacionRepository.save(publicacion);
-            //Agregar el return con el mapper
+            ASDFASDF
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
     /**
-     Función de baja lógica donde el administrador da de baja la publicación
+     Función donde se da de baja la publicación
+     / Rol: ADMINISTRADOR
      **/
     @Transactional
     public void bajaLogica(Long id, PublicacionDTO publicacionDTO) throws Exception {
@@ -95,9 +105,10 @@ public class PublicacionServiceImpl implements PublicacionService { //Faltan car
     /**
      Función de ver publicaciones en más detalle (haciendo click en 'ver más') aumentando las vistas de la
      publicación
+     / Rol: VISITANTE (MUY IMPORTANTE)
      **/
     @Transactional
-    public void verPubliVisitante(Long id) throws Exception {        //Esta funcion solo debe activarla el visitante en teoria
+    public void verPubliVisitante(Long id) throws Exception {
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
             Publicacion publicacion = publicacionOptional.get();
