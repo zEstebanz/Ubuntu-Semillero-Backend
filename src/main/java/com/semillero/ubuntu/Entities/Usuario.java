@@ -32,4 +32,6 @@ public class Usuario {
     @Column(name="rol", nullable = false)
     private Rol rol;
     //private List Proveedores;
+
+
 }

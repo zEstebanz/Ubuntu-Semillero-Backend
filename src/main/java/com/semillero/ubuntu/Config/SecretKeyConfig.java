@@ -5,8 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "google")
+@ConfigurationProperties(prefix = "jwtkey")
 @Data
-public class GoogleClientID {
-    private String ID_CLIENT;
+public class SecretKeyConfig {
+    private String SECRET_KEY;
 }

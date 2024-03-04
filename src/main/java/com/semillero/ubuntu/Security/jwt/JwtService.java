@@ -1,11 +1,13 @@
 package com.semillero.ubuntu.Security.jwt;
 
 
+import com.semillero.ubuntu.Config.SecretKeyConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
+
+//    private final SecretKeyConfig secretKeyConfig;
 
     private static final String SECRET_KEY = "B374A26A71421437AA024E4FADD5B497FDFF1A8EA6FF12F6FB65AF2720B59CCF";
 

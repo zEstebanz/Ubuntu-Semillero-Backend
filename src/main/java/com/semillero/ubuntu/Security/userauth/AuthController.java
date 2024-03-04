@@ -9,7 +9,11 @@ import com.semillero.ubuntu.Exceptions.AuthTokenNotFoundException;
 import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Config.GoogleClientID;
+import com.semillero.ubuntu.Security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -18,19 +22,21 @@ import java.util.Collections;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
 
+    private final JwtService jwtService;
     private final GoogleClientID googleClientID;
     private final UsuarioRepository usuarioRepository;
 
     @PostMapping("/token")
-    public String validateToken(@RequestHeader("Authorization") String authHeader) {
-
+    public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String authHeader) {
+        log.info("ENTRE AL ENDPOINT");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new AuthTokenNotFoundException("Token is missing in the request header.");
         }
-        String token = authHeader.substring(7);
 
+        String token = authHeader.substring(7);
         final String ID_CLIENT = googleClientID.getID_CLIENT();
         var verifier = new GoogleIdTokenVerifier.Builder
                 (new NetHttpTransport(), GsonFactory.getDefaultInstance())
@@ -40,24 +46,30 @@ public class AuthController {
         GoogleIdToken idToken;
 
             try {
+
                 idToken = verifier.verify(token);
+
                 if (idToken != null) {
+                    log.info("TOKEN DE GOOGLE VALIDADO CON EXITO");
                     GoogleIdToken.Payload payload = idToken.getPayload();
                     String email = payload.getEmail();
-                    String name = (String) payload.get("name");
                     Usuario findUser = usuarioRepository.findByEmail(email)
                             .orElseThrow(()-> new UserNotFoundException("User not found with email: " + email));
 
+                    var userAuth = new UserAuth(findUser);
 
+                    var jwtToken = jwtService.generateToken(userAuth);
 
-                    return "Usuario validado: " + name + " (" + email + ")";
+                    return ResponseEntity.ok(jwtToken);
+
                 } else {
-                    return "Token inválido.";
+
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido.");
                 }
+
             } catch (Exception e) {
-                return "Error al validar el token: " + e.getMessage();
+
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error validating token: " + e.getMessage());
             }
-
     }
-
 }
