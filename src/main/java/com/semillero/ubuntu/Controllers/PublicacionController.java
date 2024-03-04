@@ -18,7 +18,7 @@ public class PublicacionController {
      Endpoints para las publicaciones (Están sujetos a cambio, ya que hay que asignar los roles)
      **/
     @GetMapping("/")
-    public ResponseEntity<?> getAllPublicaciones() {
+    public ResponseEntity<?> getAllPublicaciones() {  //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionService.getAll());
         } catch (Exception exception) {
@@ -27,7 +27,7 @@ public class PublicacionController {
     }
 
     @GetMapping("/permitidas")
-    public ResponseEntity<?> getAllPublisPermitidas() {
+    public ResponseEntity<?> getAllPublisPermitidas() { //Visitante
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionService.traerPublisNoOcultas());
         } catch (Exception exception) {
@@ -36,7 +36,7 @@ public class PublicacionController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> crearPublicacion(@RequestBody Publicacion publicacion) {
+    public ResponseEntity<?> crearPublicacion(@RequestBody Publicacion publicacion) { //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionService.save(publicacion));
         } catch (Exception exception) {
@@ -45,7 +45,7 @@ public class PublicacionController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> actualizarPublicacion(@PathVariable Long id, @RequestBody Publicacion publicacion) {
+    public ResponseEntity<?> actualizarPublicacion(@PathVariable Long id, @RequestBody Publicacion publicacion) { //Administrador
         try {
             publicacionService.update(id, publicacion);
             return ResponseEntity.ok("Actualizacion correcta");
@@ -55,7 +55,7 @@ public class PublicacionController {
     }
 
     @PutMapping("/baja/{id}")
-    public ResponseEntity<?> bajarPublicacion(@PathVariable Long id, @RequestBody Publicacion publicacion) {
+    public ResponseEntity<?> bajarPublicacion(@PathVariable Long id, @RequestBody Publicacion publicacion) { //Administrador
         try {
             publicacionService.bajaLogica(id, publicacion);
             return ResponseEntity.ok("Baja correcta");
@@ -66,7 +66,8 @@ public class PublicacionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?>verPubliVisitante(@PathVariable Long id) { //Esta funcion solo debe activarla el visitante en teoria
+    public ResponseEntity<?>verPubliVisitante(@PathVariable Long id) {
+        //Esta funcion solo debe activarla el visitante en teoria, no el ADMIN para no aumentar las vistas (Especificado en tarjeta 17)
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionService.verPubliVisitante(id));
         } catch (Exception exception) {

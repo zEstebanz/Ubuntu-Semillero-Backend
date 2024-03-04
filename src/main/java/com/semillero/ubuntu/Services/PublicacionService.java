@@ -54,6 +54,10 @@ public class PublicacionService {
         }
     }
 
+    /**
+     Función de actualización de Publicación donde el adiministrador realiza cambios en la publicación
+     previamente creada
+     **/
     @Transactional
     public void update(Long id, Publicacion publicacionDTO) throws Exception {
         try {
@@ -69,6 +73,9 @@ public class PublicacionService {
         }
     }
 
+    /**
+     Función de baja lógica donde el administrador da de baja la publicación
+     **/
     @Transactional
     public void bajaLogica(Long id, Publicacion publicacionDTO) throws Exception {   //Puede que tenga que cambiar el DTO
         try {
@@ -81,6 +88,10 @@ public class PublicacionService {
         }
     }
 
+    /**
+     Función de ver publicaciones en más detalle (haciendo click en 'ver más') aumentando las vistas de la
+     publicación
+     **/
     @Transactional
     public Publicacion verPubliVisitante(Long id) throws Exception {        //Esta funcion solo debe activarla el visitante en teoria
         try {
