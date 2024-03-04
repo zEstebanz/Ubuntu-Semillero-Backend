@@ -39,16 +39,16 @@ public class PublicacionController {
     @PostMapping("/create")
     public ResponseEntity<?> crearPublicacion(@RequestBody PublicacionDTO publicacionDTO) { //Administrador
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.save(publicacionDTO));
+            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.crearPublcacion(publicacionDTO));
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"{\\\\\\\"error\\\\\\\":\\\\\\\"Error en crear publicacion.\\\\\\\"}\"");
         }
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> actualizarPublicacion(@PathVariable Long id, @RequestBody Publicacion publicacion) { //Administrador
+    public ResponseEntity<?> actualizarPublicacion(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) { //Administrador
         try {
-            publicacionServiceImpl.update(id, publicacion);
+            publicacionServiceImpl.editarPublicacion(id, publicacionDTO);
             return ResponseEntity.ok("Actualizacion correcta");
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"{\\\\\\\"error\\\\\\\":\\\\\\\"Error en actualizar publicacion.\\\\\\\"}\"");
@@ -56,9 +56,9 @@ public class PublicacionController {
     }
 
     @PutMapping("/baja/{id}")
-    public ResponseEntity<?> bajarPublicacion(@PathVariable Long id, @RequestBody Publicacion publicacion) { //Administrador
+    public ResponseEntity<?> bajarPublicacion(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) { //Administrador
         try {
-            publicacionServiceImpl.bajaLogica(id, publicacion);
+            publicacionServiceImpl.bajaLogica(id, publicacionDTO);
             return ResponseEntity.ok("Baja correcta");
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"{\\\\\\\"error\\\\\\\":\\\\\\\"Error en bajar publicacion.\\\\\\\"}\"");
@@ -70,7 +70,8 @@ public class PublicacionController {
     public ResponseEntity<?>verPubliVisitante(@PathVariable Long id) {
         //Esta funcion solo debe activarla el visitante en teoria, no el ADMIN para no aumentar las vistas (Especificado en tarjeta 17)
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.verPubliVisitante(id));
+            publicacionServiceImpl.verPubliVisitante(id);
+            return ResponseEntity.ok("Vista Correcta");
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
         }

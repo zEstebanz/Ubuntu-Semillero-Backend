@@ -12,10 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PublicacionServiceImpl implements PublicacionService {
+public class PublicacionServiceImpl implements PublicacionService { //Faltan cargar los otros metodos a la clase Service
     @Autowired
     private PublicacionRepository publicacionRepository;
 
+    //Modificar esta funcion para que coincida con el mapper
     @Transactional
     public List<Publicacion> getAll() throws Exception { //Todas las publicaciones guardadas en la base de datos (incluidas las que estan ocultas)
         try {
@@ -38,7 +39,7 @@ public class PublicacionServiceImpl implements PublicacionService {
  Función de creación de Publicaciones utilizando @Builder para asignar los valores de una forma más sencilla y directa
  **/
     @Transactional
-    public PublicacionDTO save(PublicacionDTO publicacionDTO) throws Exception {
+    public PublicacionDTO crearPublcacion(PublicacionDTO publicacionDTO) throws Exception {
         try {
             Publicacion nuevaPubli = Publicacion.builder()
                     .titulo(publicacionDTO.getTitulo())
@@ -60,7 +61,7 @@ public class PublicacionServiceImpl implements PublicacionService {
      previamente creada
      **/
     @Transactional
-    public void update(Long id, Publicacion publicacionDTO) throws Exception {
+    public PublicacionDTO editarPublicacion(Long id, PublicacionDTO publicacionDTO) throws Exception {
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
             Publicacion publicacion = publicacionOptional.get();
@@ -69,6 +70,7 @@ public class PublicacionServiceImpl implements PublicacionService {
             publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
             //Falta la edicion de imagenes
             publicacionRepository.save(publicacion);
+            //Agregar el return con el mapper
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -78,9 +80,10 @@ public class PublicacionServiceImpl implements PublicacionService {
      Función de baja lógica donde el administrador da de baja la publicación
      **/
     @Transactional
-    public void bajaLogica(Long id, Publicacion publicacionDTO) throws Exception {   //Puede que tenga que cambiar el DTO
+    public void bajaLogica(Long id, PublicacionDTO publicacionDTO) throws Exception {
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
+            //falta isPresent() pero no trae problemas igual
             Publicacion publicacion = publicacionOptional.get();
             publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
             publicacionRepository.save(publicacion);
@@ -94,14 +97,13 @@ public class PublicacionServiceImpl implements PublicacionService {
      publicación
      **/
     @Transactional
-    public PublicacionDTO verPubliVisitante(Long id) throws Exception {        //Esta funcion solo debe activarla el visitante en teoria
+    public void verPubliVisitante(Long id) throws Exception {        //Esta funcion solo debe activarla el visitante en teoria
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
             Publicacion publicacion = publicacionOptional.get();
             int sumaVista = publicacion.getCantVistas();
             sumaVista++;
             publicacion.setCantVistas(sumaVista);
-            return (publicacion); //Mapear a DTO
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
