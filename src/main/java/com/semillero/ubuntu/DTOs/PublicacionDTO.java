@@ -6,6 +6,5 @@ import lombok.Data;
 public class PublicacionDTO {
     String titulo;
     String descripcion;
-    Boolean isDeleted;
-
+    //Faltan las fotos
 }
