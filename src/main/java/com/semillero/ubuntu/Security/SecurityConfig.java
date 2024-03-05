@@ -23,7 +23,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
 
     RequestMatcher publicUrls = new OrRequestMatcher(
-            new AntPathRequestMatcher("/auth/**")
+            new AntPathRequestMatcher("/auth/token")
     );
 
 
@@ -35,12 +35,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(publicUrls)
                         .permitAll()
+                        .requestMatchers("/rubros/get-all").hasRole("ADMINISTRADOR")
                         .anyRequest()
                         .authenticated()
                 )
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterAfter(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

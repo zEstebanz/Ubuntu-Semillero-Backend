@@ -10,6 +10,7 @@ import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Config.GoogleClientID;
 import com.semillero.ubuntu.Security.jwt.JwtService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class AuthController {
     private final UsuarioRepository usuarioRepository;
 
     @PostMapping("/token")
-    public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String authHeader, HttpServletResponse response) {
         log.info("ENTRE AL ENDPOINT");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new AuthTokenNotFoundException("Token is missing in the request header.");
@@ -59,8 +60,10 @@ public class AuthController {
                     var userAuth = new UserAuth(findUser);
 
                     var jwtToken = jwtService.generateToken(userAuth);
+                    log.info("TOKEN = " + jwtToken);
+                    response.setHeader("Authorization", jwtToken);
 
-                    return ResponseEntity.ok(jwtToken);
+                    return ResponseEntity.ok().build();
 
                 } else {
 
