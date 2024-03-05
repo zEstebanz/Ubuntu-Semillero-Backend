@@ -4,6 +4,7 @@ import com.semillero.ubuntu.ChatBot.Enums.Categoria;
 import jakarta.persistence.*;
 
 public class Pregunta {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
