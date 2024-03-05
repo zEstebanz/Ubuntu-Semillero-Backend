@@ -13,13 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PublicacionServiceImpl implements PublicacionService { //Faltan cargar los otros metodos a la clase Service
+public class PublicacionServiceImpl implements PublicacionService {
     @Autowired
     private PublicacionRepository publicacionRepository;
 
     /**
      Trae todas las publicaciones guardadas en la base de datos, incluidas las ocultas
      y las mapea en una lista de tipo DTO
+     / ROL: SUPER ADMIN
      **/
     @Transactional
     public List<PublicacionDTO> getAll() throws Exception {
@@ -30,7 +31,10 @@ public class PublicacionServiceImpl implements PublicacionService { //Faltan car
             throw new Exception(e.getMessage());
         }
     }
-
+/**
+ Trae todas las publicaciones que están disponibles
+ / Rol: VISITANTE
+ **/
     @Transactional
     public List<PublicacionDTO> traerPublisNoOcultas() throws Exception {
         try {
@@ -46,7 +50,7 @@ public class PublicacionServiceImpl implements PublicacionService { //Faltan car
  / Rol: ADMINISTRADOR
  **/
     @Transactional
-    public PublicacionDTO crearPublcacion(PublicacionDTO publicacionDTO) throws Exception {
+    public PublicacionDTO crearPublicacion(PublicacionDTO publicacionDTO) throws Exception {
         try {
             Publicacion nuevaPubli = Publicacion.builder()
                     .titulo(publicacionDTO.getTitulo())
@@ -73,13 +77,14 @@ public class PublicacionServiceImpl implements PublicacionService { //Faltan car
     public PublicacionDTO editarPublicacion(Long id, PublicacionDTO publicacionDTO) throws Exception {
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
+            //falta isPresent() pero no trae problemas igual
             Publicacion publicacion = publicacionOptional.get();
             publicacion.setTitulo(publicacionDTO.getTitulo());
             publicacion.setDescripcion(publicacionDTO.getDescripcion());
             publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
             //Falta la edicion de imagenes
             publicacionRepository.save(publicacion);
-            ASDFASDF
+            return MapperUtil.mapToDto(publicacion, PublicacionDTO.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -111,6 +116,7 @@ public class PublicacionServiceImpl implements PublicacionService { //Faltan car
     public void verPubliVisitante(Long id) throws Exception {
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
+            //falta isPresent() pero no trae problemas igual
             Publicacion publicacion = publicacionOptional.get();
             int sumaVista = publicacion.getCantVistas();
             sumaVista++;

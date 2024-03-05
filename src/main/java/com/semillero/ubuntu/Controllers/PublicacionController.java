@@ -39,7 +39,7 @@ public class PublicacionController {
     @PostMapping("/create")
     public ResponseEntity<?> crearPublicacion(@RequestBody PublicacionDTO publicacionDTO) { //Administrador
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.crearPublcacion(publicacionDTO));
+            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.crearPublicacion(publicacionDTO));
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"{\\\\\\\"error\\\\\\\":\\\\\\\"Error en crear publicacion.\\\\\\\"}\"");
         }
@@ -48,8 +48,8 @@ public class PublicacionController {
     @PutMapping("/edit/{id}")
     public ResponseEntity<?> actualizarPublicacion(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) { //Administrador
         try {
-            publicacionServiceImpl.editarPublicacion(id, publicacionDTO);
-            return ResponseEntity.ok("Actualizacion correcta");
+
+            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.editarPublicacion(id, publicacionDTO));
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"{\\\\\\\"error\\\\\\\":\\\\\\\"Error en actualizar publicacion.\\\\\\\"}\"");
         }
