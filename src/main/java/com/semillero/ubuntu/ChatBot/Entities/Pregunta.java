@@ -3,6 +3,7 @@ package com.semillero.ubuntu.ChatBot.Entities;
 import com.semillero.ubuntu.ChatBot.Enums.Categoria;
 import jakarta.persistence.*;
 
+@Entity
 public class Pregunta {
 
     @Id
@@ -14,4 +15,5 @@ public class Pregunta {
     @ManyToOne
     @JoinColumn(name = "id_respuesta")
     private Respuesta respuesta;
+
 }
