@@ -2,9 +2,11 @@ package com.semillero.ubuntu.Entities;
 
 import com.semillero.ubuntu.Enums.Rol;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 
+@Builder
 @Data
 @Entity
 @Table(name="Usuario", uniqueConstraints = {
@@ -27,6 +29,8 @@ public class Usuario {
 
     @Column(name="Baja", nullable = false)
     private Boolean isDeleted;
+
+    //Ver tambien si hay que agregar telefono
 
     @Enumerated(EnumType.STRING)
     @Column(name="rol", nullable = false)

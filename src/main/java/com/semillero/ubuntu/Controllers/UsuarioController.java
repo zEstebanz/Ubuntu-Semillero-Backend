@@ -1,8 +1,8 @@
 package com.semillero.ubuntu.Controllers;
 
 
-import com.semillero.ubuntu.Entities.Usuario;
-import com.semillero.ubuntu.Services.UsuarioService;
+import com.semillero.ubuntu.DTOs.UsuarioDTO;
+import com.semillero.ubuntu.Services.impl.UsuarioServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,24 +15,34 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "usuarios")
 public class UsuarioController{
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioServiceImpl usuarioServiceImpl;
 
-   @PostMapping("/create")
-    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
+   @PostMapping("/crear")
+    public ResponseEntity<?> crearUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
+            return ResponseEntity.status(HttpStatus.OK).body(usuarioServiceImpl.crearUsuario(usuarioDTO));
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\\\"error\\\":\\\"Error en creacion de usuario.\\\"}");
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarUsuario(@PathVariable Long id,@RequestBody Usuario usuario) {
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> actualizarUsuario(@PathVariable Long id,@RequestBody UsuarioDTO usuarioDTO) {
        try {
-           usuarioService.update(id, usuario);
-           return ResponseEntity.ok("Actualizacion correcta");
+           return ResponseEntity.status(HttpStatus.OK).body(usuarioServiceImpl.editarUsuario(id, usuarioDTO));
        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\\\"error\\\":\\\"Error en actualizar usuario.\\\"}");
        }
     }
+
+    @PutMapping("/baja/{id}")
+    public ResponseEntity<?> bajaLogica(@PathVariable Long id) {
+       try {
+           usuarioServiceImpl.bajaLogica(id);
+           return ResponseEntity.ok("Baja Correcta");
+       } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\\\"error\\\":\\\"Error en desactivar usuario.\\\"}");
+       }
+    }
+
 }
