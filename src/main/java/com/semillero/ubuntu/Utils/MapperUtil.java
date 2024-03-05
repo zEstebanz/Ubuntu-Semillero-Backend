@@ -17,6 +17,7 @@ public class MapperUtil {
      * @return The mapped DTO object.
      */
     public static <T, U> U mapToDto(T entity, Class<U> dtoClass) {
+
         return modelMapper.map(entity, dtoClass);
     }
     /**
@@ -34,3 +35,4 @@ public class MapperUtil {
                 .collect(Collectors.toList());
     }
 }
+
