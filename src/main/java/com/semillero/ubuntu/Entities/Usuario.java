@@ -30,8 +30,6 @@ public class Usuario {
     @Column(name="Baja", nullable = false)
     private Boolean isDeleted;
 
-    //Ver tambien si hay que agregar telefono
-
     @Enumerated(EnumType.STRING)
     @Column(name="rol", nullable = false)
     private Rol rol;
