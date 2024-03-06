@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(path = "usuarios")
+@RequestMapping(path = "/usuarios")
 public class UsuarioController{
     @Autowired
     private UsuarioServiceImpl usuarioServiceImpl;

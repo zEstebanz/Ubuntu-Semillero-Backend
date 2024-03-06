@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(path = "publicaciones")
+@RequestMapping(path = "/publicaciones")
 public class PublicacionController {
     @Autowired
     private PublicacionServiceImpl publicacionServiceImpl;
@@ -17,7 +17,7 @@ public class PublicacionController {
     /**
      Endpoints para las publicaciones (Están sujetos a cambio, ya que hay que asignar los roles)
      **/
-    @GetMapping("/")
+    @GetMapping("/getAll")
     public ResponseEntity<?> getAllPublicaciones() {  //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.getAll());

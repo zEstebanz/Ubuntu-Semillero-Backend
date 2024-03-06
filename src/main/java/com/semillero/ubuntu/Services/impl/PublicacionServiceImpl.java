@@ -2,10 +2,14 @@ package com.semillero.ubuntu.Services.impl;
 
 import com.semillero.ubuntu.DTOs.PublicacionDTO;
 import com.semillero.ubuntu.Entities.Publicacion;
+import com.semillero.ubuntu.Entities.Usuario;
 import com.semillero.ubuntu.Repositories.PublicacionRepository;
+import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Services.PublicacionService;
 import com.semillero.ubuntu.Utils.MapperUtil;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.hibernate.action.internal.EntityActionVetoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +21,9 @@ import java.util.Optional;
 public class PublicacionServiceImpl implements PublicacionService {
     @Autowired
     private PublicacionRepository publicacionRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     /**
      Trae todas las publicaciones guardadas en la base de datos, incluidas las ocultas
@@ -32,10 +39,11 @@ public class PublicacionServiceImpl implements PublicacionService {
             throw new Exception(e.getMessage());
         }
     }
-/**
- Trae todas las publicaciones que están disponibles
- / Rol: VISITANTE
- **/
+
+    /**
+     Trae todas las publicaciones que están disponibles
+     / Rol: VISITANTE
+     **/
     @Transactional
     public List<PublicacionDTO> traerPublisNoOcultas() throws Exception {
         try {
@@ -46,20 +54,23 @@ public class PublicacionServiceImpl implements PublicacionService {
         }
     }
 
-/**
- Función de creación de Publicaciones utilizando @Builder para asignar los valores de una forma más sencilla y directa
- / Rol: ADMINISTRADOR
- **/
+    /**
+     Función de creación de Publicaciones utilizando @Builder para asignar los valores de una forma más sencilla y directa
+     / Rol: ADMINISTRADOR
+     **/
     @Transactional
     public PublicacionDTO crearPublicacion(PublicacionDTO publicacionDTO) throws Exception {
         try {
+            Optional<Usuario> usuarioOptional = usuarioRepository.findById(publicacionDTO.getIdUsuario());
+            Usuario usuarioCreador = usuarioOptional.get();
             Publicacion nuevaPubli = Publicacion.builder()
                     .titulo(publicacionDTO.getTitulo())
                     .descripcion(publicacionDTO.getDescripcion())
                     .fechaCreacion(LocalDate.now())
                     .cantVistas(0)
                     .isDeleted(false)
-                     //Falta la lista de imagenes y la asignacion de usuario
+                     //Falta la lista de imagenes
+                    .usuarioCreador(usuarioCreador)
                     .build();
             publicacionRepository.save(nuevaPubli);
             return publicacionDTO;
@@ -78,13 +89,13 @@ public class PublicacionServiceImpl implements PublicacionService {
     public PublicacionDTO editarPublicacion(Long id, PublicacionDTO publicacionDTO) throws Exception {
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
-            //falta isPresent() pero no trae problemas igual
-            Publicacion publicacion = publicacionOptional.get();
-            publicacion.setTitulo(publicacionDTO.getTitulo());
-            publicacion.setDescripcion(publicacionDTO.getDescripcion());
-            publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
-            //Falta la edicion de imagenes
-            publicacionRepository.save(publicacion);
+                Publicacion publicacion = publicacionOptional.get();
+                publicacion.setTitulo(publicacionDTO.getTitulo());
+                publicacion.setDescripcion(publicacionDTO.getDescripcion());
+                publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
+                //Falta la edicion de imagenes
+                publicacionRepository.save(publicacion);
+
             return MapperUtil.mapToDto(publicacion, PublicacionDTO.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -99,17 +110,18 @@ public class PublicacionServiceImpl implements PublicacionService {
     public void bajaLogica(Long id, PublicacionDTO publicacionDTO) throws Exception {
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
-            //falta isPresent() pero no trae problemas igual
-            Publicacion publicacion = publicacionOptional.get();
-            publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
-            publicacionRepository.save(publicacion);
+            if (publicacionOptional.isPresent()) {
+                Publicacion publicacion = publicacionOptional.get();
+                publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
+                publicacionRepository.save(publicacion);
+            }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
     /**
-     Función de ver publicaciones en más detalle (haciendo click en 'ver más') aumentando las vistas de la
+     Función de ver publicaciones en más detalle (haciendo clic en 'ver más') aumentando las vistas de la
      publicación
      / Rol: VISITANTE (MUY IMPORTANTE)
      **/
@@ -117,7 +129,7 @@ public class PublicacionServiceImpl implements PublicacionService {
     public void verPubliVisitante(Long id) throws Exception {
         try {
             Optional<Publicacion> publicacionOptional = publicacionRepository.findById(id);
-            //falta isPresent() pero no trae problemas igual
+            //falta isPresent() pero no trae problemas
             Publicacion publicacion = publicacionOptional.get();
             int sumaVista = publicacion.getCantVistas();
             sumaVista++;

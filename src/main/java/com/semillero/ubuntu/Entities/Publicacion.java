@@ -20,6 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "publicacion")
 public class Publicacion {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +39,10 @@ public class Publicacion {
     private LocalDate fechaCreacion;
 
     //List Imagenes
-    //private Usuario usuario
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)     //Sujeto a cambios (Puede que la relación sea al revés)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuarioCreador;
 
     @Column(name="cant-vistas", nullable = false)
     private int cantVistas;

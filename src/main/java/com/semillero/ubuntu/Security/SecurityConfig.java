@@ -36,8 +36,14 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/rubros/get-all").hasRole("ADMINISTRADOR")
                         .requestMatchers("/auth/user/details").hasRole("ADMINISTRADOR")
+                        //Pais/Provincia
                         .requestMatchers("/paises/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/provincias/**").hasRole("ADMINISTRADOR")
+                        //Publicaciones
+                        .requestMatchers("/publicaciones/getAll").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/publicaciones/create").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/publicaciones/edit/{id}").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/publicaciones/baja/{id}").hasRole("ADMINISTRADOR")
                         .anyRequest()
                         .authenticated()
                 )
