@@ -5,14 +5,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
 @Builder
 @Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name="Usuario", uniqueConstraints = {
 @UniqueConstraint(columnNames = "email")
 })

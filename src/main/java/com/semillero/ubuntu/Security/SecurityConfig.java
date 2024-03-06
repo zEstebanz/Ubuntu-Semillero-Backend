@@ -26,7 +26,6 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/auth/token")
     );
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
