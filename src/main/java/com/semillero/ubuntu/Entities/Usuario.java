@@ -2,8 +2,10 @@ package com.semillero.ubuntu.Entities;
 
 import com.semillero.ubuntu.Enums.Rol;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Builder
@@ -12,6 +14,7 @@ import lombok.Data;
 @Table(name="Usuario", uniqueConstraints = {
 @UniqueConstraint(columnNames = "email")
 })
+@AllArgsConstructor
 public class Usuario {
 
     @Id
@@ -35,5 +38,6 @@ public class Usuario {
     private Rol rol;
     //private List Proveedores;
 
+    public Usuario(){}
 
 }

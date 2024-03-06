@@ -1,4 +1,4 @@
-package com.semillero.ubuntu.Security;
+package com.semillero.ubuntu.Config;
 
 import com.semillero.ubuntu.Entities.Usuario;
 import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;

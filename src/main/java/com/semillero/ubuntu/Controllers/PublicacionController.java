@@ -1,8 +1,7 @@
 package com.semillero.ubuntu.Controllers;
 
 import com.semillero.ubuntu.DTOs.PublicacionDTO;
-import com.semillero.ubuntu.Entities.Publicacion;
-import com.semillero.ubuntu.Services.PublicacionServiceImpl;
+import com.semillero.ubuntu.Services.impl.PublicacionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

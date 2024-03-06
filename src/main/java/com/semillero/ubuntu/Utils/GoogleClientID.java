@@ -1,12 +1,12 @@
-package com.semillero.ubuntu.Config;
+package com.semillero.ubuntu.Utils;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "jwtkey")
+@ConfigurationProperties(prefix = "google")
 @Data
-public class SecretKeyConfig {
-    private String SECRET_KEY;
+public class GoogleClientID {
+    private String ID_CLIENT;
 }

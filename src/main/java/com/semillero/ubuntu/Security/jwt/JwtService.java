@@ -1,7 +1,7 @@
 package com.semillero.ubuntu.Security.jwt;
 
 
-import com.semillero.ubuntu.Config.SecretKeyConfig;
+import com.semillero.ubuntu.Utils.SecretKeyConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

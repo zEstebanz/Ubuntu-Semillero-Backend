@@ -1,8 +1,9 @@
-package com.semillero.ubuntu.Services;
+package com.semillero.ubuntu.Services.impl;
 
 import com.semillero.ubuntu.DTOs.PublicacionDTO;
 import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Repositories.PublicacionRepository;
+import com.semillero.ubuntu.Services.PublicacionService;
 import com.semillero.ubuntu.Utils.MapperUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
