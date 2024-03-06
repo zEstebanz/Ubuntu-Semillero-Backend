@@ -36,6 +36,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/rubros/get-all").hasRole("ADMINISTRADOR")
                         .requestMatchers("/auth/user/details").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/paises/**").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/provincias/**").hasRole("ADMINISTRADOR")
                         .anyRequest()
                         .authenticated()
                 )

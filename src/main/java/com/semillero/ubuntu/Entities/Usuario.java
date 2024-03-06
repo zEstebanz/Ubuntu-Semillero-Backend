@@ -8,12 +8,12 @@ import lombok.Data;
 
 
 @Builder
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name="Usuario", uniqueConstraints = {
 @UniqueConstraint(columnNames = "email")
 })
-@AllArgsConstructor
 public class Usuario {
 
     @Id
