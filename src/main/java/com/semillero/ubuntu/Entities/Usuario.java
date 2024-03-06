@@ -2,11 +2,15 @@ package com.semillero.ubuntu.Entities;
 
 import com.semillero.ubuntu.Enums.Rol;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name="Usuario", uniqueConstraints = {
