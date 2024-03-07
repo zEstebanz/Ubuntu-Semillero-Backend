@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface PreguntaService {
     List<PreguntaDTO> getInicial() throws Exception;
     PreguntaDTO findById(PreguntaDTO preguntaDTO) throws Exception;

@@ -35,7 +35,7 @@ public class PreguntaController {
     @PutMapping("edit/{id}")
     public ResponseEntity<?> edit (@PathVariable Long id,@RequestBody PreguntaDTO preguntaDTO) {
         try {
-
+            return ResponseEntity.status(HttpStatus.OK).body(preguntaService.edit(id, preguntaDTO));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se puede editar pregunta");
         }

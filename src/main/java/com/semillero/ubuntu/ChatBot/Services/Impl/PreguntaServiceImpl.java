@@ -8,10 +8,11 @@ import com.semillero.ubuntu.ChatBot.Repositories.PreguntaRepository;
 import com.semillero.ubuntu.ChatBot.Repositories.RespuestaRepository;
 import com.semillero.ubuntu.ChatBot.Services.PreguntaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class PreguntaServiceImpl implements PreguntaService {
     @Autowired
     private PreguntaRepository preguntaRepository;
