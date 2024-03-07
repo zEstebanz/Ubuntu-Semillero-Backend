@@ -1,5 +1,7 @@
 package com.semillero.ubuntu.Exceptions;
 
+import com.semillero.ubuntu.Exceptions.token.AuthTokenNotFoundException;
+import com.semillero.ubuntu.Exceptions.token.ValidateTokenException;
 import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +29,14 @@ public class GlobalHandlerException {
         resp.put("USER_NOT_FOUND", ex.getMessage());
 
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ValidateTokenException.class)
+    public ResponseEntity<Map<String,String>> validateTokenExceptionHandler(ValidateTokenException ex){
+        Map<String,String> resp = new HashMap<>();
+
+        resp.put("VALIDATE_FAIL", ex.getMessage());
+
+        return new ResponseEntity<>(resp, HttpStatus.CONFLICT);
     }
 }

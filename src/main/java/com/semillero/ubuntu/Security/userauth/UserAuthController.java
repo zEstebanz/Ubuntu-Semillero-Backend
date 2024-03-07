@@ -12,7 +12,7 @@ public class UserAuthController {
 
     private final UserAuthService userAuthService;
     @PostMapping("/token")
-    public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String authHeader, HttpServletResponse response) throws Exception {
+    public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String authHeader, HttpServletResponse response){
         response.setHeader("Authorization", userAuthService.validateToken(authHeader));
         return ResponseEntity.ok("Success");
     }

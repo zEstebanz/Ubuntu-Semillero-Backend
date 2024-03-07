@@ -5,7 +5,8 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.semillero.ubuntu.Entities.Usuario;
-import com.semillero.ubuntu.Exceptions.AuthTokenNotFoundException;
+import com.semillero.ubuntu.Exceptions.token.AuthTokenNotFoundException;
+import com.semillero.ubuntu.Exceptions.token.ValidateTokenException;
 import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Security.jwt.JwtService;
@@ -27,7 +28,7 @@ public class UserAuthService {
     private final GoogleClientID googleClientID;
     private final UsuarioRepository usuarioRepository;
 
-    public String validateToken(String authHeader) throws Exception {
+    public String validateToken(String authHeader) {
 
         var token = extractTokenFromHeader(authHeader);
         var verifierToken = validateGoogleToken(token);
@@ -54,25 +55,26 @@ public class UserAuthService {
     }
 
     private String extractTokenFromHeader(String authHeader){
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader.isEmpty()) {
             throw new AuthTokenNotFoundException("Token is missing in the request header.");
+        } else if (!authHeader.startsWith("Bearer ")){
+            throw new ValidateTokenException("Token sent in an invalid format");
         }
-
         return authHeader.substring(7);
     }
 
-    private GoogleIdToken.Payload validateGoogleToken(String token) throws Exception {
+    private GoogleIdToken.Payload validateGoogleToken(String token) {
         var verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), GsonFactory.getDefaultInstance())
                 .setAudience(Collections.singletonList(googleClientID.getID_CLIENT()))
                 .build();
         try {
             GoogleIdToken idToken = verifier.verify(token);
             if (idToken == null) {
-                throw new Exception("Token inválido o no pudo ser verificado.");
+                throw new ValidateTokenException("Token is null.");
             }
             return idToken.getPayload();
         } catch (Exception e) {
-            throw new Exception("Error de seguridad al verificar el token: " + e.getMessage(), e);
+            throw new ValidateTokenException(e.getMessage());
         }
     }
 
