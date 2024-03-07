@@ -23,7 +23,19 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
 
     RequestMatcher publicUrls = new OrRequestMatcher(
-            new AntPathRequestMatcher("/auth/token")
+            new AntPathRequestMatcher("/auth/token"),
+            new AntPathRequestMatcher("/publicaciones/permitidas")
+    );
+
+    RequestMatcher adminUrls = new OrRequestMatcher(
+            new AntPathRequestMatcher("/rubros/get-all"),
+            new AntPathRequestMatcher("/auth/user/details"),
+            new AntPathRequestMatcher("/paises/**"),
+            new AntPathRequestMatcher("/provincias/**"),
+            new AntPathRequestMatcher("/publicaciones/getAll"),
+            new AntPathRequestMatcher("/publicaciones/create"),
+            new AntPathRequestMatcher("/publicaciones/edit/{id}"),
+            new AntPathRequestMatcher("/publicaciones/baja/{id}")
     );
 
     @Bean
@@ -34,16 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(publicUrls)
                         .permitAll()
-                        .requestMatchers("/rubros/get-all").hasRole("ADMINISTRADOR")
-                        .requestMatchers("/auth/user/details").hasRole("ADMINISTRADOR")
-                        //Pais/Provincia
-                        .requestMatchers("/paises/**").hasRole("ADMINISTRADOR")
-                        .requestMatchers("/provincias/**").hasRole("ADMINISTRADOR")
-                        //Publicaciones
-                        .requestMatchers("/publicaciones/getAll").hasRole("ADMINISTRADOR")
-                        .requestMatchers("/publicaciones/create").hasRole("ADMINISTRADOR")
-                        .requestMatchers("/publicaciones/edit/{id}").hasRole("ADMINISTRADOR")
-                        .requestMatchers("/publicaciones/baja/{id}").hasRole("ADMINISTRADOR")
+                        .requestMatchers(adminUrls).hasRole("ADMINISTRADOR")
                         .anyRequest()
                         .authenticated()
                 )
