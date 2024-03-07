@@ -12,6 +12,8 @@ public class Respuesta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String texto;
+    private Boolean isDeleted;
+    private Boolean inicial;
 
     //private Categoria categoria;
     @OneToMany(mappedBy = "respuesta")

@@ -10,7 +10,8 @@ public class Pregunta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
-    private Boolean inicial;
+
+    private Boolean isDeleted;
     private Categoria categoria;
     @ManyToOne
     @JoinColumn(name = "id_respuesta")
