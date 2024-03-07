@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(path = "/publicaciones")
+@RequestMapping(path = "publicaciones")
 public class PublicacionController {
     @Autowired
     private PublicacionServiceImpl publicacionServiceImpl;
@@ -27,7 +27,7 @@ public class PublicacionController {
     }
 
     @GetMapping("/permitidas")
-    public ResponseEntity<?> getAllPublisPermitidas() { //Visitante
+    public ResponseEntity<?> getAllPublisPermitidas() { //Visitante (No se puede ver sin el token todavía)
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.traerPublisNoOcultas());
         } catch (Exception exception) {
