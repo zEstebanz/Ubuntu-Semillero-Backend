@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface RespuestaRepository extends JpaRepository<Respuesta, Long> {
-    @Query(value = "SELECT * FROM respuesta WHERE inicial = true", nativeQuery = true)
-    List<Respuesta> getInicial();
+
 }
