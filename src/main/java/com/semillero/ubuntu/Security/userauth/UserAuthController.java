@@ -6,14 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class UserAuthController {
 
     private final UserAuthService userAuthService;
     @PostMapping("/token")
-    public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String authHeader, HttpServletResponse response){
-        response.setHeader("Authorization", userAuthService.validateToken(authHeader));
+    public ResponseEntity<String> authUser(@RequestHeader("Authorization") String authHeader, HttpServletResponse response){
+        response.setHeader("Authorization", userAuthService.authUser(authHeader));
         return ResponseEntity.ok("Success");
     }
 
@@ -23,3 +23,4 @@ public class UserAuthController {
         return ResponseEntity.ok("Success");
     }
 }
+

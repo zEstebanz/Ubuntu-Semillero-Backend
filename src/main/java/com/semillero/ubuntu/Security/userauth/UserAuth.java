@@ -13,17 +13,14 @@ import java.util.Collections;
 public class UserAuth implements UserDetails {
 
     private final Usuario usuario;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name()));
     }
-
     @Override
     public String getPassword() {
         return null;
     }
-
     @Override
     public String getUsername() {
         return usuario.getEmail();

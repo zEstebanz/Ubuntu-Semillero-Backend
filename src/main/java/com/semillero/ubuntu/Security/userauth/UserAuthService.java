@@ -28,10 +28,10 @@ public class UserAuthService {
     private final GoogleClientID googleClientID;
     private final UsuarioRepository usuarioRepository;
 
-    public String validateToken(String authHeader) {
+    public String authUser(String authHeader) {
 
         var token = extractTokenFromHeader(authHeader);
-        var verifierToken = validateGoogleToken(token);
+        var verifierToken = validateGoogleTokenAndGetPayload(token);
         String email = verifierToken.getEmail();
         Usuario findUser = findUserByEmail(email);
         var userAuth = new UserAuth(findUser);
@@ -63,7 +63,7 @@ public class UserAuthService {
         return authHeader.substring(7);
     }
 
-    private GoogleIdToken.Payload validateGoogleToken(String token) {
+    private GoogleIdToken.Payload validateGoogleTokenAndGetPayload(String token) {
         var verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), GsonFactory.getDefaultInstance())
                 .setAudience(Collections.singletonList(googleClientID.getID_CLIENT()))
                 .build();
