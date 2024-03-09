@@ -5,15 +5,17 @@ import com.semillero.ubuntu.Entities.Rubro;
 import com.semillero.ubuntu.Repositories.RubroRepository;
 import com.semillero.ubuntu.Services.RubroService;
 import com.semillero.ubuntu.Utils.MapperUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RubroServiceImpl implements RubroService {
-    @Autowired
-    private RubroRepository rubroRepository;
+
+    private final RubroRepository rubroRepository;
 
     @Override
     public List<RubroDTO> getAllRubros() {

@@ -6,5 +6,5 @@ import com.semillero.ubuntu.DTOs.ProvinciaDTO;
 import java.util.List;
 
 public interface ProvinciaService {
-    List<ProvinciaDTO> getProvincias(Long id);
+    List<ProvinciaDTO> getProvincias(Long id) throws Exception;
 }
