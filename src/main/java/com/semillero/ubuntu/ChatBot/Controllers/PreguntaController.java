@@ -33,7 +33,7 @@ public class PreguntaController {
     }
 
     @PutMapping("edit/{id}")
-    public ResponseEntity<?> edit (@PathVariable Long id,@RequestBody PreguntaDTO preguntaDTO) {
+    public ResponseEntity<?> edit(@PathVariable Long id,@RequestBody PreguntaDTO preguntaDTO) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(preguntaService.edit(id, preguntaDTO));
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class PreguntaController {
     }
 
     @PutMapping("baja/{id}")
-    public ResponseEntity<?> bajaLogica (@PathVariable Long id, @RequestBody PreguntaDTO preguntaDTO) {
+    public ResponseEntity<?> bajaLogica(@PathVariable Long id, @RequestBody PreguntaDTO preguntaDTO) {
         try {
             preguntaService.bajaLogica(id, preguntaDTO);
             return ResponseEntity.ok("Baja correcta");
