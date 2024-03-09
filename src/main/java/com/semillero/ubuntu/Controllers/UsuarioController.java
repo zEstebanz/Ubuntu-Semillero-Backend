@@ -28,21 +28,17 @@ public class UsuarioController{
 
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> actualizarUsuario(@PathVariable Long id,@RequestBody UsuarioDTO usuarioDTO) {
-       try {
-           return ResponseEntity.status(HttpStatus.OK).body(usuarioServiceImpl.editarUsuario(id, usuarioDTO));
-       } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\\\"error\\\":\\\"Error en actualizar usuario.\\\"}");
-       }
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(usuarioServiceImpl.editarUsuario(id ,usuarioDTO));
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\\\"error\\\":\\\"Error en la edicion de usuario.\\\"}");
+        }
     }
 
     @PutMapping("/baja/{id}")
     public ResponseEntity<?> bajaLogica(@PathVariable Long id) {
-       try {
            usuarioServiceImpl.bajaLogica(id);
-           return ResponseEntity.ok("Baja Correcta");
-       } catch (Exception e) {
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\\\"error\\\":\\\"Error en desactivar usuario.\\\"}");
-       }
+           return ResponseEntity.ok().build();
     }
 
 }

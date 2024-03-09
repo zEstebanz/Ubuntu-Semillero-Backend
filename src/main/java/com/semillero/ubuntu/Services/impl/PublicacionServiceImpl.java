@@ -29,7 +29,7 @@ public class PublicacionServiceImpl implements PublicacionService {
      * Trae todas las publicaciones guardadas en la base de datos, incluidas las ocultas
      * y las mapea en una lista de tipo DTO
      * <p>
-     * (Habría que ver si crear otro método getAll pero que el usuario logueado solo pueda ver las que él creó)
+     * (Habría que ver si crear otro método getAll pero que el usuario logueado solo pueda ver las que él/ella creó)
      * <p>
      * ROL: SUPER ADMIN
      */
