@@ -1,6 +1,7 @@
 package com.semillero.ubuntu.Controllers;
 
 import com.semillero.ubuntu.DTOs.PublicacionDTO;
+import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Services.impl.PublicacionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class PublicacionController {
     /**
      Endpoints para las publicaciones (Están sujetos a cambio, ya que hay que asignar los roles)
      **/
-    @GetMapping("/getAll")
+    @GetMapping("admin/getAll")
     public ResponseEntity<?> getAllPublicaciones() {  //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.getAll());
@@ -27,7 +28,7 @@ public class PublicacionController {
     }
 
     @GetMapping("/permitidas")
-    public ResponseEntity<?> getAllPublisPermitidas() { //Visitante (No se puede ver sin el token todavía)
+    public ResponseEntity<?> getAllPublisPermitidas() { //Visitante
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.traerPublisNoOcultas());
         } catch (Exception exception) {
@@ -35,7 +36,7 @@ public class PublicacionController {
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping("admin/create")
     public ResponseEntity<?> crearPublicacion(@RequestBody PublicacionDTO publicacionDTO) { //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.crearPublicacion(publicacionDTO));
@@ -44,35 +45,25 @@ public class PublicacionController {
         }
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("admin/edit/{id}")
     public ResponseEntity<?> actualizarPublicacion(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) { //Administrador
         try {
-
-            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.editarPublicacion(id, publicacionDTO));
+            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.editarPublicacion(id ,publicacionDTO));
         } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"{\\\\\\\"error\\\\\\\":\\\\\\\"Error en actualizar publicacion.\\\\\\\"}\"");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"{\\\\\\\"error\\\\\\\":\\\\\\\"Error en editar publicacion.\\\\\\\"}\"");
         }
     }
 
-    @PutMapping("/baja/{id}")
-    public ResponseEntity<?> bajarPublicacion(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) { //Administrador
-        try {
-            publicacionServiceImpl.bajaLogica(id, publicacionDTO);
-            return ResponseEntity.ok("Baja correcta");
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"{\\\\\\\"error\\\\\\\":\\\\\\\"Error en bajar publicacion.\\\\\\\"}\"");
-
-        }
+    @PutMapping("admin/baja/{id}")
+    public ResponseEntity<?> bajarPublicacion(@PathVariable Long id) { //Administrador
+        publicacionServiceImpl.bajaLogica(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?>verPubliVisitante(@PathVariable Long id) {
         //Esta funcion solo debe activarla el visitante en teoria, no el ADMIN para no aumentar las vistas (Especificado en tarjeta 17)
-        try {
-            publicacionServiceImpl.verPubliVisitante(id);
-            return ResponseEntity.ok("Vista Correcta");
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
-        }
+        publicacionServiceImpl.verPubliVisitante(id);
+        return ResponseEntity.ok().build();
     }
 }

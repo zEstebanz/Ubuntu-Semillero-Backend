@@ -32,10 +32,10 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/auth/user/details"),
             new AntPathRequestMatcher("/paises/**"),
             new AntPathRequestMatcher("/provincias/**"),
-            new AntPathRequestMatcher("/publicaciones/getAll"),
-            new AntPathRequestMatcher("/publicaciones/create"),
-            new AntPathRequestMatcher("/publicaciones/edit/{id}"),
-            new AntPathRequestMatcher("/publicaciones/baja/{id}")
+            new AntPathRequestMatcher("admin/publicaciones/getAll"),
+            new AntPathRequestMatcher("admin/publicaciones/create"),
+            new AntPathRequestMatcher("admin/publicaciones/edit/{id}"),
+            new AntPathRequestMatcher("admin/publicaciones/baja/{id}")
     );
 
     @Bean
