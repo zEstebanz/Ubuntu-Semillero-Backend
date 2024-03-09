@@ -6,18 +6,22 @@ import com.semillero.ubuntu.Entities.Provincia;
 import com.semillero.ubuntu.Repositories.ProvinciaRepository;
 import com.semillero.ubuntu.Services.ProvinciaService;
 import com.semillero.ubuntu.Utils.MapperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import com.semillero.ubuntu.Exceptions.provincia.ProvinciaNotFoundException;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProvinciaServiceImpl implements ProvinciaService {
-    @Autowired
-    private ProvinciaRepository provinciaRepository;
+
+    private final ProvinciaRepository provinciaRepository;
     @Override
-    public List<ProvinciaDTO> getProvincias(Long id) {
+    public List<ProvinciaDTO> getProvincias(Long id) throws Exception{
         List<Provincia> provinciaList = provinciaRepository.findByIdPais(id);
+        if(provinciaList.isEmpty()){
+            throw new ProvinciaNotFoundException("No provinces were found for the country with ID: "+ id);
+        }
         return MapperUtil.toDTOList(provinciaList, ProvinciaDTO.class);
     }
 }

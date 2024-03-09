@@ -1,5 +1,6 @@
 package com.semillero.ubuntu.Exceptions;
 
+import com.semillero.ubuntu.Exceptions.provincia.ProvinciaNotFoundException;
 import com.semillero.ubuntu.Exceptions.token.AuthTokenNotFoundException;
 import com.semillero.ubuntu.Exceptions.token.ValidateTokenException;
 import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
@@ -40,4 +41,12 @@ public class GlobalHandlerException {
         return new ResponseEntity<>(resp, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(ProvinciaNotFoundException.class)
+    public ResponseEntity<Map<String,String>> provinciaNotFoundHandler(ProvinciaNotFoundException ex){
+        Map<String,String> resp = new HashMap<>();
+
+        resp.put("PROVINCIA_NOT_FOUND", ex.getMessage());
+
+        return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+    }
 }

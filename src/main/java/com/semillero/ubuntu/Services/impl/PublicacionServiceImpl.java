@@ -7,9 +7,7 @@ import com.semillero.ubuntu.Repositories.PublicacionRepository;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Services.PublicacionService;
 import com.semillero.ubuntu.Utils.MapperUtil;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.hibernate.action.internal.EntityActionVetoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
