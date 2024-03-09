@@ -7,6 +7,7 @@ import com.semillero.ubuntu.ChatBot.Entities.Respuesta;
 import com.semillero.ubuntu.ChatBot.Repositories.PreguntaRepository;
 import com.semillero.ubuntu.ChatBot.Repositories.RespuestaRepository;
 import com.semillero.ubuntu.ChatBot.Services.PreguntaService;
+import com.semillero.ubuntu.ChatBot.Utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class PreguntaServiceImpl implements PreguntaService {
     public List<PreguntaDTO> getInicial() throws Exception {
         try {
             List<Pregunta> preguntas = preguntaRepository.getInicial();
-            return com.semillero.ubuntu.Utils.MapperUtil.toDTOList(preguntas, PreguntaDTO.class); //arreglar
+            return MapperUtil.toDTOList(preguntas, PreguntaDTO.class); //arreglar
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -47,7 +48,7 @@ public class PreguntaServiceImpl implements PreguntaService {
                     .isDeleted(false)
                     .respuesta(respuesta)
                     .build();
-            return com.semillero.ubuntu.Utils.MapperUtil.mapToDto(pregunta, PreguntaDTO.class);
+            return MapperUtil.mapToDto(pregunta, PreguntaDTO.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -63,7 +64,7 @@ public class PreguntaServiceImpl implements PreguntaService {
             editPregunta.setTitulo(preguntaDTO.getTitulo());
             editPregunta.setRespuesta(respuesta1);
             preguntaRepository.save(editPregunta);
-            return com.semillero.ubuntu.Utils.MapperUtil.mapToDto(editPregunta, PreguntaDTO.class);
+            return MapperUtil.mapToDto(editPregunta, PreguntaDTO.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
