@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public class ApplicationConfig {
 
     private final UsuarioRepository usuarioRepository;
-
     @Bean
     public UserDetailsService userDetailsService() {
 
@@ -25,6 +24,4 @@ public class ApplicationConfig {
             return new UserAuth(usuario);
         };
     }
-
-
 }

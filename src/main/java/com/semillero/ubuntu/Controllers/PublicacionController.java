@@ -18,7 +18,7 @@ public class PublicacionController {
     /**
      Endpoints para las publicaciones (Están sujetos a cambio, ya que hay que asignar los roles)
      **/
-    @GetMapping("admin/getAll")
+    @GetMapping("/admin/getAll")
     public ResponseEntity<?> getAllPublicaciones() {  //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.getAll());
@@ -36,7 +36,7 @@ public class PublicacionController {
         }
     }
 
-    @PostMapping("admin/create")
+    @PostMapping("/admin/create")
     public ResponseEntity<?> crearPublicacion(@RequestBody PublicacionDTO publicacionDTO) { //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.crearPublicacion(publicacionDTO));
@@ -45,7 +45,7 @@ public class PublicacionController {
         }
     }
 
-    @PutMapping("admin/edit/{id}")
+    @PutMapping("/admin/edit/{id}")
     public ResponseEntity<?> actualizarPublicacion(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) { //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.editarPublicacion(id ,publicacionDTO));
@@ -54,7 +54,7 @@ public class PublicacionController {
         }
     }
 
-    @PutMapping("admin/baja/{id}")
+    @PutMapping("/admin/baja/{id}")
     public ResponseEntity<?> bajarPublicacion(@PathVariable Long id) { //Administrador
         publicacionServiceImpl.bajaLogica(id);
         return ResponseEntity.ok().build();

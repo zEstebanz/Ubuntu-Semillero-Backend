@@ -68,5 +68,6 @@ public class UsuarioServiceImpl implements UsuarioService {
                 () -> new UserNotFoundException("User not found with id: " + id)
         );
         usuario.setIsDeleted(true);
+        usuarioRepository.save(usuario);
     }
 }

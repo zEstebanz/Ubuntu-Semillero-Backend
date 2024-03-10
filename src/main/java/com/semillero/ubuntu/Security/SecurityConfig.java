@@ -24,18 +24,28 @@ public class SecurityConfig {
 
     RequestMatcher publicUrls = new OrRequestMatcher(
             new AntPathRequestMatcher("/auth/token"),
-            new AntPathRequestMatcher("/publicaciones/permitidas")
+            new AntPathRequestMatcher("/publicaciones/permitidas"),
+            new AntPathRequestMatcher("/publicaciones/{id}")
     );
 
     RequestMatcher adminUrls = new OrRequestMatcher(
+            //USER ROUTES
+            new AntPathRequestMatcher("/usuarios/crear"),
+            new AntPathRequestMatcher("/usuarios/editar/{id}"),
+            new AntPathRequestMatcher("/usuarios/baja/{id}"),
+            //PROVINCIA ROUTES
+            new AntPathRequestMatcher("/provincias/{id}"),
+            //RUBROS ROUTES
             new AntPathRequestMatcher("/rubros/get-all"),
+            //USER AUTH ROUTES
             new AntPathRequestMatcher("/auth/user/details"),
+            //PAIS ROUTES
             new AntPathRequestMatcher("/paises/**"),
-            new AntPathRequestMatcher("/provincias/**"),
-            new AntPathRequestMatcher("admin/publicaciones/getAll"),
-            new AntPathRequestMatcher("admin/publicaciones/create"),
-            new AntPathRequestMatcher("admin/publicaciones/edit/{id}"),
-            new AntPathRequestMatcher("admin/publicaciones/baja/{id}")
+            //PUBLICACIONES ROUTES
+            new AntPathRequestMatcher("/publicaciones/admin/create"),
+            new AntPathRequestMatcher("/publicaciones/admin/getAll"),
+            new AntPathRequestMatcher("/publicaciones/admin/edit/{id}"),
+            new AntPathRequestMatcher("/publicaciones/admin/baja/{id}")
     );
 
     @Bean
