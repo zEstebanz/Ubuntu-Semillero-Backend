@@ -1,24 +1,18 @@
 package com.semillero.ubuntu.ChatBot.Entities;
 
-import com.semillero.ubuntu.ChatBot.Enums.Categoria;
+import com.semillero.ubuntu.ChatBot.Enums.Category;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
 
-@Data
-@Builder
 @Entity
-public class Pregunta {
-
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String titulo;
-    private Boolean inicial;
+    private String text;
     private Boolean isDeleted;
-    private Categoria categoria;
+    private Category category;
     @ManyToOne
     @JoinColumn(name = "id_respuesta")
-    private Respuesta respuesta;
+    private Response response;
 
 }

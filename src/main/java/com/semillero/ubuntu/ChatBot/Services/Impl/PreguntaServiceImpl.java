@@ -1,9 +1,8 @@
 package com.semillero.ubuntu.ChatBot.Services.Impl;
 
 import com.semillero.ubuntu.ChatBot.DTOs.PreguntaDTO;
-import com.semillero.ubuntu.ChatBot.DTOs.RespuestaDTO;
-import com.semillero.ubuntu.ChatBot.Entities.Pregunta;
-import com.semillero.ubuntu.ChatBot.Entities.Respuesta;
+import com.semillero.ubuntu.ChatBot.Entities.Question;
+import com.semillero.ubuntu.ChatBot.Entities.Response;
 import com.semillero.ubuntu.ChatBot.Repositories.PreguntaRepository;
 import com.semillero.ubuntu.ChatBot.Repositories.RespuestaRepository;
 import com.semillero.ubuntu.ChatBot.Services.PreguntaService;
@@ -22,8 +21,8 @@ public class PreguntaServiceImpl implements PreguntaService {
 
     public List<PreguntaDTO> getInicial() throws Exception {
         try {
-            List<Pregunta> preguntas = preguntaRepository.getInicial();
-            return MapperUtil.toDTOList(preguntas, PreguntaDTO.class); //arreglar
+            List<Question> questions = preguntaRepository.getInicial();
+            return MapperUtil.toDTOList(questions, PreguntaDTO.class); //arreglar
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -40,15 +39,15 @@ public class PreguntaServiceImpl implements PreguntaService {
     @Override
     public PreguntaDTO create(PreguntaDTO preguntaDTO) throws Exception {
         try {
-            Respuesta respuesta = Respuesta.builder()
+            Response response = Response.builder()
                     .texto(preguntaDTO.getRespuestaDTO().getTexto())
                     .build();
-            Pregunta pregunta = Pregunta.builder()
+            Question question = Question.builder()
                     .titulo(preguntaDTO.getTitulo())
                     .isDeleted(false)
-                    .respuesta(respuesta)
+                    .respuesta(response)
                     .build();
-            return MapperUtil.mapToDto(pregunta, PreguntaDTO.class);
+            return MapperUtil.mapToDto(question, PreguntaDTO.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -57,14 +56,14 @@ public class PreguntaServiceImpl implements PreguntaService {
     @Override
     public PreguntaDTO edit(Long id, PreguntaDTO preguntaDTO) throws Exception {
         try {
-            Optional<Respuesta> respuesta = respuestaRepository.findById(preguntaDTO.getRespuestaDTO().getId());
-            Respuesta respuesta1 = respuesta.get();
-            Optional<Pregunta> pregunta = preguntaRepository.findById(id);
-            Pregunta editPregunta = pregunta.get();
-            editPregunta.setTitulo(preguntaDTO.getTitulo());
-            editPregunta.setRespuesta(respuesta1);
-            preguntaRepository.save(editPregunta);
-            return MapperUtil.mapToDto(editPregunta, PreguntaDTO.class);
+            Optional<Response> respuesta = respuestaRepository.findById(preguntaDTO.getRespuestaDTO().getId());
+            Response response1 = respuesta.get();
+            Optional<Question> pregunta = preguntaRepository.findById(id);
+            Question editQuestion = pregunta.get();
+            editQuestion.setTitulo(preguntaDTO.getTitulo());
+            editQuestion.setRespuesta(response1);
+            preguntaRepository.save(editQuestion);
+            return MapperUtil.mapToDto(editQuestion, PreguntaDTO.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -73,12 +72,12 @@ public class PreguntaServiceImpl implements PreguntaService {
     @Override
     public void bajaLogica(Long id, PreguntaDTO preguntaDTO) throws Exception {
         try {
-            Optional<Respuesta> respuesta = respuestaRepository.findById(preguntaDTO.getRespuestaDTO().getId());
-            Respuesta respuesta1 = respuesta.get();
-            Optional<Pregunta> pregunta = preguntaRepository.findById(id);
-            Pregunta editPregunta = pregunta.get();
-            respuesta1.setIsDeleted(true);
-            editPregunta.setIsDeleted(true);
+            Optional<Response> respuesta = respuestaRepository.findById(preguntaDTO.getRespuestaDTO().getId());
+            Response response1 = respuesta.get();
+            Optional<Question> pregunta = preguntaRepository.findById(id);
+            Question editQuestion = pregunta.get();
+            response1.setIsDeleted(true);
+            editQuestion.setIsDeleted(true);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

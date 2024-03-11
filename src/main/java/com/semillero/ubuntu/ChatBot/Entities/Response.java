@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @Builder
 @Entity
-public class Respuesta {
+public class Response {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +21,6 @@ public class Respuesta {
 
     //private Categoria categoria;
     @OneToMany(mappedBy = "respuesta")
-    private final List<Pregunta> preguntaList = new ArrayList<>();
+    private final List<Question> questionList = new ArrayList<>();
 
 }
