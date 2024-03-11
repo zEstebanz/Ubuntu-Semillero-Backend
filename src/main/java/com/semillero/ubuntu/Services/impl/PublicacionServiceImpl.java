@@ -125,6 +125,7 @@ public class PublicacionServiceImpl implements PublicacionService {
             int sumaVista = publicacion.getCantVistas();
             sumaVista++;
             publicacion.setCantVistas(sumaVista);
+            publicacionRepository.save(publicacion);
     }
 }
 
