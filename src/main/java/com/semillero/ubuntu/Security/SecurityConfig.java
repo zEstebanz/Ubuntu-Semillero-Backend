@@ -40,7 +40,7 @@ public class SecurityConfig {
             //USER AUTH ROUTES
             new AntPathRequestMatcher("/auth/user/details"),
             //PAIS ROUTES
-            new AntPathRequestMatcher("/paises/**"),
+            new AntPathRequestMatcher("/paises/get-all"),
             //PUBLICACIONES ROUTES
             new AntPathRequestMatcher("/publicaciones/admin/create"),
             new AntPathRequestMatcher("/publicaciones/admin/getAll"),

@@ -19,7 +19,7 @@ public class ProvinciaController {
 
     private final ProvinciaService provinciaService;
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProvincias(@PathVariable("id") Long idPais) throws Exception{
+    public ResponseEntity<List<ProvinciaDTO>> getProvincias(@PathVariable("id") Long idPais) {
         List<ProvinciaDTO> provinciaList = provinciaService.getProvincias(idPais);
         return ResponseEntity.ok(provinciaList);
     }

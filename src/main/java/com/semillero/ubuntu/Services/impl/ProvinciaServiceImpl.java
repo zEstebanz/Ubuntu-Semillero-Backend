@@ -17,7 +17,7 @@ public class ProvinciaServiceImpl implements ProvinciaService {
 
     private final ProvinciaRepository provinciaRepository;
     @Override
-    public List<ProvinciaDTO> getProvincias(Long id) throws EntityNotFoundException{
+    public List<ProvinciaDTO> getProvincias(Long id) throws EntityNotFoundException {
         List<Provincia> provinciaList = provinciaRepository.findByIdPais(id);
         if(provinciaList.isEmpty()){
             throw new EntityNotFoundException("No provinces were found for the country with ID: "+ id);

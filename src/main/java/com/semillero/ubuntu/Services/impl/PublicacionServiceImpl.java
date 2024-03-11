@@ -3,8 +3,6 @@ package com.semillero.ubuntu.Services.impl;
 import com.semillero.ubuntu.DTOs.PublicacionDTO;
 import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Entities.Usuario;
-import com.semillero.ubuntu.Exceptions.publicaciones.PublicationNotFoundException;
-import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
 import com.semillero.ubuntu.Repositories.PublicacionRepository;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Services.PublicacionService;

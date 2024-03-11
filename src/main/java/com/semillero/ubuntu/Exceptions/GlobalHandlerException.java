@@ -1,10 +1,7 @@
 package com.semillero.ubuntu.Exceptions;
 
-import com.semillero.ubuntu.Exceptions.provincia.ProvinciaNotFoundException;
-import com.semillero.ubuntu.Exceptions.publicaciones.PublicationNotFoundException;
 import com.semillero.ubuntu.Exceptions.token.AuthTokenNotFoundException;
 import com.semillero.ubuntu.Exceptions.token.ValidateTokenException;
-import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

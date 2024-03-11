@@ -1,9 +1,9 @@
 package com.semillero.ubuntu.Config;
 
 import com.semillero.ubuntu.Entities.Usuario;
-import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Security.userauth.UserAuth;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ public class ApplicationConfig {
 
         return username -> {
             Usuario usuario = usuarioRepository.findByEmail(username)
-                    .orElseThrow(() -> new UserNotFoundException("User not found with: " + username));
+                    .orElseThrow(() -> new EntityNotFoundException("User not found with: " + username));
 
             return new UserAuth(usuario);
         };

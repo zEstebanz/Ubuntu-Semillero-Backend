@@ -46,12 +46,9 @@ public class PublicacionController {
     }
 
     @PutMapping("/admin/edit/{id}")
-    public ResponseEntity<?> actualizarPublicacion(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) { //Administrador
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.editarPublicacion(id ,publicacionDTO));
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"{\\\\\\\"error\\\\\\\":\\\\\\\"Error en editar publicacion.\\\\\\\"}\"");
-        }
+    public ResponseEntity<PublicacionDTO> actualizarPublicacion(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) { //Administrador
+
+        return ResponseEntity.ok(publicacionServiceImpl.editarPublicacion(id,publicacionDTO));
     }
 
     @PutMapping("/admin/baja/{id}")
