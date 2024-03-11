@@ -7,10 +7,10 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.semillero.ubuntu.Entities.Usuario;
 import com.semillero.ubuntu.Exceptions.token.AuthTokenNotFoundException;
 import com.semillero.ubuntu.Exceptions.token.ValidateTokenException;
-import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Security.jwt.JwtService;
 import com.semillero.ubuntu.Utils.GoogleClientID;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -80,7 +80,7 @@ public class UserAuthService {
 
     private Usuario findUserByEmail(String email){
         return usuarioRepository.findByEmail(email)
-                .orElseThrow(()-> new UserNotFoundException("User not found with email: " + email));
+                .orElseThrow(()-> new EntityNotFoundException("User not found with email: " + email));
     }
 
     private Map<String,Object> generateTokenWithUserDetails(Usuario usuario){

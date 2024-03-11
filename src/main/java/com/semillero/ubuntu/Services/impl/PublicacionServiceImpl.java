@@ -9,6 +9,7 @@ import com.semillero.ubuntu.Repositories.PublicacionRepository;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Services.PublicacionService;
 import com.semillero.ubuntu.Utils.MapperUtil;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,9 +64,9 @@ public class PublicacionServiceImpl implements PublicacionService {
      Rol: ADMINISTRADOR
      **/
     @Transactional
-    public PublicacionDTO crearPublicacion(PublicacionDTO publicacionDTO) throws Exception {
+    public PublicacionDTO crearPublicacion(PublicacionDTO publicacionDTO) throws EntityNotFoundException {
             Usuario usuarioCreador = usuarioRepository.findById(publicacionDTO.getIdUsuario())
-                    .orElseThrow( () -> new UserNotFoundException("User not found with id: " + publicacionDTO.getIdUsuario()));
+                    .orElseThrow( () -> new EntityNotFoundException("User not found with id: " + publicacionDTO.getIdUsuario()));
             Publicacion nuevaPubli = Publicacion.builder()
                     .titulo(publicacionDTO.getTitulo())
                     .descripcion(publicacionDTO.getDescripcion())
@@ -86,9 +87,9 @@ public class PublicacionServiceImpl implements PublicacionService {
      Rol: ADMINISTRADOR
      **/
     @Transactional
-    public PublicacionDTO editarPublicacion(Long id, PublicacionDTO publicacionDTO) {
+    public PublicacionDTO editarPublicacion(Long id, PublicacionDTO publicacionDTO) throws EntityNotFoundException {
             Publicacion publicacion = publicacionRepository.findById(id)
-                    .orElseThrow( () -> new PublicationNotFoundException("Publication not found with id: " + id));
+                    .orElseThrow( () -> new EntityNotFoundException("Publication not found with id: " + id));
                 publicacion.setTitulo(publicacionDTO.getTitulo());
                 publicacion.setDescripcion(publicacionDTO.getDescripcion());
                 publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
@@ -103,9 +104,9 @@ public class PublicacionServiceImpl implements PublicacionService {
      Rol: ADMINISTRADOR
      **/
     @Transactional
-    public void bajaLogica(Long id) {
+    public void bajaLogica(Long id) throws EntityNotFoundException {
         Publicacion publicacion = publicacionRepository.findById(id)
-                .orElseThrow( () -> new PublicationNotFoundException("Publication not found with id: " + id));
+                .orElseThrow( () -> new EntityNotFoundException("Publication not found with id: " + id));
         publicacion.setIsDeleted(true);
         publicacionRepository.save(publicacion);
     }
@@ -120,9 +121,9 @@ public class PublicacionServiceImpl implements PublicacionService {
      Rol: VISITANTE (MUY IMPORTANTE)
      **/
     @Transactional
-    public void verPubliVisitante(Long id) {
+    public void verPubliVisitante(Long id) throws EntityNotFoundException {
             Publicacion publicacion = publicacionRepository.findById(id)
-                    .orElseThrow( () -> new PublicationNotFoundException("Publication not found with id: " + id));
+                    .orElseThrow( () -> new EntityNotFoundException("Publication not found with id: " + id));
             int sumaVista = publicacion.getCantVistas();
             sumaVista++;
             publicacion.setCantVistas(sumaVista);
