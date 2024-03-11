@@ -5,6 +5,7 @@ import com.semillero.ubuntu.Exceptions.publicaciones.PublicationNotFoundExceptio
 import com.semillero.ubuntu.Exceptions.token.AuthTokenNotFoundException;
 import com.semillero.ubuntu.Exceptions.token.ValidateTokenException;
 import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,14 +25,7 @@ public class GlobalHandlerException {
 
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Map<String,String>> userNotFoundHandler(UserNotFoundException ex){
-        Map<String,String> resp = new HashMap<>();
 
-        resp.put("USER_NOT_FOUND", ex.getMessage());
-
-        return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
-    }
 
     @ExceptionHandler(ValidateTokenException.class)
     public ResponseEntity<Map<String,String>> validateTokenExceptionHandler(ValidateTokenException ex){
@@ -42,21 +36,10 @@ public class GlobalHandlerException {
         return new ResponseEntity<>(resp, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(ProvinciaNotFoundException.class)
-    public ResponseEntity<Map<String,String>> provinciaNotFoundHandler(ProvinciaNotFoundException ex){
-        Map<String,String> resp = new HashMap<>();
-
-        resp.put("PROVINCIA_NOT_FOUND", ex.getMessage());
-
-        return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(PublicationNotFoundException.class)
-    public ResponseEntity<Map<String,String>> publicacionNotFoundHandler(PublicationNotFoundException ex){
-        Map<String,String> resp = new HashMap<>();
-
-        resp.put("PUBLICACION_NOT_FOUND", ex.getMessage());
-
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, String>> entityNotFoundHandler(EntityNotFoundException ex) {
+        Map<String, String> resp = new HashMap<>();
+        resp.put("ENTITY_NOT_FOUND", ex.getMessage());
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
 }

@@ -2,11 +2,10 @@ package com.semillero.ubuntu.Services.impl;
 
 import com.semillero.ubuntu.DTOs.UsuarioDTO;
 import com.semillero.ubuntu.Entities.Usuario;
-import com.semillero.ubuntu.Exceptions.publicaciones.PublicationNotFoundException;
-import com.semillero.ubuntu.Exceptions.usuario.UserNotFoundException;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Services.UsuarioService;
 import com.semillero.ubuntu.Utils.MapperUtil;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +46,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     public UsuarioDTO editarUsuario(Long id, UsuarioDTO usuarioDTO) {
         Usuario ActUsuario = usuarioRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("User not found with id: " + id)
+                () -> new EntityNotFoundException("User not found with id: " + id)
         );
         ActUsuario.setNombre(usuarioDTO.getNombre());
         ActUsuario.setApellido(usuarioDTO.getApellido());
@@ -65,7 +64,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     public void bajaLogica(Long id) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("User not found with id: " + id)
+                () -> new EntityNotFoundException("User not found with id: " + id)
         );
         usuario.setIsDeleted(true);
         usuarioRepository.save(usuario);
