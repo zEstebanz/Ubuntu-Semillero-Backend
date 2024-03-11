@@ -19,7 +19,7 @@ public class UserAuthController {
 
     @GetMapping("/user/details")
     public ResponseEntity<String> getUserInfo(@RequestHeader("Authorization") String authHeader, HttpServletResponse response) {
-        response.setHeader("Authorization",userAuthService.getUserInfo(authHeader) );
+        response.setHeader("Authorization",userAuthService.getUserInfo(authHeader));
         return ResponseEntity.ok("Success");
     }
 }
