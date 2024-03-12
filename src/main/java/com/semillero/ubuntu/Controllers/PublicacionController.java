@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*") //meter en las variables de entorno, corregir
 @RequestMapping(path = "publicaciones")
 public class PublicacionController {
     @Autowired
@@ -45,6 +45,7 @@ public class PublicacionController {
         }
     }
 
+    //En los 3 métodos siguientes hay que ver si envía un response entity en un try catch o si solamente dejarlo asi
     @PutMapping("/admin/edit/{id}")
     public ResponseEntity<PublicacionDTO> actualizarPublicacion(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) { //Administrador
 

@@ -59,6 +59,8 @@ public class PublicacionServiceImpl implements PublicacionService {
     /**
      Función de creación de Publicaciones utilizando @Builder para asignar los valores de una forma más sencilla y directa
      <p>
+     Actualización: ahora recibe el Deleted por si el administrador arma la publicacion pero no la quiere mostrar todavia
+     <p>
      Rol: ADMINISTRADOR
      **/
     @Transactional
@@ -70,7 +72,7 @@ public class PublicacionServiceImpl implements PublicacionService {
                     .descripcion(publicacionDTO.getDescripcion())
                     .fechaCreacion(LocalDate.now())
                     .cantVistas(0)
-                    .isDeleted(false)
+                    .isDeleted(publicacionDTO.getIsDeleted())
                      //Falta la lista de imagenes
                     .usuarioCreador(usuarioCreador)
                     .build();
@@ -105,8 +107,9 @@ public class PublicacionServiceImpl implements PublicacionService {
     public void bajaLogica(Long id) throws EntityNotFoundException {
         Publicacion publicacion = publicacionRepository.findById(id)
                 .orElseThrow( () -> new EntityNotFoundException("Publication not found with id: " + id));
-        publicacion.setIsDeleted(true);
+        publicacion.setIsDeleted(!publicacion.getIsDeleted());
         publicacionRepository.save(publicacion);
+
     }
 
     /**

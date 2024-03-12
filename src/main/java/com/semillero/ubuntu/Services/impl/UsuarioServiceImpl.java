@@ -20,7 +20,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     /**
      * Creación de usuario para persistirlo en la base de datos
      * <p>
-     * ROL: SUPER ADMIN (El rol solo puede ser Administador o Inversor)
+     * ROL: SUPER ADMIN (El rol solo puede ser Administrador o Inversor por ahora)
      */
     @Transactional
     public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
@@ -51,7 +51,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         ActUsuario.setNombre(usuarioDTO.getNombre());
         ActUsuario.setApellido(usuarioDTO.getApellido());
         ActUsuario.setRol(usuarioDTO.getRol());
-        ActUsuario.setEmail(usuarioDTO.getEmail());            //Esto puede traer errores
         usuarioRepository.save(ActUsuario);
         return MapperUtil.mapToDto(ActUsuario, UsuarioDTO.class);
     }
@@ -59,14 +58,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     /**
      * Baja lógica del usuario
      * <p>
-     * ROL: SUPER ADMIN
+     * Actualización: modificado para ocultar o activar el usuario (sujeto a cambios también)
+     * <p>
+     * ROL: ADMIN
      */
     @Transactional
     public void bajaLogica(Long id) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User not found with id: " + id)
         );
-        usuario.setIsDeleted(true);
+        usuario.setIsDeleted(!usuario.getIsDeleted());
         usuarioRepository.save(usuario);
     }
 }
