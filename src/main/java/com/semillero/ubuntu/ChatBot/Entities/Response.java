@@ -1,6 +1,5 @@
 package com.semillero.ubuntu.ChatBot.Entities;
 
-import com.semillero.ubuntu.ChatBot.Enums.Categoria;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -17,10 +16,8 @@ public class Response {
     private Long id;
     private String texto;
     private Boolean isDeleted;
-
-
-    //private Categoria categoria;
+    private
     @OneToMany(mappedBy = "respuesta")
-    private final List<Question> questionList = new ArrayList<>();
+    private final List<Question> questionList = new ArrayList<>(); inicial,intermedia(3)
 
 }

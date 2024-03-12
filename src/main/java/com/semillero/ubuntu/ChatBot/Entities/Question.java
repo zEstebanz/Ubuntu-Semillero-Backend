@@ -15,4 +15,6 @@ public class Question {
     @JoinColumn(name = "id_respuesta")
     private Response response;
 
+    public Question(){}
+
 }
