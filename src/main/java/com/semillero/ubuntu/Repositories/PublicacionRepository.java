@@ -11,4 +11,6 @@ import java.util.List;
 public interface PublicacionRepository extends JpaRepository <Publicacion, Long> {
     @Query(value = "SELECT * FROM publicacion WHERE baja = 0", nativeQuery = true)
     List<Publicacion> TraerPublicaciones();
+
+    //Traer las 3 publicaciones más recientes y enviarlas a través de un endpoint
 }
