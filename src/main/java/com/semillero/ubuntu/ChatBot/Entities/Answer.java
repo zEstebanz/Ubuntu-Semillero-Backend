@@ -1,5 +1,6 @@
 package com.semillero.ubuntu.ChatBot.Entities;
 
+import com.semillero.ubuntu.ChatBot.Enums.QuestionType;
 import com.semillero.ubuntu.ChatBot.ValueObjects.AnswerText;
 import jakarta.persistence.*;
 
@@ -10,35 +11,37 @@ import java.util.List;
 
 @Entity
 public class Answer {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Embedded
     private AnswerText text;
-    private Boolean active;
-    @OneToOne
-    @JoinColumn(name = "id_question")
-    private Question question;
+    private Boolean isFull;
     @OneToMany
     @JoinColumn(name = "id_secondary")
     private final List<Question> secondaryQuestions = new ArrayList<>();
 
     public Answer(){}
 
-    public Answer(AnswerText text, Boolean active){
+    public Answer(AnswerText text, Boolean isFull){
         this.text = text;
-        this.active = active;
+        this.isFull = isFull;
     }
 
-    public static Answer createResponse(String text){
+    public static Answer createAnswer(String text){
 
         var answerText = new AnswerText(text);
         return new Answer(answerText, false);
     }
 
-    public static void addQuestion(Question question){
-
+    public void addSecondaryQuestion(Question question){
+        if (this.secondaryQuestions.size() < 3 && question.getType().equals(QuestionType.SECONDARY)){
+            this.secondaryQuestions.add(question);
+            if (this.secondaryQuestions.size() == 3){
+                this.isFull = true;
+            }
+        } else {
+            throw new RuntimeException();
+        }
     }
-
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PreguntaRepository extends JpaRepository<Question, Long> {
-    @Query(value = "SELECT * FROM pregunta WHERE inicial = true", nativeQuery = true)
-    List<Question> getInicial();
+public interface QuestionRepository extends JpaRepository<Question, Long> {
+//    @Query(value = "SELECT * FROM pregunta WHERE inicial = true", nativeQuery = true)
+//    List<Question> getInicial();
 }

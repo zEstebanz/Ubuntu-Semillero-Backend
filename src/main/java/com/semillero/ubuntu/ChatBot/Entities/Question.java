@@ -1,10 +1,13 @@
 package com.semillero.ubuntu.ChatBot.Entities;
 
+import com.semillero.ubuntu.ChatBot.DTOs.QuestionRequest;
 import com.semillero.ubuntu.ChatBot.Enums.QuestionType;
 import com.semillero.ubuntu.ChatBot.ValueObjects.QuestionText;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,20 +28,22 @@ public class Question {
         this.type = type;
     }
 
-    public static Question createQuestion(String text, String type){
+    public static Question createQuestion(QuestionRequest questionRequest){
 
-        var questionText = new QuestionText(text);
-        var questionType = QuestionType.valueOf(type);
+        var questionText = new QuestionText(questionRequest.text());
+        var questionType = QuestionType.valueOf(questionRequest.type());
 
-        return new Question(questionText,false,questionType);
+        return new Question(questionText,false, questionType);
     }
 
-//    public void addResponse(Response response){
-//        this.response = response;
-//        if (this.type.equals(QuestionType.INITIAL)){
-//            this.active = true;
-//        }
-//    }
+    public void addAnswer(Answer answer){
+        if (this.answer == null){
+            this.answer = answer;
+            this.active = true;
+        } else {
+            throw new RuntimeException();
+        }
+    }
 
 
 }
