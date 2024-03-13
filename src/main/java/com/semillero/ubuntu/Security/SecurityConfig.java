@@ -21,11 +21,14 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-
+/*
+* Se puede configurar de otra forma, prohibiendo solo algunos endpoints y permitiendo todos los demás
+* */
     RequestMatcher publicUrls = new OrRequestMatcher(
             new AntPathRequestMatcher("/auth/token"),
             new AntPathRequestMatcher("/publicaciones/permitidas"),
-            new AntPathRequestMatcher("/publicaciones/{id}")
+            new AntPathRequestMatcher("/publicaciones/{id}"),
+            new AntPathRequestMatcher("/publicaciones/ultimasTres")
     );
 
     RequestMatcher adminUrls = new OrRequestMatcher(

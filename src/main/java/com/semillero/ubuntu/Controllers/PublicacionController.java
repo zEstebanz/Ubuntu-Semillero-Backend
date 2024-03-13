@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*") //meter en las variables de entorno, corregir
 @RequestMapping(path = "publicaciones")
 public class PublicacionController {
     @Autowired
@@ -17,6 +16,8 @@ public class PublicacionController {
 
     /**
      Endpoints para las publicaciones (Están sujetos a cambio, ya que hay que asignar los roles)
+     <p>
+     Lo de @CrossOrigin investigarlo de meterlo en las variables de entorno
      **/
     @GetMapping("/admin/getAll")
     public ResponseEntity<?> getAllPublicaciones() {  //Administrador
@@ -63,5 +64,14 @@ public class PublicacionController {
         //Esta funcion solo debe activarla el visitante en teoria, no el ADMIN para no aumentar las vistas (Especificado en tarjeta 17)
         publicacionServiceImpl.verPubliVisitante(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/ultimasTres")
+    public ResponseEntity<?> traerUltimasTres() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.traerUltimasTres());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
+        }
     }
 }

@@ -130,5 +130,20 @@ public class PublicacionServiceImpl implements PublicacionService {
             publicacion.setCantVistas(sumaVista);
             publicacionRepository.save(publicacion);
     }
+
+    /**
+     * Función de ver las últimas 3 publicaciones agregadas por los administradores
+     * <p>
+     * Esta función se utiliza en el inicio
+     **/
+    @Transactional
+    public List<PublicacionDTO> traerUltimasTres() throws Exception {
+        try {
+            List<Publicacion> publicaciones = publicacionRepository.TraerUltimasTres();
+            return MapperUtil.toDTOList(publicaciones, PublicacionDTO.class);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 }
 

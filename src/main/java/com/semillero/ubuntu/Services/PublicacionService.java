@@ -13,5 +13,6 @@ public interface PublicacionService {
     PublicacionDTO editarPublicacion(Long id, PublicacionDTO publicacionDTO) throws EntityNotFoundException;
     void bajaLogica(Long id) throws EntityNotFoundException;
     void verPubliVisitante(Long id) throws EntityNotFoundException;
+    List<PublicacionDTO> traerUltimasTres() throws Exception;
 
 }
