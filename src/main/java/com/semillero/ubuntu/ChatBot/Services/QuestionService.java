@@ -1,12 +1,12 @@
 package com.semillero.ubuntu.ChatBot.Services;
 
-import com.semillero.ubuntu.ChatBot.DTOs.QuestionRequest;
+import com.semillero.ubuntu.ChatBot.DTOs.InitialQuestionRequest;
 import com.semillero.ubuntu.ChatBot.DTOs.QuestionResponse;
-
-import java.util.List;
+import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionRequest;
 
 
 public interface QuestionService {
 
-    QuestionResponse createQuestion(QuestionRequest question);
+    QuestionResponse createInitialQuestion(InitialQuestionRequest question);
+    QuestionResponse createSecondaryQuestion(SecondaryQuestionRequest question);
 }

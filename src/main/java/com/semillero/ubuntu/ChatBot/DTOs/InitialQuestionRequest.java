@@ -1,7 +1,7 @@
 package com.semillero.ubuntu.ChatBot.DTOs;
 
 
-public record QuestionRequest(
+public record InitialQuestionRequest(
         String text,
         String type
 ) {}

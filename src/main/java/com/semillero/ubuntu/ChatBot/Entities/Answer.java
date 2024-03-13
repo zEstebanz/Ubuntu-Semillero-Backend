@@ -3,6 +3,9 @@ package com.semillero.ubuntu.ChatBot.Entities;
 import com.semillero.ubuntu.ChatBot.Enums.QuestionType;
 import com.semillero.ubuntu.ChatBot.ValueObjects.AnswerText;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 
 import java.util.ArrayList;
@@ -10,6 +13,9 @@ import java.util.List;
 
 
 @Entity
+@Getter
+@ToString
+@EqualsAndHashCode
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
