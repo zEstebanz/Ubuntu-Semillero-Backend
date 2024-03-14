@@ -10,6 +10,7 @@ import com.semillero.ubuntu.ChatBot.Repositories.AnswerRepository;
 import com.semillero.ubuntu.ChatBot.Repositories.QuestionRepository;
 import com.semillero.ubuntu.ChatBot.Services.QuestionService;
 import com.semillero.ubuntu.ChatBot.mappers.Mapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class QuestionServiceImpl implements QuestionService {
     public SecondaryQuestionResponse createSecondaryQuestion(SecondaryQuestionRequest question) {
 
         Answer findAnswer = answerRepository.findById(question.answer_id())
-                .orElseThrow();
+                .orElseThrow(()-> new EntityNotFoundException("Answer not found with ID: " + question.answer_id()));
         Question newQuestion = Question.createSecondaryQuestion(question.text(), question.type());
         findAnswer.addSecondaryQuestion(newQuestion);
         questionRepository.save(newQuestion);

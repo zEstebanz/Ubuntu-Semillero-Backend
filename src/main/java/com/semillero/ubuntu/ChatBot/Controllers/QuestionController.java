@@ -28,7 +28,4 @@ public class QuestionController {
         return ResponseEntity.ok(service.createSecondaryQuestion(question));
     }
 
-
-
-
 }

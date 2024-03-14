@@ -19,7 +19,10 @@ public class Mapper {
         );
     }
 
-    public static AnswerResponse answerToAnswerResponse(Answer answer, QuestionResponse questionResponse){
+    public static AnswerResponse answerToAnswerResponse(Answer answer, Question question){
+
+        QuestionResponse questionResponse = questionToResponse(question);
+
         return new AnswerResponse(
                 answer.getId(),
                 answer.getText().text(),
@@ -27,6 +30,7 @@ public class Mapper {
                 questionResponse
         );
     }
+
     public static SecondaryQuestionResponse answerToSecondaryQuestion(Answer answer){
         List<QuestionResponse> secondaryQuestions=answer.getSecondaryQuestions()
                 .stream()

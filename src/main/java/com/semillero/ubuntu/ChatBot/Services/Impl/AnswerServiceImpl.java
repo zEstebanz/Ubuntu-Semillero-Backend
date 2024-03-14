@@ -2,7 +2,6 @@ package com.semillero.ubuntu.ChatBot.Services.Impl;
 
 import com.semillero.ubuntu.ChatBot.DTOs.AnswerRequest;
 import com.semillero.ubuntu.ChatBot.DTOs.AnswerResponse;
-import com.semillero.ubuntu.ChatBot.DTOs.QuestionResponse;
 import com.semillero.ubuntu.ChatBot.Entities.Answer;
 import com.semillero.ubuntu.ChatBot.Entities.Question;
 import com.semillero.ubuntu.ChatBot.Enums.QuestionType;
@@ -22,16 +21,19 @@ public class AnswerServiceImpl implements AnswerService {
     private final QuestionRepository questionRepository;
     @Override
     public AnswerResponse createAnswer(AnswerRequest answerRequest) {
+
         Question findQuestion = questionRepository.findById(answerRequest.id_question())
-                .orElseThrow();
+                .orElseThrow(()-> new EntityNotFoundException("Question not found with ID: " + answerRequest.id_question()));
         Answer newAnswer = Answer.createAnswer(answerRequest.text());
+
         if(findQuestion.getType().equals(QuestionType.SECONDARY)){
             newAnswer.updateIsFull(true);
         }
+
         findQuestion.addAnswer(newAnswer);
         answerRepository.save(newAnswer);
         questionRepository.save(findQuestion);
-        QuestionResponse questionResponse = Mapper.questionToResponse(findQuestion);
-        return Mapper.answerToAnswerResponse(newAnswer,questionResponse);
+
+        return Mapper.answerToAnswerResponse(newAnswer,findQuestion);
     }
 }

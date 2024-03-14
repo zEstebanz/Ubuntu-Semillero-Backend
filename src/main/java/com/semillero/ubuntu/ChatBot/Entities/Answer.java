@@ -6,11 +6,8 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Getter
@@ -35,7 +32,6 @@ public class Answer {
     }
 
     public static Answer createAnswer(String text){
-
         var answerText = new AnswerText(text);
         return new Answer(answerText, false);
     }
@@ -43,14 +39,17 @@ public class Answer {
     public void addSecondaryQuestion(Question question){
         if (this.secondaryQuestions.size() < 3 && question.getType().equals(QuestionType.SECONDARY) && !this.isFull){
             this.secondaryQuestions.add(question);
-            if (this.secondaryQuestions.size() == 3){
-                this.isFull = true;
-            }
+            updateIsFullStatus();
         } else {
             throw new RuntimeException();
         }
     }
+
+    private void updateIsFullStatus() {
+        this.isFull = this.secondaryQuestions.size() >= 3;
+    }
+
     public void updateIsFull(boolean isFull){
-        this.isFull=isFull;
+        this.isFull = isFull;
     }
 }
