@@ -3,6 +3,7 @@ package com.semillero.ubuntu.ChatBot.Controllers;
 import com.semillero.ubuntu.ChatBot.DTOs.InitialQuestionRequest;
 import com.semillero.ubuntu.ChatBot.DTOs.QuestionResponse;
 import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionRequest;
+import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionResponse;
 import com.semillero.ubuntu.ChatBot.Services.Impl.QuestionServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class QuestionController {
     }
 
     @PostMapping("/secondary")
-    public ResponseEntity<QuestionResponse> createSecondaryQuestion(@RequestBody SecondaryQuestionRequest question){
+    public ResponseEntity<SecondaryQuestionResponse> createSecondaryQuestion(@RequestBody SecondaryQuestionRequest question){
 
         return ResponseEntity.ok(service.createSecondaryQuestion(question));
     }

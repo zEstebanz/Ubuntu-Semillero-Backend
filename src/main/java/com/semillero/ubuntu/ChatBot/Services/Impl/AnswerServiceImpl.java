@@ -5,10 +5,12 @@ import com.semillero.ubuntu.ChatBot.DTOs.AnswerResponse;
 import com.semillero.ubuntu.ChatBot.DTOs.QuestionResponse;
 import com.semillero.ubuntu.ChatBot.Entities.Answer;
 import com.semillero.ubuntu.ChatBot.Entities.Question;
+import com.semillero.ubuntu.ChatBot.Enums.QuestionType;
 import com.semillero.ubuntu.ChatBot.Repositories.AnswerRepository;
 import com.semillero.ubuntu.ChatBot.Repositories.QuestionRepository;
 import com.semillero.ubuntu.ChatBot.Services.AnswerService;
 import com.semillero.ubuntu.ChatBot.mappers.Mapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +22,16 @@ public class AnswerServiceImpl implements AnswerService {
     private final QuestionRepository questionRepository;
     @Override
     public AnswerResponse createAnswer(AnswerRequest answerRequest) {
-
         Question findQuestion = questionRepository.findById(answerRequest.id_question())
                 .orElseThrow();
         Answer newAnswer = Answer.createAnswer(answerRequest.text());
+        if(findQuestion.getType().equals(QuestionType.SECONDARY)){
+            newAnswer.updateIsFull(true);
+        }
         findQuestion.addAnswer(newAnswer);
-        questionRepository.save(findQuestion);
         answerRepository.save(newAnswer);
+        questionRepository.save(findQuestion);
         QuestionResponse questionResponse = Mapper.questionToResponse(findQuestion);
-
         return Mapper.answerToAnswerResponse(newAnswer,questionResponse);
     }
 }

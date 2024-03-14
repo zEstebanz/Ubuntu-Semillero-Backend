@@ -18,6 +18,7 @@ public class Question {
     @Embedded
     private QuestionText text;
     private Boolean active;
+    @Enumerated(EnumType.STRING)
     private QuestionType type;
     @OneToOne
     @JoinColumn(name = "id_answer")
@@ -32,8 +33,20 @@ public class Question {
     }
 
 
-    public static Question createQuestion(String text, String type){
+    public static Question createInitialQuestion(String text, String type){
+        if (!type.equals(QuestionType.INITIAL.name())){
+            throw new RuntimeException();
+        }
 
+        var questionText = new QuestionText(text);
+        var questionType = QuestionType.valueOf(type);
+
+        return new Question(questionText,false, questionType);
+    }
+    public static Question createSecondaryQuestion(String text, String type){
+        if (!type.equals(QuestionType.SECONDARY.name())){
+            throw new RuntimeException();
+        }
         var questionText = new QuestionText(text);
         var questionType = QuestionType.valueOf(type);
 

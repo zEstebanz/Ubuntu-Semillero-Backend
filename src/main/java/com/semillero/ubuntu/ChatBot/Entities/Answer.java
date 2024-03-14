@@ -41,7 +41,7 @@ public class Answer {
     }
 
     public void addSecondaryQuestion(Question question){
-        if (this.secondaryQuestions.size() < 3 && question.getType().equals(QuestionType.SECONDARY)){
+        if (this.secondaryQuestions.size() < 3 && question.getType().equals(QuestionType.SECONDARY) && !this.isFull){
             this.secondaryQuestions.add(question);
             if (this.secondaryQuestions.size() == 3){
                 this.isFull = true;
@@ -49,5 +49,8 @@ public class Answer {
         } else {
             throw new RuntimeException();
         }
+    }
+    public void updateIsFull(boolean isFull){
+        this.isFull=isFull;
     }
 }

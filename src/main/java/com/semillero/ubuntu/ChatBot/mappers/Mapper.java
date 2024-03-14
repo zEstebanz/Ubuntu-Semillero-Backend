@@ -2,16 +2,19 @@ package com.semillero.ubuntu.ChatBot.mappers;
 
 import com.semillero.ubuntu.ChatBot.DTOs.AnswerResponse;
 import com.semillero.ubuntu.ChatBot.DTOs.QuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionResponse;
 import com.semillero.ubuntu.ChatBot.Entities.Answer;
 import com.semillero.ubuntu.ChatBot.Entities.Question;
+
+import java.util.List;
 
 public class Mapper {
 
     public static QuestionResponse questionToResponse(Question question){
         return new QuestionResponse(
                 question.getId(),
-                question.getType().name(),
                 question.getText().text(),
+                question.getType().name(),
                 question.getActive()
         );
     }
@@ -22,6 +25,17 @@ public class Mapper {
                 answer.getText().text(),
                 answer.getIsFull(),
                 questionResponse
+        );
+    }
+    public static SecondaryQuestionResponse answerToSecondaryQuestion(Answer answer){
+        List<QuestionResponse> secondaryQuestions=answer.getSecondaryQuestions()
+                .stream()
+                .map(Mapper::questionToResponse)
+                .toList();
+        return new SecondaryQuestionResponse(
+                answer.getId(),
+                answer.getText().text(),
+                secondaryQuestions
         );
     }
 
