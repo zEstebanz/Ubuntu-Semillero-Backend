@@ -1,6 +1,7 @@
 package com.semillero.ubuntu.ChatBot.Entities;
 
 import com.semillero.ubuntu.ChatBot.Enums.QuestionType;
+import com.semillero.ubuntu.ChatBot.Exceptions.AddSecondaryException;
 import com.semillero.ubuntu.ChatBot.ValueObjects.AnswerText;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -41,7 +42,7 @@ public class Answer {
             this.secondaryQuestions.add(question);
             updateIsFullStatus();
         } else {
-            throw new RuntimeException();
+            throw new AddSecondaryException("Answer´s secondary questions are already full");
         }
     }
 

@@ -2,6 +2,7 @@ package com.semillero.ubuntu.ChatBot.Services.Impl;
 
 import com.semillero.ubuntu.ChatBot.DTOs.AnswerRequest;
 import com.semillero.ubuntu.ChatBot.DTOs.AnswerResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.AnswerWithQuestionResponse;
 import com.semillero.ubuntu.ChatBot.Entities.Answer;
 import com.semillero.ubuntu.ChatBot.Entities.Question;
 import com.semillero.ubuntu.ChatBot.Enums.QuestionType;
@@ -13,6 +14,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AnswerServiceImpl implements AnswerService {
@@ -20,7 +23,7 @@ public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
     @Override
-    public AnswerResponse createAnswer(AnswerRequest answerRequest) {
+    public AnswerWithQuestionResponse createAnswer(AnswerRequest answerRequest) {
 
         Question findQuestion = questionRepository.findById(answerRequest.id_question())
                 .orElseThrow(()-> new EntityNotFoundException("Question not found with ID: " + answerRequest.id_question()));
@@ -34,6 +37,23 @@ public class AnswerServiceImpl implements AnswerService {
         answerRepository.save(newAnswer);
         questionRepository.save(findQuestion);
 
-        return Mapper.answerToAnswerResponse(newAnswer,findQuestion);
+        return Mapper.answerToAnswerWithQuestionResponse(newAnswer,findQuestion);
     }
+
+    @Override
+    public List<AnswerResponse> getAllAnswersNotFull() {
+        List<Answer>list=answerRepository.getAllAnswersNotFull();
+        return list.stream()
+                .map(Mapper::answerToAnswerResponse)
+                .toList();
+    }
+
+    @Override
+    public AnswerResponse findById(Long id) {
+        Answer answer=answerRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("No answers were found with ID: "+id));
+        return Mapper.answerToAnswerResponse(answer);
+    }
+
+
 }

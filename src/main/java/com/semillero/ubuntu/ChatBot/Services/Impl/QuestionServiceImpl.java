@@ -11,8 +11,12 @@ import com.semillero.ubuntu.ChatBot.Repositories.QuestionRepository;
 import com.semillero.ubuntu.ChatBot.Services.QuestionService;
 import com.semillero.ubuntu.ChatBot.mappers.Mapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +43,34 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.save(newQuestion);
 
         return Mapper.answerToSecondaryQuestion(findAnswer);
+    }
+
+    @Override
+    public List<QuestionResponse> getQuestionsNotActive() {
+        List<Question>list=questionRepository.getQuestionsNotActive();
+        return list.stream()
+                .map(Mapper::questionToResponse)
+                .toList();
+    }
+
+    @Override
+    public QuestionResponse findById(Long id) {
+        Question question=questionRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("No Question were found with ID: "+id));
+
+        return Mapper.questionToResponse(question);
+    }
+
+    @Override
+    @Transactional
+    public QuestionResponse logicalDelete(Long id) {
+        Question question=questionRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("No Question were found with ID: "+id));
+        questionRepository.setToNotActive(id);
+        questionRepository.save(question);
+        return Mapper.questionToResponse(question);
+
+
     }
 
 
