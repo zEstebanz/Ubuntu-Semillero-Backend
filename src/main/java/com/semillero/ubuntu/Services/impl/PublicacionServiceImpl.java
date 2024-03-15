@@ -117,7 +117,9 @@ public class PublicacionServiceImpl implements PublicacionService {
      publicación
      <p>
      (Ver como modelar la lógica de esta funcionalidad, si creando otro endpoint o verificando el rol del usuario
-     logueado con el token)
+     logueado con el token, charlar con el front sobre como implementan la lógica. Ver si aumenta la vista una vez por
+     visitante o si aumenta sin restricciones, cuando selecciona 'ver más' o si cuando se renderiza. Si es usando el botón
+     que no sume dos veces, o quizás sí)
      <p>
      Rol: VISITANTE (MUY IMPORTANTE)
      **/
