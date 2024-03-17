@@ -25,9 +25,9 @@ public class Answer {
     @JoinColumn(name = "id_secondary")
     private final List<Question> secondaryQuestions = new ArrayList<>();
 
-    public Answer(){}
+    private Answer(){}
 
-    public Answer(AnswerText text, Boolean isFull){
+    private Answer(AnswerText text, Boolean isFull){
         this.text = text;
         this.isFull = isFull;
     }

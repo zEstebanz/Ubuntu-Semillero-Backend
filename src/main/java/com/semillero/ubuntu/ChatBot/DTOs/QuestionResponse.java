@@ -4,6 +4,7 @@ public record QuestionResponse(
         Long id,
         String text,
         String type,
-        Boolean active
+        Boolean active,
+        Long id_answer
 ) {
 }

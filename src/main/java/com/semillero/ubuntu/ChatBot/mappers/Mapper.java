@@ -16,7 +16,8 @@ public class Mapper {
                 question.getId(),
                 question.getText().text(),
                 question.getType().name(),
-                question.getActive()
+                question.getActive(),
+                question.getAnswer().getId()
         );
     }
 

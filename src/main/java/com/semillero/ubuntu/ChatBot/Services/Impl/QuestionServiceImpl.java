@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +35,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public SecondaryQuestionResponse createSecondaryQuestion(SecondaryQuestionRequest question) {
 
-        Answer findAnswer = answerRepository.findById(question.answer_id())
-                .orElseThrow(()-> new EntityNotFoundException("Answer not found with ID: " + question.answer_id()));
+        Answer findAnswer = findAnswer(question.answer_id());
         Question newQuestion = Question.createSecondaryQuestion(question.text(), question.type());
         findAnswer.addSecondaryQuestion(newQuestion);
         questionRepository.save(newQuestion);
@@ -47,7 +45,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<QuestionResponse> getQuestionsNotActive() {
-        List<Question>list=questionRepository.getQuestionsNotActive();
+
+        List<Question> list = questionRepository.getQuestionsNotActive();
+
         return list.stream()
                 .map(Mapper::questionToResponse)
                 .toList();
@@ -55,23 +55,42 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionResponse findById(Long id) {
-        Question question=questionRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("No Question were found with ID: "+id));
 
+        Question question = findQuestion(id);
         return Mapper.questionToResponse(question);
     }
 
     @Override
     @Transactional
-    public QuestionResponse logicalDelete(Long id) {
-        Question question=questionRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("No Question were found with ID: "+id));
-        questionRepository.setToNotActive(id);
+    public QuestionResponse hideQuestion(Long id) {
+
+        Question question = findQuestion(id);
+        if (question.getAnswer() == null || !question.getActive()){
+            throw new EntityNotFoundException("The question is already hide.");}
+        question.setActive(false);
         questionRepository.save(question);
+
         return Mapper.questionToResponse(question);
-
-
     }
 
+    @Override
+    public QuestionResponse showQuestion(Long id) {
 
+        Question question = findQuestion(id);
+        if (question.getAnswer() == null){
+            throw new EntityNotFoundException("The question does not have an associated answer.");}
+        question.setActive(true);
+        questionRepository.save(question);
+
+        return Mapper.questionToResponse(question);
+    }
+
+    private Question findQuestion(Long id){
+        return questionRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("No Question were found with ID: " + id));
+    }
+    private Answer findAnswer(Long id){
+        return answerRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Answer not found with ID: " + id));
+    }
 }

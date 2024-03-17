@@ -14,5 +14,6 @@ public interface QuestionService {
     SecondaryQuestionResponse createSecondaryQuestion(SecondaryQuestionRequest question);
     List<QuestionResponse> getQuestionsNotActive();
     QuestionResponse findById(Long id);
-    QuestionResponse logicalDelete(Long id);
+    QuestionResponse hideQuestion(Long id);
+    QuestionResponse showQuestion(Long id);
 }

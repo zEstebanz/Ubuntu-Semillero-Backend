@@ -27,9 +27,9 @@ public class Question {
     @JoinColumn(name = "id_answer")
     private Answer answer;
 
-    public Question(){}
+    private Question(){}
 
-    public Question(QuestionText text, Boolean active, QuestionType type){
+    private Question(QuestionText text, Boolean active, QuestionType type){
         this.text = text;
         this.active = active;
         this.type = type;
@@ -64,6 +64,12 @@ public class Question {
             this.active = true;
         } else {
             throw new AddAnswerException("This question already has an answer associated with it.");
+        }
+    }
+
+    public void setActive(boolean isActive){
+        if (this.answer != null){
+            this.active = isActive;
         }
     }
 }
