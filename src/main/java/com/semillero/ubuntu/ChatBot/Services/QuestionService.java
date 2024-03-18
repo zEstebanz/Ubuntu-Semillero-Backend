@@ -16,4 +16,5 @@ public interface QuestionService {
     QuestionResponse findById(Long id);
     QuestionResponse hideQuestion(Long id);
     QuestionResponse showQuestion(Long id);
+    QuestionResponse updateQuestionText(Long id, String text);
 }

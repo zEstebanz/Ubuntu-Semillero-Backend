@@ -15,6 +15,7 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 public class Answer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -52,5 +53,9 @@ public class Answer {
 
     public void updateIsFull(boolean isFull){
         this.isFull = isFull;
+    }
+
+    public void updateAnswerText(String text){
+        this.text = new AnswerText(text);
     }
 }

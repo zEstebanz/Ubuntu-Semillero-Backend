@@ -72,4 +72,8 @@ public class Question {
             this.active = isActive;
         }
     }
+
+    public void updateQuestionText(String text){
+        this.text = new QuestionText(text);
+    }
 }

@@ -12,4 +12,5 @@ public interface AnswerService {
     AnswerWithQuestionResponse createAnswer(AnswerRequest answerRequest);
     List<AnswerResponse> getAllAnswersNotFull();
     AnswerResponse findById(Long id);
+    AnswerResponse updateAnswerText(Long id, String text);
 }

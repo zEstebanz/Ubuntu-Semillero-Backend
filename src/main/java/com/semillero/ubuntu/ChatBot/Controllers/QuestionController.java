@@ -1,9 +1,6 @@
 package com.semillero.ubuntu.ChatBot.Controllers;
 
-import com.semillero.ubuntu.ChatBot.DTOs.InitialQuestionRequest;
-import com.semillero.ubuntu.ChatBot.DTOs.QuestionResponse;
-import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionRequest;
-import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.*;
 import com.semillero.ubuntu.ChatBot.Services.Impl.QuestionServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +43,11 @@ public class QuestionController {
     @PutMapping("/show/{id}")
     public ResponseEntity<QuestionResponse> showQuestion(@PathVariable Long id){
         return ResponseEntity.ok(service.showQuestion(id));
+    }
+
+    @PutMapping("/text/{id}")
+    public ResponseEntity<QuestionResponse> updateQuestionText(@PathVariable("id") Long id, @RequestParam String text){
+        return ResponseEntity.ok(service.updateQuestionText(id, text));
     }
 
 }

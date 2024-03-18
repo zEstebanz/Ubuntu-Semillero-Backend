@@ -78,8 +78,21 @@ public class QuestionServiceImpl implements QuestionService {
 
         Question question = findQuestion(id);
         if (question.getAnswer() == null){
-            throw new EntityNotFoundException("The question does not have an associated answer.");}
+            throw new EntityNotFoundException("The question does not have an associated answer.");
+        } else if (question.getActive()){
+            throw new EntityNotFoundException("The question is already shown.");
+        }
         question.setActive(true);
+        questionRepository.save(question);
+
+        return Mapper.questionToResponse(question);
+    }
+
+    @Override
+    public QuestionResponse updateQuestionText(Long id, String text) {
+
+        Question question = findQuestion(id);
+        question.updateQuestionText(text);
         questionRepository.save(question);
 
         return Mapper.questionToResponse(question);

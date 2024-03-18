@@ -27,8 +27,12 @@ public class AnswerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AnswerResponse>findById(@PathVariable Long id){
+    public ResponseEntity<AnswerResponse> findById(@PathVariable Long id){
         return ResponseEntity.ok(service.findById(id));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<AnswerResponse> updateAnswerText(@PathVariable("id") Long id, @RequestParam String text){
+        return ResponseEntity.ok(service.updateAnswerText(id, text));
+    }
 }

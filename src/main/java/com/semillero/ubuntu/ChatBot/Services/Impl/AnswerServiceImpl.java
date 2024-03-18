@@ -42,7 +42,9 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public List<AnswerResponse> getAllAnswersNotFull() {
+
         List<Answer> list = answerRepository.getAllAnswersNotFull();
+
         return list.stream()
                 .map(Mapper::answerToAnswerResponse)
                 .toList();
@@ -50,8 +52,26 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public AnswerResponse findById(Long id) {
-        Answer answer = answerRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException("No answers were found with ID: "+id));
+
+        Answer answer = findAnswer(id);
+
         return Mapper.answerToAnswerResponse(answer);
+    }
+
+    @Override
+    public AnswerResponse updateAnswerText(Long id, String text) {
+
+        Answer answer = findAnswer(id);
+
+        answer.updateAnswerText(text);
+        answerRepository.save(answer);
+
+        return Mapper.answerToAnswerResponse(answer);
+    }
+
+    private Answer findAnswer(Long id){
+
+        return answerRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("No answers were found with ID: " + id));
     }
 }

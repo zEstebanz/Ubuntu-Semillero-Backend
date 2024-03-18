@@ -12,12 +12,15 @@ import java.util.List;
 public class Mapper {
 
     public static QuestionResponse questionToResponse(Question question){
+
+        Long answerId = question.getAnswer() != null ? question.getAnswer().getId() : null;
+
         return new QuestionResponse(
                 question.getId(),
                 question.getText().text(),
                 question.getType().name(),
                 question.getActive(),
-                question.getAnswer().getId()
+                answerId
         );
     }
 
