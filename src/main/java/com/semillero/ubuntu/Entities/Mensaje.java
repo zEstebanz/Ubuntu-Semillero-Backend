@@ -39,6 +39,8 @@ public class Mensaje {
         this.email=requestDTO.getEmail();
         this.telefono=requestDTO.getTelefono();
         this.texto=requestDTO.getTexto();
+        this.gestionado=false;
+        this.fechaCreacion=new Date();
 
         String[] partesNombre = requestDTO.getApellidoYNombre().split(", ");
         this.apellido = partesNombre[0];

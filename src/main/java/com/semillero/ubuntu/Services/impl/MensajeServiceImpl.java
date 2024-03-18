@@ -7,8 +7,6 @@ import com.semillero.ubuntu.Repositories.MensajeRepository;
 import com.semillero.ubuntu.Services.MensajeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,8 +18,6 @@ public class MensajeServiceImpl implements MensajeService {
     public MensajeResponseDTO save(MensajeRequestDTO requestDTO) throws Exception {
         try{
             Mensaje entityToSave=new Mensaje(requestDTO);
-            entityToSave.setFechaCreacion(new Date());
-            entityToSave.setGestionado(false);
             Mensaje entitySaved= repository.save(entityToSave);
             return new MensajeResponseDTO(entitySaved);
         }

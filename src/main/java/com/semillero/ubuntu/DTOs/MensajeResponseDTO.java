@@ -19,6 +19,7 @@ public class MensajeResponseDTO {
     private String apellidoYNombre;
     private String email;
     private String texto;
+    //private Long id_microemprendimiento
 
     public MensajeResponseDTO(Mensaje entity){
         this.id=entity.getId();
