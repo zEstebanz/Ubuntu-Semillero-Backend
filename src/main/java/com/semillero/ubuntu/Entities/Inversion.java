@@ -1,0 +1,49 @@
+package com.semillero.ubuntu.Entities;
+
+import com.semillero.ubuntu.Enums.NivelRiesgo;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+
+@Builder
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "inversiones")
+public class Inversion {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private Double costosGestion;
+
+    @Column(nullable = false)
+    private String descripcion;
+
+    @Column(nullable = false)
+    private Integer cuotas;
+
+    @Column(nullable = false)
+    private Double max;
+
+    @Column(nullable = false)
+    private Double min;
+
+    @Column(nullable = false)
+    private Double tasaRetorno;
+
+    @Column(nullable = false)
+    private NivelRiesgo nivelRiesgo;
+
+    //Relacion Con Microemprendimiento
+
+    //Lo cree aca porque hacer la relacion desde Usuario trae problemas de creacion y presistencia en la base de datos
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuarioCreador;
+}
