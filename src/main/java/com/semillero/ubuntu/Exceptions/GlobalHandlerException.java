@@ -42,8 +42,8 @@ public class GlobalHandlerException {
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(PublicationImageException.class)
-    public ResponseEntity<Map<String,String>> publicationImageExceptionHandler(PublicationImageException ex){
+    @ExceptionHandler(ImageException.class)
+    public ResponseEntity<Map<String,String>> imageExceptionHandler(ImageException ex){
         Map<String,String> resp = new HashMap<>();
 
         resp.put("BAD_REQUEST", ex.getMessage());

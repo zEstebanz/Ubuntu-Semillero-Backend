@@ -6,7 +6,7 @@ import com.semillero.ubuntu.DTOs.PublicationResponse;
 import com.semillero.ubuntu.Entities.Image;
 import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Entities.Usuario;
-import com.semillero.ubuntu.Exceptions.PublicationImageException;
+import com.semillero.ubuntu.Exceptions.ImageException;
 import com.semillero.ubuntu.Repositories.ImageRepository;
 import com.semillero.ubuntu.Repositories.PublicacionRepository;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -83,7 +82,7 @@ public class PublicacionServiceImpl implements PublicacionService {
                 .orElseThrow( () -> new EntityNotFoundException("User not found with id: " + publicacionDTO.getIdUsuario()));
 
         if (publicacionDTO.getImages().size() == 0 || publicacionDTO.getImages().size() > 3) {
-            throw new PublicationImageException("You must provide a minimum of one image and a maximum of 3");
+            throw new ImageException("You must provide a minimum of one image and a maximum of 3");
         }
 
         Publicacion nuevaPubli = Publicacion.builder()
@@ -184,7 +183,7 @@ public class PublicacionServiceImpl implements PublicacionService {
                 .orElseThrow(()-> new  EntityNotFoundException("Publication not found with ID: " + ids.id_publication()));
 
         if (publicacion.getImages().size() >= 3) {
-            throw new PublicationImageException("The post provided already has the maximum of 3 images assigned");
+            throw new ImageException("The post provided already has the maximum of 3 images assigned");
         }
 
         Image image = imageRepository.findById(ids.id_image())

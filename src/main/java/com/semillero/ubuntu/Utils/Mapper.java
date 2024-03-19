@@ -1,8 +1,10 @@
 package com.semillero.ubuntu.Utils;
 
 import com.semillero.ubuntu.DTOs.ImageDto;
+import com.semillero.ubuntu.DTOs.MicroemprendimientoResponse;
 import com.semillero.ubuntu.DTOs.PublicationResponse;
 import com.semillero.ubuntu.Entities.Image;
+import com.semillero.ubuntu.Entities.Microemprendimiento;
 import com.semillero.ubuntu.Entities.Publicacion;
 
 import java.util.List;
@@ -21,7 +23,25 @@ public class Mapper {
                 getUrl
         );
     }
+    public static MicroemprendimientoResponse microemprendimientoToResponse(Microemprendimiento microemprendimiento, List<Image> images){
 
+        List<String> getUrl = images.stream().map(Image::getSecure_url).toList();
+
+        return new MicroemprendimientoResponse(
+                microemprendimiento.getId(),
+                microemprendimiento.getNombre(),
+                microemprendimiento.getRubro(),
+                microemprendimiento.getSubrubro(),
+                microemprendimiento.getPais(),
+                microemprendimiento.getProvincia(),
+                microemprendimiento.getCiudad(),
+                microemprendimiento.getDescripcion(),
+                microemprendimiento.getMasInfo(),
+                microemprendimiento.getDeleted(),
+                microemprendimiento.getGestionado(),
+                getUrl
+        );
+    }
     public static ImageDto imageToImageDto(Image image){
 
         return new ImageDto(

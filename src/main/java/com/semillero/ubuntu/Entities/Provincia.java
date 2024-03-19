@@ -1,5 +1,6 @@
 package com.semillero.ubuntu.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,8 @@ public class Provincia {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
+    @ToString.Exclude
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_Pais", nullable = false)
     private Pais pais;
