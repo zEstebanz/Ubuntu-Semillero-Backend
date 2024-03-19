@@ -1,6 +1,8 @@
 package com.semillero.ubuntu.Controllers;
 
+import com.semillero.ubuntu.DTOs.AddImageToPublication;
 import com.semillero.ubuntu.DTOs.PublicacionDTO;
+import com.semillero.ubuntu.DTOs.PublicationResponse;
 import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Services.impl.PublicacionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +40,9 @@ public class PublicacionController {
     }
 
     @PostMapping("/admin/create")
-    public ResponseEntity<?> crearPublicacion(@RequestBody PublicacionDTO publicacionDTO) { //Administrador
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.crearPublicacion(publicacionDTO));
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"{\\\\\\\"error\\\\\\\":\\\\\\\"Error en crear publicacion.\\\\\\\"}\"");
-        }
+    public ResponseEntity<PublicationResponse> crearPublicacion(@ModelAttribute PublicacionDTO publicacionDTO) { //Administrador
+
+        return ResponseEntity.ok(publicacionServiceImpl.crearPublicacion(publicacionDTO));
     }
 
     //En los 3 métodos siguientes hay que ver si envía un response entity en un try catch o si solamente dejarlo asi
@@ -73,5 +72,11 @@ public class PublicacionController {
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
         }
+    }
+
+    @PutMapping("/add-image")
+    public ResponseEntity<PublicationResponse> addImageToPublication(@RequestBody AddImageToPublication addImage){
+
+        return ResponseEntity.ok(publicacionServiceImpl.addImage(addImage));
     }
 }

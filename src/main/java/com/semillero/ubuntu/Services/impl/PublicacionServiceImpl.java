@@ -1,22 +1,35 @@
 package com.semillero.ubuntu.Services.impl;
 
+import com.semillero.ubuntu.DTOs.AddImageToPublication;
 import com.semillero.ubuntu.DTOs.PublicacionDTO;
+import com.semillero.ubuntu.DTOs.PublicationResponse;
+import com.semillero.ubuntu.Entities.Image;
 import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Entities.Usuario;
+import com.semillero.ubuntu.Exceptions.PublicationImageException;
+import com.semillero.ubuntu.Repositories.ImageRepository;
 import com.semillero.ubuntu.Repositories.PublicacionRepository;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Services.PublicacionService;
+import com.semillero.ubuntu.Utils.Mapper;
 import com.semillero.ubuntu.Utils.MapperUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class PublicacionServiceImpl implements PublicacionService {
+
+    private final CloudinaryImageServiceImpl cloudinaryImageService;
+    private final ImageRepository imageRepository;
     @Autowired
     private PublicacionRepository publicacionRepository;
 
@@ -64,20 +77,36 @@ public class PublicacionServiceImpl implements PublicacionService {
      Rol: ADMINISTRADOR
      **/
     @Transactional
-    public PublicacionDTO crearPublicacion(PublicacionDTO publicacionDTO) throws EntityNotFoundException {
-            Usuario usuarioCreador = usuarioRepository.findById(publicacionDTO.getIdUsuario())
-                    .orElseThrow( () -> new EntityNotFoundException("User not found with id: " + publicacionDTO.getIdUsuario()));
-            Publicacion nuevaPubli = Publicacion.builder()
-                    .titulo(publicacionDTO.getTitulo())
-                    .descripcion(publicacionDTO.getDescripcion())
-                    .fechaCreacion(LocalDate.now())
-                    .cantVistas(0)
-                    .isDeleted(publicacionDTO.getIsDeleted())
-                     //Falta la lista de imagenes
-                    .usuarioCreador(usuarioCreador)
-                    .build();
-            publicacionRepository.save(nuevaPubli);
-            return publicacionDTO;
+    public PublicationResponse crearPublicacion(PublicacionDTO publicacionDTO) {
+
+        Usuario usuarioCreador = usuarioRepository.findById(publicacionDTO.getIdUsuario())
+                .orElseThrow( () -> new EntityNotFoundException("User not found with id: " + publicacionDTO.getIdUsuario()));
+
+        if (publicacionDTO.getImages().size() == 0 || publicacionDTO.getImages().size() > 3) {
+            throw new PublicationImageException("You must provide a minimum of one image and a maximum of 3");
+        }
+
+        Publicacion nuevaPubli = Publicacion.builder()
+                .titulo(publicacionDTO.getTitulo())
+                .descripcion(publicacionDTO.getDescripcion())
+                .fechaCreacion(LocalDate.now())
+                .cantVistas(0)
+                .isDeleted(publicacionDTO.getIsDeleted())
+                .usuarioCreador(usuarioCreador)
+                .build();
+
+        List<Map> upload = publicacionDTO.getImages()
+                .stream()
+                .map(cloudinaryImageService::upload)
+                .toList();
+
+        List<Image> images = upload.stream().map(Image::createImage).toList();
+
+        nuevaPubli.setImages(images);
+        images.forEach(imageRepository::save);
+        publicacionRepository.save(nuevaPubli);
+
+        return Mapper.publicationToPublicationResponse(nuevaPubli, images);
     }
 
     /**
@@ -146,6 +175,25 @@ public class PublicacionServiceImpl implements PublicacionService {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    @Override
+    public PublicationResponse addImage(AddImageToPublication ids) {
+
+        Publicacion publicacion = publicacionRepository.findById(ids.id_publication())
+                .orElseThrow(()-> new  EntityNotFoundException("Publication not found with ID: " + ids.id_publication()));
+
+        if (publicacion.getImages().size() >= 3) {
+            throw new PublicationImageException("The post provided already has the maximum of 3 images assigned");
+        }
+
+        Image image = imageRepository.findById(ids.id_image())
+                .orElseThrow(()-> new  EntityNotFoundException("Image not found with ID: " + ids.id_image()));
+
+        publicacion.addImage(image);
+        publicacionRepository.save(publicacion);
+
+        return Mapper.publicationToPublicationResponse(publicacion, List.of(image));
     }
 }
 

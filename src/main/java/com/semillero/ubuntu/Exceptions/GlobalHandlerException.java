@@ -39,4 +39,13 @@ public class GlobalHandlerException {
         resp.put("ENTITY_NOT_FOUND", ex.getMessage());
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(PublicationImageException.class)
+    public ResponseEntity<Map<String,String>> publicationImageExceptionHandler(PublicationImageException ex){
+        Map<String,String> resp = new HashMap<>();
+
+        resp.put("BAD_REQUEST", ex.getMessage());
+
+        return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+    }
 }

@@ -9,7 +9,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Builder
@@ -38,7 +40,9 @@ public class Publicacion {
     @Column(name="fecha-creacion", nullable = false)
     private LocalDate fechaCreacion;
 
-    //List Imagenes
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_publication")
+    private List<Image> images = new ArrayList<>();
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)     //Sujeto a cambios (Puede que la relación sea al revés)
     @JoinColumn(name = "id_usuario", nullable = false)
@@ -47,4 +51,9 @@ public class Publicacion {
     @Column(name="cant-vistas", nullable = false)
     private int cantVistas;
 
+    public void addImage(Image image){
+        if (this.getImages().size() < 3){
+            this.getImages().add(image);
+        }
+    }
 }
