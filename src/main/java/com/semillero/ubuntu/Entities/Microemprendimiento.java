@@ -22,18 +22,18 @@ public class Microemprendimiento {
     @Column(name="nombre", nullable = false)
     private String nombre;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_rubro", nullable = false)
     private Rubro rubro;
 
     @Column(name="subrubro")
     private String subrubro;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_pais", nullable = false)
     private Pais pais;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_provincia", nullable = false)
     private Provincia provincia;
 
