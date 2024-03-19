@@ -20,11 +20,15 @@ public class Inversion {
     private Long id;
 
     @Column(nullable = false)
+    private Double montoAportado;
+
+    @Column(nullable = false)
     private Double costosGestion;
 
     @Column(nullable = false)
     private String descripcion;
 
+    //Puede que haya que agregar una cantidad fija de cuotas a recibir
     @Column(nullable = false)
     private Integer cuotas;
 
