@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class RecibirInversionDTO {
-    Double montoAportado;
+    Double montoAporte;
     Integer cuotas;
     Long idMicro;
 }
