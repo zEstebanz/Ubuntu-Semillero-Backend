@@ -4,9 +4,11 @@ import com.semillero.ubuntu.DTOs.MicroemprendimientoRequest;
 import com.semillero.ubuntu.DTOs.MicroemprendimientoResponse;
 import com.semillero.ubuntu.Entities.*;
 import com.semillero.ubuntu.Exceptions.ImageException;
+import com.semillero.ubuntu.Exceptions.MicroemprendimientoException;
 import com.semillero.ubuntu.Repositories.*;
 import com.semillero.ubuntu.Services.MicroemprendimientoService;
 import com.semillero.ubuntu.Utils.Mapper;
+import com.semillero.ubuntu.Utils.MapperUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -128,5 +130,20 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
                 Mapper.microemprendimientoToResponse(editMicroemprendimiento, images);
 
         return ResponseEntity.status(HttpStatus.OK).body(microemprendimientoResponse);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> findByNameMicroemprendimiento(String query) {
+        if (query == null || query.isEmpty() || query.isBlank()) {
+            throw new MicroemprendimientoException("Escriba un nombre");
+        }
+        List<Microemprendimiento> microemprendimientoList =
+                microemprendimientoRepository.findByNameMicroemprendimiento(query);
+        if (microemprendimientoList.isEmpty()) {
+            throw new MicroemprendimientoException("No se encontraron microemprendimientos");
+        }
+        return ResponseEntity.status(HttpStatus.OK).
+                body(MapperUtil.toDTOList(microemprendimientoList, MicroemprendimientoResponse.class));
     }
 }

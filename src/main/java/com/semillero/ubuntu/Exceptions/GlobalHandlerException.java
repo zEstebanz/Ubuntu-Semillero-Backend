@@ -61,4 +61,12 @@ public class GlobalHandlerException {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(MicroemprendimientoException.class)
+    public ResponseEntity<Map<String,String>> microemprendimientoExceptionHandler(MicroemprendimientoException ex){
+        Map<String,String> resp = new HashMap<>();
+
+        resp.put("MICROEMPRENDIMIENTO_NOT_FOUND", ex.getMessage());
+
+        return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+    }
 }

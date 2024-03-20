@@ -21,4 +21,8 @@ public class MicroemprendimientoController {
     public ResponseEntity<?> editMicroemprendimiento(@Valid @PathVariable Long id, @ModelAttribute MicroemprendimientoRequest microemprendimientoRequest) {
         return ResponseEntity.ok(microemprendimientoService.editMicroemprendimiento(id, microemprendimientoRequest));
     }
+    @GetMapping("/find")
+    public ResponseEntity<?> findByNameMicroemprendimiento(@RequestParam("query") String query) {
+        return ResponseEntity.ok(microemprendimientoService.findByNameMicroemprendimiento(query));
+    }
 }
