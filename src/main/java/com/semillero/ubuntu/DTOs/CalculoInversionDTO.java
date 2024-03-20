@@ -10,4 +10,6 @@ public class CalculoInversionDTO {
     Double retornoEsperado;
     Double montoCuota;
     Double gananciaTotal;
+    String descripcion; //Se puede colocar en el front si se quiere
+    String nombreMicro;
 }
