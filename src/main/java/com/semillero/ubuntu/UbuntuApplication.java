@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 //Ver como colocar la anotacion en SecurityConfig con una variable de entorno
-@CrossOrigin(origins = "http://localhost:5173")
 @SpringBootApplication
 public class UbuntuApplication {
 
