@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Builder
 @AllArgsConstructor
@@ -35,7 +38,8 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     @Column(name="rol", nullable = false)
     private Rol rol;
-    //private List Proveedores;
+
+    //Preferentemente no crear ninguna relacion desde usuario porque trae problemas con Seguridad
 
     public Usuario(){}
 

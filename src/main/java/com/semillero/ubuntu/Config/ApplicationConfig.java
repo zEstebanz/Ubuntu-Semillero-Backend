@@ -1,7 +1,5 @@
 package com.semillero.ubuntu.Config;
-
 import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.semillero.ubuntu.Entities.Usuario;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Security.userauth.UserAuth;
