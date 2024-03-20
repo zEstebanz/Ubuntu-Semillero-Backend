@@ -1,9 +1,11 @@
 package com.semillero.ubuntu.Utils;
 
 import com.semillero.ubuntu.DTOs.ImageDto;
+import com.semillero.ubuntu.DTOs.MensajeResponseDTO;
 import com.semillero.ubuntu.DTOs.MicroemprendimientoResponse;
 import com.semillero.ubuntu.DTOs.PublicationResponse;
 import com.semillero.ubuntu.Entities.Image;
+import com.semillero.ubuntu.Entities.Mensaje;
 import com.semillero.ubuntu.Entities.Microemprendimiento;
 import com.semillero.ubuntu.Entities.Publicacion;
 
@@ -40,6 +42,19 @@ public class Mapper {
                 microemprendimiento.getDeleted(),
                 microemprendimiento.getGestionado(),
                 getUrl
+        );
+    }
+    public static MensajeResponseDTO mensajeToResponse(Mensaje mensaje){
+        MicroemprendimientoResponse microemprendimientoResponse=Mapper.microemprendimientoToResponse(mensaje.getMicroemprendimiento(), mensaje.getMicroemprendimiento().getImages());
+        return new MensajeResponseDTO(
+                mensaje.getId(),
+                mensaje.getFechaCreacion(),
+                mensaje.isGestionado(),
+                mensaje.getTelefono(),
+                mensaje.getApellido() +", "+ mensaje.getNombre(),
+                mensaje.getEmail(),
+                mensaje.getTexto(),
+                microemprendimientoResponse
         );
     }
     public static ImageDto imageToImageDto(Image image){

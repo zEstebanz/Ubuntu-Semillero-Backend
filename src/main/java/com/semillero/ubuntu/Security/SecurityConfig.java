@@ -29,7 +29,8 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/publicaciones/permitidas"),
             new AntPathRequestMatcher("/publicaciones/{id}"),
             new AntPathRequestMatcher("/publicaciones/ultimasTres"),
-            new AntPathRequestMatcher("/cloudinary/upload")
+            new AntPathRequestMatcher("/cloudinary/upload"),
+            new AntPathRequestMatcher("/mensaje/create")
     );
 
     RequestMatcher adminUrls = new OrRequestMatcher(
@@ -53,7 +54,11 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/publicaciones/add-image"),
             //IMAGE ROUTES
             new AntPathRequestMatcher("/image/delete/{id}"),
-            new AntPathRequestMatcher("/image/create")
+            new AntPathRequestMatcher("/image/create"),
+            //MENSAJE ROUTES
+            new AntPathRequestMatcher("/mensaje"),
+            new AntPathRequestMatcher("/mensaje/gestionado"),
+            new AntPathRequestMatcher("/mensaje/{id}")
 
     );
 

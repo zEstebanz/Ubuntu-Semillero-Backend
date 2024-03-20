@@ -36,10 +36,8 @@ public class MensajeRequestDTO {
     @Size(min = 4,max = 300)
     private String texto;
 
-   /* @NotNull(message = "This field can´t be null")
-    @NotBlank(message = "This field can´t be blank")
-    @NotEmpty(message = "This field can´t be empty")
-    private Long id_microemprendimiento;*/
+    @NotNull(message = "This field can´t be null")
+    private Long id_microemprendimiento;
 
 
 }

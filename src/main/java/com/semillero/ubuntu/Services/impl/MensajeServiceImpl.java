@@ -2,11 +2,14 @@ package com.semillero.ubuntu.Services.impl;
 
 import com.semillero.ubuntu.DTOs.MensajeRequestDTO;
 import com.semillero.ubuntu.DTOs.MensajeResponseDTO;
+import com.semillero.ubuntu.DTOs.MicroemprendimientoResponse;
 import com.semillero.ubuntu.Entities.Mensaje;
 import com.semillero.ubuntu.Entities.Microemprendimiento;
 import com.semillero.ubuntu.Repositories.MensajeRepository;
 import com.semillero.ubuntu.Repositories.MicroemprendimientoRepository;
 import com.semillero.ubuntu.Services.MensajeService;
+import com.semillero.ubuntu.Utils.Mapper;
+import com.semillero.ubuntu.Utils.MapperUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +26,12 @@ public class MensajeServiceImpl implements MensajeService {
     @Transactional
     public MensajeResponseDTO save(MensajeRequestDTO requestDTO) throws Exception {
         try{
-          /*  Microemprendimiento microemprendimiento=microemprendimientoRepository.findById(requestDTO.getId_microemprendimiento())
-                    .orElseThrow(()->new EntityNotFoundException("No microentrepreneurship was found with ID: "+ requestDTO.getId_microemprendimiento()));*/
+            Microemprendimiento microemprendimiento=microemprendimientoRepository.findById(requestDTO.getId_microemprendimiento())
+                    .orElseThrow(()->new EntityNotFoundException("No microentrepreneurship was found with ID: "+ requestDTO.getId_microemprendimiento()));
             Mensaje entityToSave=new Mensaje(requestDTO);
-           /* entityToSave.setMicroemprendimiento(microemprendimiento);*/
+            entityToSave.setMicroemprendimiento(microemprendimiento);
             Mensaje entitySaved= repository.save(entityToSave);
-            return new MensajeResponseDTO(entitySaved);
+            return Mapper.mensajeToResponse(entitySaved);
         }
         catch (Exception e){
             throw new Exception(e.getMessage());
@@ -37,12 +40,12 @@ public class MensajeServiceImpl implements MensajeService {
     @Override
     public List<MensajeResponseDTO> getAll() {
         List<Mensaje>list=repository.findAll();
-        return list.stream().map(MensajeResponseDTO::new).toList();
+        return list.stream().map(Mapper::mensajeToResponse).toList();
     }
     @Override
     public List<MensajeResponseDTO>getAllByGestionado(boolean gestionado){
         List<Mensaje>list=repository.findByGestionado(gestionado);
-        return list.stream().map(MensajeResponseDTO::new).toList();
+        return list.stream().map(Mapper::mensajeToResponse).toList();
     }
 
     @Transactional
@@ -52,7 +55,7 @@ public class MensajeServiceImpl implements MensajeService {
                 .orElseThrow(()->new EntityNotFoundException("No message was found with ID: "+id));
         mensajeToEdit.setGestionado(gestionado);
         Mensaje mensajeEdited=repository.save(mensajeToEdit);
-        return new MensajeResponseDTO(mensajeEdited);
+        return Mapper.mensajeToResponse(mensajeEdited);
     }
 
 

@@ -1,6 +1,5 @@
 package com.semillero.ubuntu.DTOs;
 
-import com.semillero.ubuntu.Entities.Mensaje;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,18 +18,8 @@ public class MensajeResponseDTO {
     private String apellidoYNombre;
     private String email;
     private String texto;
-    /*private Long id_microemprendimiento;*/
-
-    public MensajeResponseDTO(Mensaje entity){
-        this.id=entity.getId();
-        this.fechaCreacion=entity.getFechaCreacion();
-        this.gestionado= entity.isGestionado();
-        this.telefono=entity.getTelefono();
-        this.email= entity.getEmail();
-        this.texto= entity.getTexto();
-        this.apellidoYNombre = entity.getApellido() + ", " + entity.getNombre();
-       /* this.id_microemprendimiento=entity.getMicroemprendimiento().getId();*/
-    }
+    //private Long id_microemprendimiento;
+    private MicroemprendimientoResponse microemprendimiento;
 
 
 }

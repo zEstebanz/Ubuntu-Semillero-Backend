@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Mensaje")
+@Table(name = "mensaje")
 public class Mensaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +32,8 @@ public class Mensaje {
     private String email;
     @Column(nullable = false)
     private String texto;
-   /* @ManyToOne(fetch = FetchType.LAZY)
-    private Microemprendimiento microemprendimiento;*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Microemprendimiento microemprendimiento;
 
     public Mensaje(MensajeRequestDTO requestDTO){
         this.email=requestDTO.getEmail();
