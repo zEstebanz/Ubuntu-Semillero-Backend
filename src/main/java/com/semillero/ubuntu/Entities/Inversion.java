@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 
 @Builder
 @Entity
@@ -50,5 +49,5 @@ public class Inversion {
     //Lo cree aca porque hacer la relacion desde Usuario trae problemas de creacion y presistencia en la base de datos
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id")
-    private Usuario usuarioCreador;
+    private Usuario usuarioInversor;
 }
