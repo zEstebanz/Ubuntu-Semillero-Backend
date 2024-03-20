@@ -29,7 +29,9 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/publicaciones/permitidas"),
             new AntPathRequestMatcher("/publicaciones/{id}"),
             new AntPathRequestMatcher("/publicaciones/ultimasTres"),
-            new AntPathRequestMatcher("/cloudinary/upload")
+            new AntPathRequestMatcher("/cloudinary/upload"),
+            //RUBROS ROUTES
+            new AntPathRequestMatcher("/rubros/get-all")
     );
 
     RequestMatcher adminUrls = new OrRequestMatcher(
@@ -39,8 +41,6 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/usuarios/baja/{id}"),
             //PROVINCIA ROUTES
             new AntPathRequestMatcher("/provincias/{id}"),
-            //RUBROS ROUTES
-            new AntPathRequestMatcher("/rubros/get-all"),
             //USER AUTH ROUTES
             new AntPathRequestMatcher("/auth/user/details"),
             //PAIS ROUTES
