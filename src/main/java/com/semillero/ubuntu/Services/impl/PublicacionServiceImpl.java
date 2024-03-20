@@ -22,11 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -86,17 +83,11 @@ public class PublicacionServiceImpl implements PublicacionService {
         Usuario usuarioCreador = usuarioRepository.findById(publicacionDTO.getIdUsuario())
                 .orElseThrow( () -> new EntityNotFoundException("User not found with id: " + publicacionDTO.getIdUsuario()));
 
-        if (publicacionDTO.getImages().size() == 0 || publicacionDTO.getImages().size() > 3) {
+        if (publicacionDTO.getImages().get(0).isEmpty() || publicacionDTO.getImages().size() > 3) {
             throw new PublicationImageException("You must provide a minimum of one image and a maximum of 3");
         }
 
-        long maxSize = 3 * 1024 * 1024;
-
-        for (MultipartFile img : publicacionDTO.getImages()){
-            if (img.getSize() > maxSize){
-                throw new PublicationImageException("Maximum upload size exceeded");
-            }
-        }
+        checkImageSize(publicacionDTO.getImages());
 
         Publicacion publication = Publicacion.builder()
                 .titulo(publicacionDTO.getTitulo())
@@ -107,13 +98,8 @@ public class PublicacionServiceImpl implements PublicacionService {
                 .usuarioCreador(usuarioCreador)
                 .build();
 
-        List<Map> upload = publicacionDTO.getImages()
-                .stream()
-                .map(cloudinaryImageService::upload)
-                .toList();
-
+        List<Map> upload = uploadImage(publicacionDTO.getImages());
         List<Image> images = upload.stream().map(Image::createImage).toList();
-
         images.forEach(publication::addImage);
         images.forEach(imageRepository::save);
         publicacionRepository.save(publication);
@@ -130,14 +116,8 @@ public class PublicacionServiceImpl implements PublicacionService {
     @Transactional
     public PublicationResponse editarPublicacion(Long id, PublicationEditRequest publicationEdit){
 
-        Publicacion publicacion = publicacionRepository.findById(id)
-                .orElseThrow( () -> new EntityNotFoundException("Publication not found with id: " + id));
-
-        int result = publicacion.getImages().size() + publicationEdit.newImages().size() - publicationEdit.id_imageToReplace().size();
-
-        if (result <= 1 || result >= 4){
-            throw new PublicationImageException("debes tener al mens una imagen o maximo 3");
-        }
+        Publicacion publicacion = findPublication(id);
+        validateEditRequest(publicacion, publicationEdit);
 
         if (publicationEdit.id_imageToReplace().size() != 0) {
 
@@ -145,7 +125,7 @@ public class PublicacionServiceImpl implements PublicacionService {
                     .stream()
                     .map(img -> imageRepository.findById(img)
                             .orElseThrow(()->
-                            new EntityNotFoundException("estas intentando borrar una foto que no te corresponde o no existe")))
+                            new EntityNotFoundException("You are trying to delete a photo that does not belong to you or does not exist")))
                     .toList();
 
             getImage.forEach(img -> publicacion.getImages().remove(img));
@@ -155,37 +135,19 @@ public class PublicacionServiceImpl implements PublicacionService {
             publicacionRepository.flush();
         }
 
-        long maxSize = 3 * 1024 * 1024;
+        checkImageSize(publicationEdit.newImages());
 
-        for (MultipartFile img : publicationEdit.newImages()){
-            if (img.getSize() > maxSize){
-                throw new PublicationImageException("Maximum upload size exceeded");
-            }
-        }
+        if (!publicationEdit.newImages().get(0).isEmpty()){
 
-        if (!publicationEdit.newImages().isEmpty()) {
-
-            List<Map> upload = publicationEdit.newImages()
-                    .stream()
-                    .map(cloudinaryImageService::upload)
-                    .toList();
-
+            List<Map> upload = uploadImage(publicationEdit.newImages());
             List<Image> images = upload.stream().map(Image::createImage).toList();
-
             images.forEach(publicacion::addImage);
             images.forEach(imageRepository::save);
-            publicacion.setTitulo(publicationEdit.tittle());
-            publicacion.setDescripcion(publicationEdit.description());
-            publicacionRepository.save(publicacion);
 
-            return Mapper.publicationToPublicationResponse(publicacion, publicacion.getImages());
+            return saveUpdate(publicacion, publicationEdit.tittle(), publicationEdit.description());
         }
 
-        publicacion.setTitulo(publicationEdit.tittle());
-        publicacion.setDescripcion(publicationEdit.description());
-        publicacionRepository.save(publicacion);
-        return Mapper.publicationToPublicationResponse(publicacion, publicacion.getImages());
-
+        return saveUpdate(publicacion, publicationEdit.tittle(), publicationEdit.description());
     }
 
     /**
@@ -194,9 +156,9 @@ public class PublicacionServiceImpl implements PublicacionService {
      Rol: ADMINISTRADOR
      **/
     @Transactional
-    public void bajaLogica(Long id) throws EntityNotFoundException {
-        Publicacion publicacion = publicacionRepository.findById(id)
-                .orElseThrow( () -> new EntityNotFoundException("Publication not found with id: " + id));
+    public void bajaLogica(Long id) {
+
+        Publicacion publicacion = findPublication(id);
         publicacion.setIsDeleted(!publicacion.getIsDeleted());
         publicacionRepository.save(publicacion);
 
@@ -215,8 +177,8 @@ public class PublicacionServiceImpl implements PublicacionService {
      **/
     @Transactional
     public void verPubliVisitante(Long id) throws EntityNotFoundException {
-            Publicacion publicacion = publicacionRepository.findById(id)
-                    .orElseThrow( () -> new EntityNotFoundException("Publication not found with id: " + id));
+
+            Publicacion publicacion = findPublication(id);
             int sumaVista = publicacion.getCantVistas();
             sumaVista++;
             publicacion.setCantVistas(sumaVista);
@@ -241,8 +203,7 @@ public class PublicacionServiceImpl implements PublicacionService {
     @Override
     public PublicationResponse addImage(AddImageToPublication ids) {
 
-        Publicacion publicacion = publicacionRepository.findById(ids.id_publication())
-                .orElseThrow(()-> new  EntityNotFoundException("Publication not found with ID: " + ids.id_publication()));
+        Publicacion publicacion = findPublication(ids.id_publication());
 
         if (publicacion.getImages().size() >= 3) {
             throw new PublicationImageException("The post provided already has the maximum of 3 images assigned");
@@ -255,6 +216,49 @@ public class PublicacionServiceImpl implements PublicacionService {
         publicacionRepository.save(publicacion);
 
         return Mapper.publicationToPublicationResponse(publicacion, List.of(image));
+    }
+
+    private Publicacion findPublication(Long id){
+
+        return publicacionRepository.findById(id)
+                .orElseThrow( () -> new EntityNotFoundException("Publication not found with id: " + id));
+    }
+
+    private void checkImageSize(List<MultipartFile> images) {
+
+        long maxSize = 3 * 1024 * 1024;
+        for (MultipartFile img : images){
+            if (img.getSize() > maxSize){
+                throw new PublicationImageException("Maximum upload size exceeded");
+            }
+        }
+    }
+
+    private void validateEditRequest(Publicacion publicacion, PublicationEditRequest publicationEdit) {
+
+        int result = publicacion.getImages().size()
+                + publicationEdit.newImages().size()
+                - publicationEdit.id_imageToReplace().size();
+
+        if (result < 1 || result > 3 || result == 1 && publicationEdit.newImages().get(0).isEmpty()){
+            throw new PublicationImageException("Your publication must contain at least one image and up to a maximum of three.");
+        }
+    }
+
+    private PublicationResponse saveUpdate(Publicacion publicacion, String tittle, String description){
+
+        publicacion.setTitulo(tittle);
+        publicacion.setDescripcion(description);
+        publicacionRepository.save(publicacion);
+
+        return Mapper.publicationToPublicationResponse(publicacion, publicacion.getImages());
+    }
+
+    private List<Map> uploadImage(List<MultipartFile> file){
+
+        return file.stream()
+                .map(cloudinaryImageService::upload)
+                .toList();
     }
 }
 
