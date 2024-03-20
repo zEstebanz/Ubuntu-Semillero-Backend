@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -118,9 +119,12 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         List<Map> upload = microemprendimientoRequest.getImages()
                 .stream()
                 .map(cloudinaryImageService::upload)
-                .toList();
+                .collect(Collectors.toList());
 
-        List<Image> images = upload.stream().map(Image::createImage).toList();
+        List<Image> images = upload
+                .stream()
+                .map(Image::createImage)
+                .collect(Collectors.toList());
 
         editMicroemprendimiento.setImages(images);
         images.forEach(imageRepository::save);

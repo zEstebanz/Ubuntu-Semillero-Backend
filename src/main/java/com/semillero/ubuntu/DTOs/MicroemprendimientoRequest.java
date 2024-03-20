@@ -23,17 +23,14 @@ public class MicroemprendimientoRequest {
 
     @NotNull(message = "Debe elegir un rubro")
     private Long idRubro;
-    //private Rubro rubro;
 
     private String subrubro;
 
     @NotNull(message = "Debe elegir un pais")
     private Long idPais;
-    //private Pais pais;
 
     @NotNull(message = "Debe elegir una provincia")
     private Long idProvincia;
-    //private Provincia provincia;
 
     @NotBlank(message = "Debe ingresar una ciudad")
     @NotEmpty(message = "El campo ciudad no puede estar vacío")
