@@ -22,6 +22,9 @@ public class Image {
     private String public_id;
     private Integer width;
     private Integer height;
+    @ManyToOne
+    @JoinColumn(name = "id_publicacion")
+    private Publicacion publication;
 
     private Image(){}
     private Image(String secure_url, String format, String created_at, String public_id, Integer width, Integer height){
@@ -44,4 +47,7 @@ public class Image {
         );
     }
 
+    public void setPublicacion(Publicacion publication) {
+        this.publication = publication;
+    }
 }

@@ -2,6 +2,7 @@ package com.semillero.ubuntu.Services.impl;
 
 import com.semillero.ubuntu.DTOs.AddImageToPublication;
 import com.semillero.ubuntu.DTOs.PublicacionDTO;
+import com.semillero.ubuntu.DTOs.PublicationEditRequest;
 import com.semillero.ubuntu.DTOs.PublicationResponse;
 import com.semillero.ubuntu.Entities.Image;
 import com.semillero.ubuntu.Entities.Publicacion;
@@ -18,11 +19,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -86,7 +90,15 @@ public class PublicacionServiceImpl implements PublicacionService {
             throw new PublicationImageException("You must provide a minimum of one image and a maximum of 3");
         }
 
-        Publicacion nuevaPubli = Publicacion.builder()
+        long maxSize = 3 * 1024 * 1024;
+
+        for (MultipartFile img : publicacionDTO.getImages()){
+            if (img.getSize() > maxSize){
+                throw new PublicationImageException("Maximum upload size exceeded");
+            }
+        }
+
+        Publicacion publication = Publicacion.builder()
                 .titulo(publicacionDTO.getTitulo())
                 .descripcion(publicacionDTO.getDescripcion())
                 .fechaCreacion(LocalDate.now())
@@ -102,11 +114,11 @@ public class PublicacionServiceImpl implements PublicacionService {
 
         List<Image> images = upload.stream().map(Image::createImage).toList();
 
-        nuevaPubli.setImages(images);
+        images.forEach(publication::addImage);
         images.forEach(imageRepository::save);
-        publicacionRepository.save(nuevaPubli);
+        publicacionRepository.save(publication);
 
-        return Mapper.publicationToPublicationResponse(nuevaPubli, images);
+        return Mapper.publicationToPublicationResponse(publication, images);
     }
 
     /**
@@ -116,15 +128,64 @@ public class PublicacionServiceImpl implements PublicacionService {
      Rol: ADMINISTRADOR
      **/
     @Transactional
-    public PublicacionDTO editarPublicacion(Long id, PublicacionDTO publicacionDTO) throws EntityNotFoundException {
-            Publicacion publicacion = publicacionRepository.findById(id)
-                    .orElseThrow( () -> new EntityNotFoundException("Publication not found with id: " + id));
-                publicacion.setTitulo(publicacionDTO.getTitulo());
-                publicacion.setDescripcion(publicacionDTO.getDescripcion());
-                publicacion.setIsDeleted(publicacionDTO.getIsDeleted());
-                //Falta la edicion de imagenes
-                publicacionRepository.save(publicacion);
-            return MapperUtil.mapToDto(publicacion, PublicacionDTO.class);
+    public PublicationResponse editarPublicacion(Long id, PublicationEditRequest publicationEdit){
+
+        Publicacion publicacion = publicacionRepository.findById(id)
+                .orElseThrow( () -> new EntityNotFoundException("Publication not found with id: " + id));
+
+        int result = publicacion.getImages().size() + publicationEdit.newImages().size() - publicationEdit.id_imageToReplace().size();
+
+        if (result <= 1 || result >= 4){
+            throw new PublicationImageException("debes tener al mens una imagen o maximo 3");
+        }
+
+        if (publicationEdit.id_imageToReplace().size() != 0) {
+
+            List<Image> getImage = publicationEdit.id_imageToReplace()
+                    .stream()
+                    .map(img -> imageRepository.findById(img)
+                            .orElseThrow(()->
+                            new EntityNotFoundException("estas intentando borrar una foto que no te corresponde o no existe")))
+                    .toList();
+
+            getImage.forEach(img -> publicacion.getImages().remove(img));
+            getImage.forEach(imageRepository::delete);
+            publicacionRepository.save(publicacion);
+            imageRepository.flush();
+            publicacionRepository.flush();
+        }
+
+        long maxSize = 3 * 1024 * 1024;
+
+        for (MultipartFile img : publicationEdit.newImages()){
+            if (img.getSize() > maxSize){
+                throw new PublicationImageException("Maximum upload size exceeded");
+            }
+        }
+
+        if (!publicationEdit.newImages().isEmpty()) {
+
+            List<Map> upload = publicationEdit.newImages()
+                    .stream()
+                    .map(cloudinaryImageService::upload)
+                    .toList();
+
+            List<Image> images = upload.stream().map(Image::createImage).toList();
+
+            images.forEach(publicacion::addImage);
+            images.forEach(imageRepository::save);
+            publicacion.setTitulo(publicationEdit.tittle());
+            publicacion.setDescripcion(publicationEdit.description());
+            publicacionRepository.save(publicacion);
+
+            return Mapper.publicationToPublicationResponse(publicacion, publicacion.getImages());
+        }
+
+        publicacion.setTitulo(publicationEdit.tittle());
+        publicacion.setDescripcion(publicationEdit.description());
+        publicacionRepository.save(publicacion);
+        return Mapper.publicationToPublicationResponse(publicacion, publicacion.getImages());
+
     }
 
     /**

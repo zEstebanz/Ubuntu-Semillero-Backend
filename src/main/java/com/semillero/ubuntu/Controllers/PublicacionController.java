@@ -2,6 +2,7 @@ package com.semillero.ubuntu.Controllers;
 
 import com.semillero.ubuntu.DTOs.AddImageToPublication;
 import com.semillero.ubuntu.DTOs.PublicacionDTO;
+import com.semillero.ubuntu.DTOs.PublicationEditRequest;
 import com.semillero.ubuntu.DTOs.PublicationResponse;
 import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Services.impl.PublicacionServiceImpl;
@@ -47,9 +48,9 @@ public class PublicacionController {
 
     //En los 3 métodos siguientes hay que ver si envía un response entity en un try catch o si solamente dejarlo asi
     @PutMapping("/admin/edit/{id}")
-    public ResponseEntity<PublicacionDTO> actualizarPublicacion(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) { //Administrador
+    public ResponseEntity<PublicationResponse> actualizarPublicacion(@PathVariable Long id, @ModelAttribute PublicationEditRequest publicationEdit) { //Administrador
 
-        return ResponseEntity.ok(publicacionServiceImpl.editarPublicacion(id,publicacionDTO));
+        return ResponseEntity.ok(publicacionServiceImpl.editarPublicacion(id,publicationEdit));
     }
 
     @PutMapping("/admin/baja/{id}")
