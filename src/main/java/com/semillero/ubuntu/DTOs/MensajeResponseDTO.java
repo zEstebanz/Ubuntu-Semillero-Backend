@@ -19,7 +19,7 @@ public class MensajeResponseDTO {
     private String apellidoYNombre;
     private String email;
     private String texto;
-    //private Long id_microemprendimiento
+    /*private Long id_microemprendimiento;*/
 
     public MensajeResponseDTO(Mensaje entity){
         this.id=entity.getId();
@@ -29,6 +29,7 @@ public class MensajeResponseDTO {
         this.email= entity.getEmail();
         this.texto= entity.getTexto();
         this.apellidoYNombre = entity.getApellido() + ", " + entity.getNombre();
+       /* this.id_microemprendimiento=entity.getMicroemprendimiento().getId();*/
     }
 
 

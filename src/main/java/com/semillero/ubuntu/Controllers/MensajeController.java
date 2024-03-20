@@ -4,6 +4,7 @@ import com.semillero.ubuntu.DTOs.MensajeRequestDTO;
 import com.semillero.ubuntu.DTOs.MensajeResponseDTO;
 import com.semillero.ubuntu.Services.impl.MensajeServiceImpl;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,20 @@ public class MensajeController {
         List<MensajeResponseDTO>list=service.getAll();
         return ResponseEntity.ok(list);
     }
+
+    @GetMapping("/gestionado")
+    public ResponseEntity<List<MensajeResponseDTO>>getAllByGestionado(@RequestParam boolean gestionado){
+        List<MensajeResponseDTO>list=service.getAllByGestionado(gestionado);
+        return ResponseEntity.ok(list);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MensajeResponseDTO>editGestionado(@PathVariable Long id, @RequestParam boolean gestionado){
+         return ResponseEntity.ok(service.editGestionado(id, gestionado));
+
+    }
+
+
 
 
 }

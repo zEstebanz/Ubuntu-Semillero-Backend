@@ -8,5 +8,7 @@ import java.util.List;
 public interface MensajeService {
     MensajeResponseDTO save(MensajeRequestDTO requestDTO) throws Exception;
     List<MensajeResponseDTO> getAll();
+    List<MensajeResponseDTO>getAllByGestionado(boolean gestionado);
+    MensajeResponseDTO editGestionado(Long id, boolean gestionado);
 
 }

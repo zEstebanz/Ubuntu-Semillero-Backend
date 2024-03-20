@@ -32,8 +32,8 @@ public class Mensaje {
     private String email;
     @Column(nullable = false)
     private String texto;
-
-    //private Microemprendimiento microemprendimiento
+   /* @ManyToOne(fetch = FetchType.LAZY)
+    private Microemprendimiento microemprendimiento;*/
 
     public Mensaje(MensajeRequestDTO requestDTO){
         this.email=requestDTO.getEmail();
@@ -42,7 +42,7 @@ public class Mensaje {
         this.gestionado=false;
         this.fechaCreacion=new Date();
 
-        String[] partesNombre = requestDTO.getApellidoYNombre().split(", ");
+        String[] partesNombre = requestDTO.getApellidoYNombre().split(",");
         this.apellido = partesNombre[0];
         this.nombre = partesNombre[1];
 
