@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.semillero.ubuntu.Services.CloudinaryImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ public class CloudinaryImageServiceImpl implements CloudinaryImageService {
     }
 
     @Override
+    @Async("asyncTaskExecutor")
     public void delete(String public_id) {
 
         try {

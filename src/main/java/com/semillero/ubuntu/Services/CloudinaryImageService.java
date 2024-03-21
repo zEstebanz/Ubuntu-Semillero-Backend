@@ -7,5 +7,6 @@ import java.util.Map;
 public interface CloudinaryImageService {
 
     Map upload(MultipartFile file);
+
     void delete(String public_id);
 }
