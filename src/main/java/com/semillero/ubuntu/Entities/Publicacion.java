@@ -1,7 +1,6 @@
 package com.semillero.ubuntu.Entities;
 
 
-import com.semillero.ubuntu.Exceptions.PublicationImageException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -38,10 +36,11 @@ public class Publicacion {
     @Column(name="baja", nullable = false)
     private Boolean isDeleted;
 
-    @Column(name="fecha-creacion", nullable = false)
+    @Column(name="fecha-creacion", nullable = false, columnDefinition = "DATE")
     private LocalDate fechaCreacion;
 
-    @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL,
+            orphanRemoval = true, targetEntity = Image.class, fetch = FetchType.LAZY)
     private final List<Image> images = new ArrayList<>();
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)     //Sujeto a cambios (Puede que la relación sea al revés)

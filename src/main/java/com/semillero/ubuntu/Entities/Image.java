@@ -22,8 +22,9 @@ public class Image {
     private String public_id;
     private Integer width;
     private Integer height;
-    @ManyToOne
-    @JoinColumn(name = "id_publicacion")
+
+    @ManyToOne(targetEntity = Publicacion.class)
+    @JoinColumn(name = "id_publication")
     private Publicacion publication;
 
     private Image(){}
