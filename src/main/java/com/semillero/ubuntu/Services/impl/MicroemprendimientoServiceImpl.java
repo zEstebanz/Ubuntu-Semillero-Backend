@@ -10,7 +10,6 @@ import com.semillero.ubuntu.Services.MicroemprendimientoService;
 import com.semillero.ubuntu.Utils.Mapper;
 import com.semillero.ubuntu.Utils.MapperUtil;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -80,6 +80,7 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         newMicroemprendimiento.setMasInfo(microemprendimientoRequest.getMasInfo());
         newMicroemprendimiento.setDeleted(false);
         newMicroemprendimiento.setGestionado(false);
+        newMicroemprendimiento.setFechaCreacion((LocalDate.now()));
 
         List<Map> upload = microemprendimientoRequest.getImages()
                 .stream()
@@ -138,6 +139,7 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         editMicroemprendimiento.setCiudad(microemprendimientoRequest.getCiudad());
         editMicroemprendimiento.setDescripcion(microemprendimientoRequest.getDescripcion());
         editMicroemprendimiento.setMasInfo(microemprendimientoRequest.getMasInfo());
+        editMicroemprendimiento.setFechaCreacion((LocalDate.now()));
         //esto da de baja en cloudinary
         for (Image image : editMicroemprendimiento.getImages()) {
             Long imageId = image.getId();

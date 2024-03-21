@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -27,4 +28,5 @@ public class MicroemprendimientoResponse {
     private Boolean deleted;
     private Boolean gestionado;
     private List<String> images;
+    private LocalDate fechaCreacion;
 }

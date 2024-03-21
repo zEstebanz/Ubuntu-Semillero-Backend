@@ -32,6 +32,7 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/cloudinary/upload"),
             //RUBROS ROUTES
             new AntPathRequestMatcher("/rubros/get-all"),
+            //MICROEMPRENDIMIENTOS ROUTES
             new AntPathRequestMatcher("/microemprendimientos/findByName"),
             new AntPathRequestMatcher("/microemprendimientos/findByRubro/{id}"),
             new AntPathRequestMatcher("/microemprendimientos/findById/{idMicroemprendimiento}")
