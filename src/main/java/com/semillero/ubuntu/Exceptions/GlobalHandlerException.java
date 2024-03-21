@@ -43,8 +43,8 @@ public class GlobalHandlerException {
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(PublicationImageException.class)
-    public ResponseEntity<Map<String,String>> publicationImageExceptionHandler(PublicationImageException ex){
+    @ExceptionHandler(ImageException.class)
+    public ResponseEntity<Map<String,String>> imageExceptionHandler(ImageException ex){
         Map<String,String> resp = new HashMap<>();
 
         resp.put("BAD_REQUEST", ex.getMessage());
@@ -62,8 +62,18 @@ public class GlobalHandlerException {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<Object> handleMaxUploadSizeExceeded(MaxUploadSizeExceededException ex) {
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("Maximum upload size exceeded");
+    }
+
+    @ExceptionHandler(MicroemprendimientoException.class)
+    public ResponseEntity<Map<String,String>> microemprendimientoExceptionHandler(MicroemprendimientoException ex){
+        Map<String,String> resp = new HashMap<>();
+
+        resp.put("MICROEMPRENDIMIENTO_NOT_FOUND", ex.getMessage());
+
+        return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
 }

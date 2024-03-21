@@ -1,11 +1,13 @@
 package com.semillero.ubuntu.Utils;
 
-import com.semillero.ubuntu.DTOs.ImageDto;
-import com.semillero.ubuntu.DTOs.PublicationResponse;
+import com.semillero.ubuntu.DTOs.*;
 import com.semillero.ubuntu.Entities.Image;
+import com.semillero.ubuntu.Entities.Microemprendimiento;
 import com.semillero.ubuntu.Entities.Publicacion;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Mapper {
 
@@ -21,7 +23,25 @@ public class Mapper {
                 getUrl
         );
     }
+    public static MicroemprendimientoResponse microemprendimientoToResponse(Microemprendimiento microemprendimiento, List<Image> images){
 
+        List<String> getUrl = images.stream().map(Image::getSecure_url).toList();
+
+        return new MicroemprendimientoResponse(
+                microemprendimiento.getId(),
+                microemprendimiento.getNombre(),
+                microemprendimiento.getRubro(),
+                microemprendimiento.getSubrubro(),
+                microemprendimiento.getPais(),
+                microemprendimiento.getProvincia(),
+                microemprendimiento.getCiudad(),
+                microemprendimiento.getDescripcion(),
+                microemprendimiento.getMasInfo(),
+                microemprendimiento.getDeleted(),
+                microemprendimiento.getGestionado(),
+                getUrl
+        );
+    }
     public static ImageDto imageToImageDto(Image image){
 
         return new ImageDto(
@@ -33,5 +53,23 @@ public class Mapper {
                 image.getWidth(),
                 image.getHeight()
         );
+    }
+    public static List<RubroDTO> objectToRubroDTO(List<Object[]> resultados){
+        return resultados.stream()
+                .map(resultado -> new RubroDTO(
+                        (Long) resultado[0],
+                        (String) resultado[1],
+                        (Long) resultado[2]
+                ))
+                .collect(Collectors.toList());
+    }
+    public static List<MicroemprendimientoEstadistica> objectToEstadisticaDTO(List<Object[]> resultados){
+        return resultados.stream()
+                .map(resultado -> new MicroemprendimientoEstadistica(
+                        (Long) resultado[0],
+                        (Long) resultado[1],
+                        (Long) resultado[2]
+                ))
+                .collect(Collectors.toList());
     }
 }

@@ -18,8 +18,8 @@ public class RubroController {
 
     private final RubroService rubroService;
     @GetMapping("/get-all")
-    public ResponseEntity<List<RubroDTO>> getAllRubros() {
-        List<RubroDTO> rubroList = rubroService.getAllRubros();
+    public ResponseEntity<List<RubroDTO>> getRubrosOrderByCantMicroemprendimientos() {
+        List<RubroDTO> rubroList = rubroService.getRubrosOrderByCantMicroemprendimientos();
         return ResponseEntity.ok(rubroList);
     }
 }

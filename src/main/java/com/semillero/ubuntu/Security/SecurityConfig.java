@@ -53,8 +53,9 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/publicaciones/add-image"),
             //IMAGE ROUTES
             new AntPathRequestMatcher("/image/delete/{id}"),
-            new AntPathRequestMatcher("/image/create")
-
+            new AntPathRequestMatcher("/image/create"),
+            //MICROEMPRENDIMIENTOS ROUTES
+            new AntPathRequestMatcher("/microemprendimientos/**")
     );
 
     @Bean

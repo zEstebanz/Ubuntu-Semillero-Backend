@@ -7,7 +7,7 @@ import com.semillero.ubuntu.DTOs.PublicationResponse;
 import com.semillero.ubuntu.Entities.Image;
 import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Entities.Usuario;
-import com.semillero.ubuntu.Exceptions.PublicationImageException;
+import com.semillero.ubuntu.Exceptions.ImageException;
 import com.semillero.ubuntu.Repositories.ImageRepository;
 import com.semillero.ubuntu.Repositories.PublicacionRepository;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
@@ -84,7 +84,7 @@ public class PublicacionServiceImpl implements PublicacionService {
                 .orElseThrow( () -> new EntityNotFoundException("User not found with id: " + publicacionDTO.getIdUsuario()));
 
         if (publicacionDTO.getImages().get(0).isEmpty() || publicacionDTO.getImages().size() > 3) {
-            throw new PublicationImageException("You must provide a minimum of one image and a maximum of 3");
+            throw new ImageException("You must provide a minimum of one image and a maximum of 3");
         }
 
         checkImageSize(publicacionDTO.getImages());
@@ -205,7 +205,7 @@ public class PublicacionServiceImpl implements PublicacionService {
         Publicacion publicacion = findPublication(ids.id_publication());
 
         if (publicacion.getImages().size() >= 3) {
-            throw new PublicationImageException("The post provided already has the maximum of 3 images assigned");
+            throw new ImageException("The post provided already has the maximum of 3 images assigned");
         }
 
         Image image = imageRepository.findById(ids.id_image())
@@ -228,7 +228,7 @@ public class PublicacionServiceImpl implements PublicacionService {
         long maxSize = 3 * 1024 * 1024;
         for (MultipartFile img : images){
             if (img.getSize() > maxSize){
-                throw new PublicationImageException("Maximum upload size exceeded");
+                throw new ImageException("Maximum upload size exceeded");
             }
         }
     }
@@ -240,7 +240,7 @@ public class PublicacionServiceImpl implements PublicacionService {
                 - publicationEdit.id_imageToReplace().size();
 
         if (result < 1 || result > 3 || result == 1 && publicationEdit.newImages().get(0).isEmpty()){
-            throw new PublicationImageException("Your publication must contain at least one image and up to a maximum of three.");
+            throw new ImageException("Your publication must contain at least one image and up to a maximum of three.");
         }
     }
 
