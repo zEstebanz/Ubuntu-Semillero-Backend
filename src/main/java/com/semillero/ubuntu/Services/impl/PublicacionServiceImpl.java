@@ -123,16 +123,15 @@ public class PublicacionServiceImpl implements PublicacionService {
 
             List<Image> getImage = publicationEdit.id_imageToReplace()
                     .stream()
-                    .map(img -> imageRepository.findById(img)
-                            .orElseThrow(()->
-                            new EntityNotFoundException("You are trying to delete a photo that does not belong to you or does not exist")))
+                    .map(img -> imageRepository.findById(img).orElseThrow(()-> new EntityNotFoundException("You are trying to delete a photo that does not belong to you or does not exist")))
                     .toList();
-
+            List<String> publicIdToDelete = getImage.stream().map(Image::getPublic_id).toList();
             getImage.forEach(img -> publicacion.getImages().remove(img));
             getImage.forEach(imageRepository::delete);
             publicacionRepository.save(publicacion);
             imageRepository.flush();
             publicacionRepository.flush();
+            publicIdToDelete.forEach(cloudinaryImageService::delete);
         }
 
         checkImageSize(publicationEdit.newImages());
