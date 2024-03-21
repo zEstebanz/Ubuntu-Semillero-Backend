@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -35,9 +36,15 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     private final PaisRepository paisRepository;
 
     private final ProvinciaRepository provinciaRepository;
+    private final long maxSize = 3 * 1024 * 1024;
     @Override
     @Transactional
     public ResponseEntity<?> createMicroemprendimiento(MicroemprendimientoRequest microemprendimientoRequest) {
+        for (MultipartFile img : microemprendimientoRequest.getImages()){
+            if (img.getSize() > maxSize){
+                throw new ImageException("El archivo no puede pesar más de 3mb");
+            }
+        }
         if(microemprendimientoRequest.getImages().size() == 0 || microemprendimientoRequest.getImages().size() > 3) {
             throw new ImageException("Debes agregar 1 imágen como mínimo y 3 como máximo");
         }
@@ -85,6 +92,11 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     @Override
     @Transactional
     public ResponseEntity<?> editMicroemprendimiento(Long id, MicroemprendimientoRequest microemprendimientoRequest) {
+        for (MultipartFile img : microemprendimientoRequest.getImages()){
+            if (img.getSize() > maxSize){
+                throw new ImageException("El archivo no puede pesar más de 3mb");
+            }
+        }
         Microemprendimiento editMicroemprendimiento = microemprendimientoRepository.findById(id)
                         .orElseThrow( () -> new EntityNotFoundException("Microemprendimiento not found with id: " + id));
 
@@ -113,8 +125,14 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         editMicroemprendimiento.setCiudad(microemprendimientoRequest.getCiudad());
         editMicroemprendimiento.setDescripcion(microemprendimientoRequest.getDescripcion());
         editMicroemprendimiento.setMasInfo(microemprendimientoRequest.getMasInfo());
-        editMicroemprendimiento.setDeleted(microemprendimientoRequest.getDeleted());
-        editMicroemprendimiento.setGestionado(microemprendimientoRequest.getGestionado());
+
+        for (Image image : editMicroemprendimiento.getImages()) {
+            Long imageId = image.getId();
+            cloudinaryImageService.delete(String.valueOf(imageId));
+        }
+
+        editMicroemprendimiento.getImages().forEach
+                (image -> imageRepository.deleteById(image.getId()));
 
         List<Map> upload = microemprendimientoRequest.getImages()
                 .stream()

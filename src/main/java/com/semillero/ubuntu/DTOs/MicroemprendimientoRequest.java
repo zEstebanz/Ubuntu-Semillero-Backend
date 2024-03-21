@@ -46,9 +46,6 @@ public class MicroemprendimientoRequest {
     @NotBlank(message = "Este campo es obligatorio")
     private String masInfo;
 
-    private Boolean deleted;
-    private Boolean gestionado;
-
     private List<MultipartFile> images;
     //private List<Mensaje> mensajes;
 }
