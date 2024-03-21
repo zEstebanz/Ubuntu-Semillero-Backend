@@ -125,20 +125,21 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         editMicroemprendimiento.setCiudad(microemprendimientoRequest.getCiudad());
         editMicroemprendimiento.setDescripcion(microemprendimientoRequest.getDescripcion());
         editMicroemprendimiento.setMasInfo(microemprendimientoRequest.getMasInfo());
-
+        //esto da de baja en cloudinary
         for (Image image : editMicroemprendimiento.getImages()) {
             Long imageId = image.getId();
             cloudinaryImageService.delete(String.valueOf(imageId));
         }
-
+        //esto da de baja en la BD
         editMicroemprendimiento.getImages().forEach
                 (image -> imageRepository.deleteById(image.getId()));
-
+        //esto da de alta en cloudinary
         List<Map> upload = microemprendimientoRequest.getImages()
                 .stream()
                 .map(cloudinaryImageService::upload)
                 .collect(Collectors.toList());
 
+        //esto da de alta en la base de datos, en la tabla imagen
         List<Image> images = upload
                 .stream()
                 .map(Image::createImage)
@@ -165,7 +166,40 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         if (microemprendimientoList.isEmpty()) {
             throw new MicroemprendimientoException("No se encontraron microemprendimientos");
         }
-        return ResponseEntity.status(HttpStatus.OK).
-                body(MapperUtil.toDTOList(microemprendimientoList, MicroemprendimientoResponse.class));
+        return ResponseEntity.status(HttpStatus.OK)
+                        .body(MapperUtil.toDTOList(microemprendimientoList, MicroemprendimientoResponse.class));
+    }
+    @Transactional
+    @Override
+    public ResponseEntity<?> findByRubro(Long idRubro) {
+        List<Microemprendimiento> microemprendimientoList = microemprendimientoRepository.findByRubro(idRubro);
+        if(microemprendimientoList.isEmpty()){
+            throw new EntityNotFoundException("No se encontraron microemprendimientos con este rubro");
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(MapperUtil.toDTOList(microemprendimientoList, MicroemprendimientoResponse.class));
+    }
+    @Transactional
+    @Override
+    public ResponseEntity<?> findById(Long idMicroemprendimiento) {
+        Microemprendimiento microemprendimiento = microemprendimientoRepository.findByIdAndDeletedFalse(idMicroemprendimiento)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: "+ idMicroemprendimiento));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(MapperUtil.mapToDto(microemprendimiento, MicroemprendimientoResponse.class));
+    }
+    @Transactional
+    @Override
+    public void hideMicroemprendimiento(Long idMicroemprendimiento) {
+        Microemprendimiento microemprendimiento = microemprendimientoRepository.findById(idMicroemprendimiento)
+                .orElseThrow( () -> new EntityNotFoundException("Microemprendimiento not found with id: " + idMicroemprendimiento));
+        microemprendimiento.setDeleted(true);
+        microemprendimientoRepository.save(microemprendimiento);
+    }
+
+    @Override
+    public ResponseEntity<?> estadisticas() {
+        List<Object[]> resultados = microemprendimientoRepository.estadisticas();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Mapper.objectToEstadisticaDTO(resultados));
     }
 }

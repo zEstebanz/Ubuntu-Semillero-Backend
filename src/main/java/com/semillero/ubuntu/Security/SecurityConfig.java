@@ -29,7 +29,9 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/publicaciones/permitidas"),
             new AntPathRequestMatcher("/publicaciones/{id}"),
             new AntPathRequestMatcher("/publicaciones/ultimasTres"),
-            new AntPathRequestMatcher("/cloudinary/upload")
+            new AntPathRequestMatcher("/cloudinary/upload"),
+            //RUBROS ROUTES
+            new AntPathRequestMatcher("/rubros/get-all")
     );
 
     RequestMatcher adminUrls = new OrRequestMatcher(
@@ -53,8 +55,9 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/publicaciones/add-image"),
             //IMAGE ROUTES
             new AntPathRequestMatcher("/image/delete/{id}"),
-            new AntPathRequestMatcher("/image/create")
-
+            new AntPathRequestMatcher("/image/create"),
+            //MICROEMPRENDIMIENTOS ROUTES
+            new AntPathRequestMatcher("/microemprendimientos/**")
     );
 
     @Bean
