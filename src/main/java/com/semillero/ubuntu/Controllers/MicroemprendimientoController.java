@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class MicroemprendimientoController {
 
     private final MicroemprendimientoService microemprendimientoService;
-    @PostMapping("/create")
+    @PostMapping("/admin/create")
     public ResponseEntity<?> crearMicroemprendimiento(@Valid @ModelAttribute MicroemprendimientoRequest microemprendimientoRequest) {
         return ResponseEntity.ok(microemprendimientoService.createMicroemprendimiento(microemprendimientoRequest));
     }
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<?> editMicroemprendimiento(@Valid @PathVariable Long id, @ModelAttribute MicroemprendimientoRequest microemprendimientoRequest) {
-        return ResponseEntity.ok(microemprendimientoService.editMicroemprendimiento(id, microemprendimientoRequest));
+    @PutMapping("/admin/edit/{idMicroemprendimiento}")
+    public ResponseEntity<?> editMicroemprendimiento(@Valid @PathVariable Long idMicroemprendimiento, @ModelAttribute MicroemprendimientoRequest microemprendimientoRequest) {
+        return ResponseEntity.ok(microemprendimientoService.editMicroemprendimiento(idMicroemprendimiento, microemprendimientoRequest));
     }
     @GetMapping("/findByName")
     public ResponseEntity<?> findByNameMicroemprendimiento(@RequestParam("query") String query) {
@@ -30,17 +30,21 @@ public class MicroemprendimientoController {
     public ResponseEntity<?> findByRubro(@PathVariable("id") Long idRubro) {
         return ResponseEntity.ok(microemprendimientoService.findByRubro(idRubro));
     }
-    @GetMapping("/findById/{id}")
-    public ResponseEntity<?> findById(@PathVariable("id") Long idMicroemprendimiento) {
+    @GetMapping("/findById/{idMicroemprendimiento}")
+    public ResponseEntity<?> findById(@PathVariable("idMicroemprendimiento") Long idMicroemprendimiento) {
         return ResponseEntity.ok(microemprendimientoService.findById(idMicroemprendimiento));
     }
-    @PutMapping("/hide/{id}")
+    @PutMapping("/admin/hide/{idMicroemprendimiento}")
     public ResponseEntity<?> hideMicroemprendimiento(@Valid @PathVariable Long idMicroemprendimiento) {
         microemprendimientoService.hideMicroemprendimiento(idMicroemprendimiento);
         return ResponseEntity.ok().body("Microemprendimiento ocultado exitosamente");
     }
-    @GetMapping("/estadisticas")
-    public ResponseEntity<?> estadisticas() {
-        return ResponseEntity.ok(microemprendimientoService.estadisticas());
+    @GetMapping("/admin/estadisticasGenerales/{idUsuario}")
+    public ResponseEntity<?> estadisticas(@PathVariable("idUsuario") Long idUsuario) {
+        return ResponseEntity.ok(microemprendimientoService.estadisticas(idUsuario));
+    }
+    @GetMapping("/admin/findByUser/{idUsuario}")
+    public ResponseEntity<?> findByUser(@PathVariable("idUsuario") Long idUsuario) {
+        return ResponseEntity.ok(microemprendimientoService.findByUser(idUsuario));
     }
 }

@@ -31,7 +31,10 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/publicaciones/ultimasTres"),
             new AntPathRequestMatcher("/cloudinary/upload"),
             //RUBROS ROUTES
-            new AntPathRequestMatcher("/rubros/get-all")
+            new AntPathRequestMatcher("/rubros/get-all"),
+            new AntPathRequestMatcher("/microemprendimientos/findByName"),
+            new AntPathRequestMatcher("/microemprendimientos/findByRubro/{id}"),
+            new AntPathRequestMatcher("/microemprendimientos/findById/{idMicroemprendimiento}")
     );
 
     RequestMatcher adminUrls = new OrRequestMatcher(
@@ -41,8 +44,6 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/usuarios/baja/{id}"),
             //PROVINCIA ROUTES
             new AntPathRequestMatcher("/provincias/{id}"),
-            //RUBROS ROUTES
-            new AntPathRequestMatcher("/rubros/get-all"),
             //USER AUTH ROUTES
             new AntPathRequestMatcher("/auth/user/details"),
             //PAIS ROUTES
@@ -57,7 +58,14 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/image/delete/{id}"),
             new AntPathRequestMatcher("/image/create"),
             //MICROEMPRENDIMIENTOS ROUTES
-            new AntPathRequestMatcher("/microemprendimientos/**")
+            new AntPathRequestMatcher("/microemprendimientos/admin/create"),
+            new AntPathRequestMatcher("/microemprendimientos/admin/edit/{idMicroemprendimiento}"),
+            new AntPathRequestMatcher("/microemprendimientos/admin/hide/{idMicroemprendimiento}"),
+            new AntPathRequestMatcher("/microemprendimientos/admin/estadisticasGenerales/{idUsuario}"),
+            new AntPathRequestMatcher("/microemprendimientos/admin/findByUser/{idUsuario}"),
+            //RUBROS ROUTES
+            new AntPathRequestMatcher("/rubros/get-all"),
+            new AntPathRequestMatcher("/rubros/admin/estadisticasPorUsuario/{idUsuario}")
     );
 
     @Bean

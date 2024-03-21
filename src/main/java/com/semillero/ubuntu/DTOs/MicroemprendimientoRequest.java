@@ -46,6 +46,9 @@ public class MicroemprendimientoRequest {
     @NotBlank(message = "Este campo es obligatorio")
     private String masInfo;
 
+    @NotEmpty(message = "La lista de imágenes no puede estar vacía")
     private List<MultipartFile> images;
-    //private List<Mensaje> mensajes;
+
+    @NotNull(message = "El usuario no puede ser nulo")
+    private Long idUsuario;
 }

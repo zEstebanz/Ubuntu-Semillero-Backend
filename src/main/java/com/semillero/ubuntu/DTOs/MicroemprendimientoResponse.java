@@ -27,5 +27,4 @@ public class MicroemprendimientoResponse {
     private Boolean deleted;
     private Boolean gestionado;
     private List<String> images;
-    //private List<Mensaje> mensajes;
 }

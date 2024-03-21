@@ -10,6 +10,7 @@ import com.semillero.ubuntu.Services.MicroemprendimientoService;
 import com.semillero.ubuntu.Utils.Mapper;
 import com.semillero.ubuntu.Utils.MapperUtil;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,10 +38,15 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     private final PaisRepository paisRepository;
 
     private final ProvinciaRepository provinciaRepository;
+
+    private final UsuarioRepository usuarioRepository;
     private final long maxSize = 3 * 1024 * 1024;
     @Override
     @Transactional
     public ResponseEntity<?> createMicroemprendimiento(MicroemprendimientoRequest microemprendimientoRequest) {
+        Usuario usuario = usuarioRepository.findById(microemprendimientoRequest.getIdUsuario())
+                .orElseThrow( () -> new EntityNotFoundException("Usuario no encontrado con el id: "
+                        + microemprendimientoRequest.getIdUsuario()));
         for (MultipartFile img : microemprendimientoRequest.getImages()){
             if (img.getSize() > maxSize){
                 throw new ImageException("El archivo no puede pesar más de 3mb");
@@ -84,6 +91,7 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         newMicroemprendimiento.setImages(images);
         images.forEach(imageRepository::save);
 
+        newMicroemprendimiento.setUsuario(usuario);
         microemprendimientoRepository.save(newMicroemprendimiento);
         MicroemprendimientoResponse microemprendimientoResponse =
                 Mapper.microemprendimientoToResponse(newMicroemprendimiento, images);
@@ -91,15 +99,20 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     }
     @Override
     @Transactional
-    public ResponseEntity<?> editMicroemprendimiento(Long id, MicroemprendimientoRequest microemprendimientoRequest) {
+    public ResponseEntity<?> editMicroemprendimiento(Long idMicroemprendimiento, MicroemprendimientoRequest microemprendimientoRequest) {
+        Usuario usuario = usuarioRepository.findById(microemprendimientoRequest.getIdUsuario())
+                .orElseThrow( () -> new EntityNotFoundException("Usuario no encontrado con el id: "
+                        + microemprendimientoRequest.getIdUsuario()));
         for (MultipartFile img : microemprendimientoRequest.getImages()){
             if (img.getSize() > maxSize){
                 throw new ImageException("El archivo no puede pesar más de 3mb");
             }
         }
-        Microemprendimiento editMicroemprendimiento = microemprendimientoRepository.findById(id)
-                        .orElseThrow( () -> new EntityNotFoundException("Microemprendimiento not found with id: " + id));
-
+        Microemprendimiento editMicroemprendimiento = microemprendimientoRepository.findById(idMicroemprendimiento)
+                        .orElseThrow( () -> new EntityNotFoundException("Microemprendimiento not found with id: " + idMicroemprendimiento));
+        if (!Objects.equals(usuario.getId(), editMicroemprendimiento.getUsuario().getId())){
+            throw new MicroemprendimientoException("No puede editar esta publicacion");
+        }
         if(microemprendimientoRequest.getImages().size() == 0 || microemprendimientoRequest.getImages().size() > 3){
             throw new ImageException("Debes agregar 1 imágen como mínimo y 3 como máximo");
         }
@@ -183,7 +196,7 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     @Override
     public ResponseEntity<?> findById(Long idMicroemprendimiento) {
         Microemprendimiento microemprendimiento = microemprendimientoRepository.findByIdAndDeletedFalse(idMicroemprendimiento)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: "+ idMicroemprendimiento));
+                .orElseThrow(() -> new EntityNotFoundException("Microemprendimiento not found with id: "+ idMicroemprendimiento));
         return ResponseEntity.status(HttpStatus.OK)
                 .body(MapperUtil.mapToDto(microemprendimiento, MicroemprendimientoResponse.class));
     }
@@ -197,9 +210,20 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     }
 
     @Override
-    public ResponseEntity<?> estadisticas() {
-        List<Object[]> resultados = microemprendimientoRepository.estadisticas();
+    public ResponseEntity<?> estadisticas(Long idUsuario) {
+        List<Object[]> resultados = microemprendimientoRepository.estadisticas(idUsuario);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Mapper.objectToEstadisticaDTO(resultados));
+    }
+
+    @Override
+    public ResponseEntity<?> findByUser(Long idUsuario) {
+        List<Microemprendimiento> microemprendimientoList =
+                microemprendimientoRepository.findAllByUsuarioIdAndDeletedFalse(idUsuario);
+        if(microemprendimientoList.isEmpty()){
+            throw new EntityNotFoundException("No se encontraron microemprendimientos asociados a este usuario " + idUsuario);
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(MapperUtil.toDTOList(microemprendimientoList, MicroemprendimientoResponse.class));
     }
 }

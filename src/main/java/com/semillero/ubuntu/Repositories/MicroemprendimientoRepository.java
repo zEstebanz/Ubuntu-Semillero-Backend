@@ -21,6 +21,9 @@ public interface MicroemprendimientoRepository extends JpaRepository<Microempren
             "COUNT(CASE WHEN gestionado = true THEN 1 END) AS gestionados," +
             "COUNT(CASE WHEN gestionado = false THEN 1 END) AS noGestionados " +
             "FROM microemprendimiento " +
-            "WHERE deleted = false;", nativeQuery = true)
-    List<Object[]> estadisticas();
+            "WHERE deleted = false " +
+            "AND id_usuario = ?1", nativeQuery = true)
+    List<Object[]> estadisticas(@Param("idUsuario") Long idUsuario);
+
+    List<Microemprendimiento> findAllByUsuarioIdAndDeletedFalse(Long idUsuario);
 }
