@@ -4,7 +4,6 @@ import com.semillero.ubuntu.DTOs.MensajeRequestDTO;
 import com.semillero.ubuntu.DTOs.MensajeResponseDTO;
 import com.semillero.ubuntu.Services.impl.MensajeServiceImpl;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class MensajeController {
     @PostMapping("/create")
     public ResponseEntity<MensajeResponseDTO> save(@Valid @RequestBody MensajeRequestDTO requestDTO) throws Exception {
         MensajeResponseDTO responseDTO=service.save(requestDTO);
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.status(201).body(responseDTO);
     }
     @GetMapping
     public ResponseEntity<List<MensajeResponseDTO>>getAll(){
