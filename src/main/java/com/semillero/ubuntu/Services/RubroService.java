@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface RubroService {
     List<RubroDTO> getRubrosOrderByCantMicroemprendimientos();
+    List<RubroDTO> estadisticasPorUsuario(Long idUsuario);
 }
