@@ -32,10 +32,10 @@ public class UtilsMicroemprendimientoImpl implements UtilsMicroemprendimiento {
     private final long maxSize = 3 * 1024 * 1024;
 
     @Override
-    public Usuario findUsuario(Long idUsuario) {
-        return usuarioRepository.findById(idUsuario)
-                .orElseThrow( () -> new EntityNotFoundException("Usuario no encontrado con el id: "
-                        + idUsuario));
+    public Usuario findUsuario(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow( () -> new EntityNotFoundException("Usuario no encontrado con el email: "
+                        + email));
     }
     @Override
     public void validationImage(MicroemprendimientoRequest microemprendimientoRequest) {

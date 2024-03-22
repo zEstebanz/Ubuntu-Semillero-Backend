@@ -2,6 +2,7 @@ package com.semillero.ubuntu.Services.impl;
 
 import com.semillero.ubuntu.DTOs.MicroemprendimientoRequest;
 import com.semillero.ubuntu.DTOs.MicroemprendimientoResponse;
+import com.semillero.ubuntu.DTOs.AdminRequest;
 import com.semillero.ubuntu.Entities.*;
 import com.semillero.ubuntu.Exceptions.MicroemprendimientoException;
 import com.semillero.ubuntu.Repositories.*;
@@ -31,7 +32,7 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     @Override
     @Transactional
     public ResponseEntity<?> createMicroemprendimiento(MicroemprendimientoRequest microemprendimientoRequest) {
-        Usuario usuario = utilsMicroemprendimiento.findUsuario(microemprendimientoRequest.getIdUsuario());
+        Usuario usuario = utilsMicroemprendimiento.findUsuario(microemprendimientoRequest.getEmail());
         utilsMicroemprendimiento.validationImage(microemprendimientoRequest);
 
         Microemprendimiento newMicroemprendimiento = new Microemprendimiento();
@@ -70,12 +71,12 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     @Override
     @Transactional
     public ResponseEntity<?> editMicroemprendimiento(Long idMicroemprendimiento, MicroemprendimientoRequest microemprendimientoRequest) {
-        Usuario usuario = utilsMicroemprendimiento.findUsuario(microemprendimientoRequest.getIdUsuario());
+        Usuario usuario = utilsMicroemprendimiento.findUsuario(microemprendimientoRequest.getEmail());
         utilsMicroemprendimiento.validationImage(microemprendimientoRequest);
 
         Microemprendimiento editMicroemprendimiento = microemprendimientoRepository.findById(idMicroemprendimiento)
                         .orElseThrow( () -> new EntityNotFoundException("Microemprendimiento not found with id: " + idMicroemprendimiento));
-        if (!Objects.equals(usuario.getId(), editMicroemprendimiento.getUsuario().getId())){
+        if (!Objects.equals(usuario.getEmail(), editMicroemprendimiento.getUsuario().getEmail())){
             throw new MicroemprendimientoException("No puede editar esta publicacion");
         }
         editMicroemprendimiento.setNombre(microemprendimientoRequest.getNombre());
@@ -128,7 +129,8 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     @Transactional
     @Override
     public ResponseEntity<?> findByRubro(Long idRubro) {
-        List<Microemprendimiento> microemprendimientoList = microemprendimientoRepository.findByRubro(idRubro);
+        Rubro rubro = utilsMicroemprendimiento.findRubro(idRubro);
+        List<Microemprendimiento> microemprendimientoList = microemprendimientoRepository.findByRubroAndDeletedFalse(rubro);
         if(microemprendimientoList.isEmpty()){
             throw new EntityNotFoundException("No se encontraron microemprendimientos con este rubro");
         }
@@ -152,17 +154,17 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         microemprendimientoRepository.save(microemprendimiento);
     }
     @Override
-    public ResponseEntity<?> estadisticas(Long idUsuario) {
-        List<Object[]> resultados = microemprendimientoRepository.estadisticas(idUsuario);
+    public ResponseEntity<?> estadisticas(AdminRequest adminRequest) {
+        List<Object[]> resultados = microemprendimientoRepository.estadisticas(adminRequest.getEmail());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Mapper.objectToEstadisticaDTO(resultados));
     }
     @Override
-    public ResponseEntity<?> findByUser(Long idUsuario) {
+    public ResponseEntity<?> findByUser(AdminRequest adminRequest) {
         List<Microemprendimiento> microemprendimientoList =
-                microemprendimientoRepository.findAllByUsuarioIdAndDeletedFalse(idUsuario);
+                microemprendimientoRepository.findAllByUsuarioEmailAndDeletedFalse(adminRequest.getEmail());
         if(microemprendimientoList.isEmpty()){
-            throw new EntityNotFoundException("No se encontraron microemprendimientos asociados a este usuario " + idUsuario);
+            throw new EntityNotFoundException("No se encontraron microemprendimientos asociados a este usuario " + adminRequest.getEmail());
         }
         return ResponseEntity.status(HttpStatus.OK)
                 .body(MapperUtil.toDTOList(microemprendimientoList, MicroemprendimientoResponse.class));

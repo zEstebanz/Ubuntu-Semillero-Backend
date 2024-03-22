@@ -1,10 +1,10 @@
 package com.semillero.ubuntu.Controllers;
 
 import com.semillero.ubuntu.DTOs.MicroemprendimientoRequest;
+import com.semillero.ubuntu.DTOs.AdminRequest;
 import com.semillero.ubuntu.Services.MicroemprendimientoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,12 +39,12 @@ public class MicroemprendimientoController {
         microemprendimientoService.hideMicroemprendimiento(idMicroemprendimiento);
         return ResponseEntity.ok().body("Microemprendimiento ocultado exitosamente");
     }
-    @GetMapping("/admin/estadisticasGenerales/{idUsuario}")
-    public ResponseEntity<?> estadisticas(@PathVariable("idUsuario") Long idUsuario) {
-        return ResponseEntity.ok(microemprendimientoService.estadisticas(idUsuario));
+    @PostMapping("/admin/estadisticasGenerales")
+    public ResponseEntity<?> estadisticas(@RequestBody AdminRequest adminRequest) {
+        return ResponseEntity.ok(microemprendimientoService.estadisticas(adminRequest));
     }
-    @GetMapping("/admin/findByUser/{idUsuario}")
-    public ResponseEntity<?> findByUser(@PathVariable("idUsuario") Long idUsuario) {
-        return ResponseEntity.ok(microemprendimientoService.findByUser(idUsuario));
+    @PostMapping("/admin/findByUser")
+    public ResponseEntity<?> findByUser(@RequestBody AdminRequest adminRequest) {
+        return ResponseEntity.ok(microemprendimientoService.findByUser(adminRequest));
     }
 }

@@ -58,11 +58,11 @@ public class Microemprendimiento {
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "id_microemprendimiento", nullable = false)
+    @JoinColumn(name = "id_microemprendimiento", nullable = false) //sacar esto
     private List<Mensaje> mensajes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
     private Usuario usuario;
 
     @Column(name="fecha_creacion", nullable = false)

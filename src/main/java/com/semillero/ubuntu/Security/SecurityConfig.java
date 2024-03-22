@@ -62,8 +62,8 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/microemprendimientos/admin/create"),
             new AntPathRequestMatcher("/microemprendimientos/admin/edit/{idMicroemprendimiento}"),
             new AntPathRequestMatcher("/microemprendimientos/admin/hide/{idMicroemprendimiento}"),
-            new AntPathRequestMatcher("/microemprendimientos/admin/estadisticasGenerales/{idUsuario}"),
-            new AntPathRequestMatcher("/microemprendimientos/admin/findByUser/{idUsuario}"),
+            new AntPathRequestMatcher("/microemprendimientos/admin/findByUser"),
+            new AntPathRequestMatcher("/microemprendimientos/admin/estadisticasGenerales"),
             //RUBROS ROUTES
             new AntPathRequestMatcher("/rubros/admin/estadisticasPorUsuario/{idUsuario}")
     );

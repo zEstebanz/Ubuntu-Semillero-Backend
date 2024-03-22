@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface UtilsMicroemprendimiento {
-    Usuario findUsuario(Long idUsuario);
+    Usuario findUsuario(String email);
     void validationImage(MicroemprendimientoRequest microemprendimientoRequest);
     Rubro findRubro(Long idRubro);
     Pais findPais(Long idPais);
