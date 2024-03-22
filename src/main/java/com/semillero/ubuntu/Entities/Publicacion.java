@@ -49,7 +49,6 @@ public class Publicacion {
 
     @Column(name="cant-vistas", nullable = false)
     private int cantVistas;
-
     public void addImage(Image image) {
 
         if (this.getImages().size() < 3){

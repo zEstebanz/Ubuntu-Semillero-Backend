@@ -39,7 +39,8 @@ public class Mapper {
                 microemprendimiento.getMasInfo(),
                 microemprendimiento.getDeleted(),
                 microemprendimiento.getGestionado(),
-                getUrl
+                getUrl,
+                microemprendimiento.getFechaCreacion()
         );
     }
     public static ImageDto imageToImageDto(Image image){

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -45,20 +46,31 @@ public class EmailServiceImpl implements EmailService {
     private final MicroemprendimientoRepository microRepository;
     private final PublicacionRepository publicacionRepository;
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0 1 * * MON")
     public void sendEmailToUsers() {
 
         List<UsuarioProjection> users = usuarioRepository.findNombreAndEmailByIsDeletedFalse();
 
-        users.forEach(user -> sendEmail(user.getNombre(),
-                            user.getEmail(),
-                           1,
-                           2));
+        LocalDate newPublications = LocalDate.now().minusDays(7);
+        LocalDate todayPublications = LocalDate.now();
+
+        long newPublis = publicacionRepository.countByFechaCreacionBetween(newPublications, todayPublications);
+
+        LocalDate newMicro = LocalDate.now().minusDays(7);
+        LocalDate todayMicros = LocalDate.now();
+
+        long newMicros = microRepository.countByFechaCreacionBetween(newMicro, todayMicros);
+
+        users.forEach(user -> sendEmail(
+                user.getNombre(),
+                user.getEmail(),
+                newMicros,
+                newPublis));
     }
 
     @Override
     @Async("asyncTaskExecutor")
-    public void sendEmail(String user_name, String user_email, int newMicrosQuantity, int newPublicationsQuantity) {
+    public void sendEmail(String user_name, String user_email, long newMicrosQuantity, long newPublicationsQuantity) {
 
         try {
 

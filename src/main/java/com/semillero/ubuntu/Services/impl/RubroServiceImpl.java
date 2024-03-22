@@ -24,4 +24,10 @@ public class RubroServiceImpl implements RubroService {
         List<Object[]> resultados = rubroRepository.getRubrosOrderByCantMicroemprendimientos();
         return Mapper.objectToRubroDTO(resultados);
     }
+
+    @Override
+    public List<RubroDTO> estadisticasPorUsuario(Long idUsuario) {
+        List<Object[]> resultados = rubroRepository.estadisticasPorUsuario(idUsuario);
+        return Mapper.objectToRubroDTO(resultados);
+    }
 }
