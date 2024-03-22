@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @Data
@@ -18,7 +19,7 @@ public class Mensaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private Date fechaCreacion;
+    private LocalDate fechaCreacion;
     @Column(nullable = false)
     private boolean gestionado;
    // usuario que envia
@@ -40,7 +41,7 @@ public class Mensaje {
         this.telefono=requestDTO.getTelefono();
         this.texto=requestDTO.getTexto();
         this.gestionado=false;
-        this.fechaCreacion=new Date();
+        this.fechaCreacion=LocalDate.now();
 
         String[] partesNombre = requestDTO.getApellidoYNombre().split(",");
         this.apellido = partesNombre[0];
