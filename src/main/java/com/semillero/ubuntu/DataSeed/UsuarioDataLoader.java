@@ -21,7 +21,7 @@ public class UsuarioDataLoader implements CommandLineRunner {
         if (usuarioRepository.count() == 0) {
             Usuario usuario1 = new Usuario(1L,"Ubuntu", "Semillero", "ubuntusemillero@gmail.com", false, Rol.ADMINISTRADOR);
             Usuario usuario2 = new Usuario(2L,"Flor", "Fernandez", "florenciafernandez0301@gmail.com", false, Rol.INVERSOR);
-            Usuario usuario3 = new Usuario(3L,"Nahuel", "Rocha", "turkito.-@hotmail.com.ar", false, Rol.ADMINISTRADOR);
+            Usuario usuario3 = new Usuario(3L,"Nahuel", "Rocha", "rocha.nahuel2024@gmail.com", false, Rol.ADMINISTRADOR);
             usuarioRepository.save(usuario1);
             usuarioRepository.save(usuario2);
             usuarioRepository.save(usuario3);

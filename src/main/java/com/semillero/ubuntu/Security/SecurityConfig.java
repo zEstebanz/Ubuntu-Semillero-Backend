@@ -31,7 +31,9 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/publicaciones/ultimasTres"),
             new AntPathRequestMatcher("/cloudinary/upload"),
             //RUBROS ROUTES
-            new AntPathRequestMatcher("/rubros/get-all")
+            new AntPathRequestMatcher("/rubros/get-all"),
+            new AntPathRequestMatcher("/email")
+
     );
 
     RequestMatcher adminUrls = new OrRequestMatcher(
