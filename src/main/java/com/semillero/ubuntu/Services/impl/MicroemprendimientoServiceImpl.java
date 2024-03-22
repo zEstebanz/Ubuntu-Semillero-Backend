@@ -3,10 +3,10 @@ package com.semillero.ubuntu.Services.impl;
 import com.semillero.ubuntu.DTOs.MicroemprendimientoRequest;
 import com.semillero.ubuntu.DTOs.MicroemprendimientoResponse;
 import com.semillero.ubuntu.Entities.*;
-import com.semillero.ubuntu.Exceptions.ImageException;
 import com.semillero.ubuntu.Exceptions.MicroemprendimientoException;
 import com.semillero.ubuntu.Repositories.*;
 import com.semillero.ubuntu.Services.MicroemprendimientoService;
+import com.semillero.ubuntu.Services.UtilsMicroemprendimiento;
 import com.semillero.ubuntu.Utils.Mapper;
 import com.semillero.ubuntu.Utils.MapperUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,13 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,50 +27,25 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
 
     private final MicroemprendimientoRepository microemprendimientoRepository;
 
-    private final CloudinaryImageServiceImpl cloudinaryImageService;
-
-    private final ImageRepository imageRepository;
-
-    private final RubroRepository rubroRepository;
-
-    private final PaisRepository paisRepository;
-
-    private final ProvinciaRepository provinciaRepository;
-
-    private final UsuarioRepository usuarioRepository;
-    private final long maxSize = 3 * 1024 * 1024;
+    private final UtilsMicroemprendimiento utilsMicroemprendimiento;
     @Override
     @Transactional
     public ResponseEntity<?> createMicroemprendimiento(MicroemprendimientoRequest microemprendimientoRequest) {
-        Usuario usuario = usuarioRepository.findById(microemprendimientoRequest.getIdUsuario())
-                .orElseThrow( () -> new EntityNotFoundException("Usuario no encontrado con el id: "
-                        + microemprendimientoRequest.getIdUsuario()));
-        for (MultipartFile img : microemprendimientoRequest.getImages()){
-            if (img.getSize() > maxSize){
-                throw new ImageException("El archivo no puede pesar más de 3mb");
-            }
-        }
-        if(microemprendimientoRequest.getImages().size() == 0 || microemprendimientoRequest.getImages().size() > 3) {
-            throw new ImageException("Debes agregar 1 imágen como mínimo y 3 como máximo");
-        }
+        Usuario usuario = utilsMicroemprendimiento.findUsuario(microemprendimientoRequest.getIdUsuario());
+        utilsMicroemprendimiento.validationImage(microemprendimientoRequest);
+
         Microemprendimiento newMicroemprendimiento = new Microemprendimiento();
         newMicroemprendimiento.setNombre(microemprendimientoRequest.getNombre());
 
-        Rubro rubro = rubroRepository.findById(microemprendimientoRequest.getIdRubro())
-                .orElseThrow( () -> new EntityNotFoundException("Rubro no encontrado con el id: "
-                        + microemprendimientoRequest.getIdRubro()));
+        Rubro rubro = utilsMicroemprendimiento.findRubro(microemprendimientoRequest.getIdRubro());
         newMicroemprendimiento.setRubro(rubro);
 
         newMicroemprendimiento.setSubrubro(microemprendimientoRequest.getSubrubro());
 
-        Pais pais = paisRepository.findById(microemprendimientoRequest.getIdPais())
-                .orElseThrow( () -> new EntityNotFoundException("Pais no encontrado con el id: "
-                        + microemprendimientoRequest.getIdPais()));
+        Pais pais = utilsMicroemprendimiento.findPais(microemprendimientoRequest.getIdPais());
         newMicroemprendimiento.setPais(pais);
 
-        Provincia provincia = provinciaRepository.findById(microemprendimientoRequest.getIdProvincia())
-                .orElseThrow( () -> new EntityNotFoundException("Provincia no encontrada con el id: "
-                        + microemprendimientoRequest.getIdProvincia()));
+        Provincia provincia = utilsMicroemprendimiento.findProvincia(microemprendimientoRequest.getIdProvincia());
         newMicroemprendimiento.setProvincia(provincia);
 
         newMicroemprendimiento.setCiudad(microemprendimientoRequest.getCiudad());
@@ -82,15 +55,11 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         newMicroemprendimiento.setGestionado(false);
         newMicroemprendimiento.setFechaCreacion((LocalDate.now()));
 
-        List<Map> upload = microemprendimientoRequest.getImages()
-                .stream()
-                .map(cloudinaryImageService::upload)
-                .toList();
+        List<Map> upload = utilsMicroemprendimiento.saveInCloud(microemprendimientoRequest.getImages());
 
-        List<Image> images = upload.stream().map(Image::createImage).toList();
+        List<Image> images = utilsMicroemprendimiento.saveInBd(upload);
 
         newMicroemprendimiento.setImages(images);
-        images.forEach(imageRepository::save);
 
         newMicroemprendimiento.setUsuario(usuario);
         microemprendimientoRepository.save(newMicroemprendimiento);
@@ -101,67 +70,40 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     @Override
     @Transactional
     public ResponseEntity<?> editMicroemprendimiento(Long idMicroemprendimiento, MicroemprendimientoRequest microemprendimientoRequest) {
-        Usuario usuario = usuarioRepository.findById(microemprendimientoRequest.getIdUsuario())
-                .orElseThrow( () -> new EntityNotFoundException("Usuario no encontrado con el id: "
-                        + microemprendimientoRequest.getIdUsuario()));
-        for (MultipartFile img : microemprendimientoRequest.getImages()){
-            if (img.getSize() > maxSize){
-                throw new ImageException("El archivo no puede pesar más de 3mb");
-            }
-        }
+        Usuario usuario = utilsMicroemprendimiento.findUsuario(microemprendimientoRequest.getIdUsuario());
+        utilsMicroemprendimiento.validationImage(microemprendimientoRequest);
+
         Microemprendimiento editMicroemprendimiento = microemprendimientoRepository.findById(idMicroemprendimiento)
                         .orElseThrow( () -> new EntityNotFoundException("Microemprendimiento not found with id: " + idMicroemprendimiento));
         if (!Objects.equals(usuario.getId(), editMicroemprendimiento.getUsuario().getId())){
             throw new MicroemprendimientoException("No puede editar esta publicacion");
         }
-        if(microemprendimientoRequest.getImages().size() == 0 || microemprendimientoRequest.getImages().size() > 3){
-            throw new ImageException("Debes agregar 1 imágen como mínimo y 3 como máximo");
-        }
         editMicroemprendimiento.setNombre(microemprendimientoRequest.getNombre());
 
-        Rubro rubro = rubroRepository.findById(microemprendimientoRequest.getIdRubro())
-                .orElseThrow( () -> new EntityNotFoundException("Rubro no encontrado con el id: "
-                        + microemprendimientoRequest.getIdRubro()));
+        Rubro rubro = utilsMicroemprendimiento.findRubro(microemprendimientoRequest.getIdRubro());
         editMicroemprendimiento.setRubro(rubro);
 
         editMicroemprendimiento.setSubrubro(microemprendimientoRequest.getSubrubro());
 
-        Pais pais = paisRepository.findById(microemprendimientoRequest.getIdPais())
-                .orElseThrow( () -> new EntityNotFoundException("Pais no encontrado con el id: "
-                        + microemprendimientoRequest.getIdPais()));
+        Pais pais = utilsMicroemprendimiento.findPais(microemprendimientoRequest.getIdPais());
         editMicroemprendimiento.setPais(pais);
 
-        Provincia provincia = provinciaRepository.findById(microemprendimientoRequest.getIdProvincia())
-                .orElseThrow( () -> new EntityNotFoundException("Provincia no encontrada con el id: "
-                        + microemprendimientoRequest.getIdProvincia()));
+        Provincia provincia = utilsMicroemprendimiento.findProvincia(microemprendimientoRequest.getIdProvincia());
         editMicroemprendimiento.setProvincia(provincia);
 
         editMicroemprendimiento.setCiudad(microemprendimientoRequest.getCiudad());
         editMicroemprendimiento.setDescripcion(microemprendimientoRequest.getDescripcion());
         editMicroemprendimiento.setMasInfo(microemprendimientoRequest.getMasInfo());
         editMicroemprendimiento.setFechaCreacion((LocalDate.now()));
-        //esto da de baja en cloudinary
-        for (Image image : editMicroemprendimiento.getImages()) {
-            Long imageId = image.getId();
-            cloudinaryImageService.delete(String.valueOf(imageId));
-        }
-        //esto da de baja en la BD
-        editMicroemprendimiento.getImages().forEach
-                (image -> imageRepository.deleteById(image.getId()));
-        //esto da de alta en cloudinary
-        List<Map> upload = microemprendimientoRequest.getImages()
-                .stream()
-                .map(cloudinaryImageService::upload)
-                .collect(Collectors.toList());
 
-        //esto da de alta en la base de datos, en la tabla imagen
-        List<Image> images = upload
-                .stream()
-                .map(Image::createImage)
-                .collect(Collectors.toList());
+        utilsMicroemprendimiento.deleteInCloud(editMicroemprendimiento.getImages());
+        utilsMicroemprendimiento.deleteInBd(editMicroemprendimiento.getImages());
+
+        List<Map> upload = utilsMicroemprendimiento.saveInCloud(microemprendimientoRequest.getImages());
+
+        List<Image> images = utilsMicroemprendimiento.saveInBd(upload);
 
         editMicroemprendimiento.setImages(images);
-        images.forEach(imageRepository::save);
 
         microemprendimientoRepository.save(editMicroemprendimiento);
         MicroemprendimientoResponse microemprendimientoResponse =
@@ -169,7 +111,6 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
 
         return ResponseEntity.status(HttpStatus.OK).body(microemprendimientoResponse);
     }
-
     @Override
     @Transactional
     public ResponseEntity<?> findByNameMicroemprendimiento(String query) {
@@ -210,14 +151,12 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         microemprendimiento.setDeleted(true);
         microemprendimientoRepository.save(microemprendimiento);
     }
-
     @Override
     public ResponseEntity<?> estadisticas(Long idUsuario) {
         List<Object[]> resultados = microemprendimientoRepository.estadisticas(idUsuario);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Mapper.objectToEstadisticaDTO(resultados));
     }
-
     @Override
     public ResponseEntity<?> findByUser(Long idUsuario) {
         List<Microemprendimiento> microemprendimientoList =
