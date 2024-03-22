@@ -55,9 +55,9 @@ public class Mapper {
                 image.getHeight()
         );
     }
-    public static List<RubroDTO> objectToRubroDTO(List<Object[]> resultados){
+    public static List<RubroResponse> objectToRubroDTO(List<Object[]> resultados){
         return resultados.stream()
-                .map(resultado -> new RubroDTO(
+                .map(resultado -> new RubroResponse(
                         (Long) resultado[0],
                         (String) resultado[1],
                         (Long) resultado[2]

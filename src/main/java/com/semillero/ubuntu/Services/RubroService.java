@@ -1,9 +1,11 @@
 package com.semillero.ubuntu.Services;
 
 import com.semillero.ubuntu.DTOs.RubroDTO;
+import com.semillero.ubuntu.DTOs.RubroResponse;
+
 import java.util.List;
 
 public interface RubroService {
-    List<RubroDTO> getRubrosOrderByCantMicroemprendimientos();
-    List<RubroDTO> estadisticasPorUsuario(Long idUsuario);
+    List<RubroDTO> getAllRubros();
+    List<RubroResponse> estadisticasPorUsuario(Long idUsuario);
 }

@@ -1,6 +1,7 @@
 package com.semillero.ubuntu.Controllers;
 
 import com.semillero.ubuntu.DTOs.RubroDTO;
+import com.semillero.ubuntu.DTOs.RubroResponse;
 import com.semillero.ubuntu.Services.RubroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,13 @@ public class RubroController {
 
     private final RubroService rubroService;
     @GetMapping("/get-all")
-    public ResponseEntity<List<RubroDTO>> getRubrosOrderByCantMicroemprendimientos() {
-        List<RubroDTO> rubroList = rubroService.getRubrosOrderByCantMicroemprendimientos();
+    public ResponseEntity<List<RubroDTO>> getAllRubros() {
+        List<RubroDTO> rubroList = rubroService.getAllRubros();
         return ResponseEntity.ok(rubroList);
     }
     @GetMapping("/admin/estadisticasPorUsuario/{idUsuario}")
-    public ResponseEntity<List<RubroDTO>> estadisticasPorUsuario(@PathVariable("idUsuario") Long idUsuario) {
-        List<RubroDTO> rubroList = rubroService.estadisticasPorUsuario(idUsuario);
+    public ResponseEntity<List<RubroResponse>> estadisticasPorUsuario(@PathVariable("idUsuario") Long idUsuario) {
+        List<RubroResponse> rubroList = rubroService.estadisticasPorUsuario(idUsuario);
         return ResponseEntity.ok(rubroList);
     }
 }

@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RubroDTO {
+public class RubroResponse {
     private Long id;
     private String nombre;
+    private Long cantidadMicroemprendimientos;
 }

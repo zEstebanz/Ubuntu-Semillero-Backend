@@ -65,7 +65,6 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/microemprendimientos/admin/estadisticasGenerales/{idUsuario}"),
             new AntPathRequestMatcher("/microemprendimientos/admin/findByUser/{idUsuario}"),
             //RUBROS ROUTES
-            new AntPathRequestMatcher("/rubros/get-all"),
             new AntPathRequestMatcher("/rubros/admin/estadisticasPorUsuario/{idUsuario}")
     );
 
