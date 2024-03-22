@@ -20,7 +20,7 @@ public class MicroemprendimientoResponse {
     private String nombre;
     private Rubro rubro;
     private String subrubro;
-    private Pais pais;
+    private PaisDTO pais;
     private Provincia provincia;
     private String ciudad;
     private String descripcion;

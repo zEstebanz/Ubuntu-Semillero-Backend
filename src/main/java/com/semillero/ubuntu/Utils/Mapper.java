@@ -32,7 +32,7 @@ public class Mapper {
                 microemprendimiento.getNombre(),
                 microemprendimiento.getRubro(),
                 microemprendimiento.getSubrubro(),
-                microemprendimiento.getPais(),
+                MapperUtil.mapToDto(microemprendimiento.getPais(), PaisDTO.class),
                 microemprendimiento.getProvincia(),
                 microemprendimiento.getCiudad(),
                 microemprendimiento.getDescripcion(),
