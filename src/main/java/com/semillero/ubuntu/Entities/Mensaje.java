@@ -6,19 +6,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Mensaje")
+@Table(name = "mensaje")
 public class Mensaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private Date fechaCreacion;
+    private LocalDate fechaCreacion;
     @Column(nullable = false)
     private boolean gestionado;
    // usuario que envia
@@ -32,17 +33,17 @@ public class Mensaje {
     private String email;
     @Column(nullable = false)
     private String texto;
-
-    //private Microemprendimiento microemprendimiento
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Microemprendimiento microemprendimiento;
 
     public Mensaje(MensajeRequestDTO requestDTO){
         this.email=requestDTO.getEmail();
         this.telefono=requestDTO.getTelefono();
         this.texto=requestDTO.getTexto();
         this.gestionado=false;
-        this.fechaCreacion=new Date();
+        this.fechaCreacion=LocalDate.now();
 
-        String[] partesNombre = requestDTO.getApellidoYNombre().split(", ");
+        String[] partesNombre = requestDTO.getApellidoYNombre().split(",");
         this.apellido = partesNombre[0];
         this.nombre = partesNombre[1];
 

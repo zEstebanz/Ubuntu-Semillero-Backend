@@ -19,7 +19,7 @@ public class MensajeController {
     @PostMapping("/create")
     public ResponseEntity<MensajeResponseDTO> save(@Valid @RequestBody MensajeRequestDTO requestDTO) throws Exception {
         MensajeResponseDTO responseDTO=service.save(requestDTO);
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.status(201).body(responseDTO);
     }
     @GetMapping
     public ResponseEntity<List<MensajeResponseDTO>>getAll(){
@@ -27,5 +27,16 @@ public class MensajeController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("/gestionado")
+    public ResponseEntity<List<MensajeResponseDTO>>getAllByGestionado(@RequestParam boolean gestionado){
+        List<MensajeResponseDTO>list=service.getAllByGestionado(gestionado);
+        return ResponseEntity.ok(list);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MensajeResponseDTO>editGestionado(@PathVariable Long id, @RequestParam boolean gestionado){
+         return ResponseEntity.ok(service.editGestionado(id, gestionado));
+
+    }
 
 }

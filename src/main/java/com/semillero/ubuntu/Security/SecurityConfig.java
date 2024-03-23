@@ -36,7 +36,8 @@ public class SecurityConfig {
             //MICROEMPRENDIMIENTOS ROUTES
             new AntPathRequestMatcher("/microemprendimientos/findByName"),
             new AntPathRequestMatcher("/microemprendimientos/findByRubro/{id}"),
-            new AntPathRequestMatcher("/microemprendimientos/findById/{idMicroemprendimiento}")
+            new AntPathRequestMatcher("/microemprendimientos/findById/{idMicroemprendimiento}"),
+            new AntPathRequestMatcher("/mensaje/create")
     );
 
     RequestMatcher adminUrls = new OrRequestMatcher(
@@ -67,7 +68,11 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/microemprendimientos/admin/findByUser/{idUsuario}"),
             //RUBROS ROUTES
             new AntPathRequestMatcher("/rubros/get-all"),
-            new AntPathRequestMatcher("/rubros/admin/estadisticasPorUsuario/{idUsuario}")
+            new AntPathRequestMatcher("/rubros/admin/estadisticasPorUsuario/{idUsuario}"),
+            //MENSAJE ROUTES
+            new AntPathRequestMatcher("/mensaje"),
+            new AntPathRequestMatcher("/mensaje/gestionado"),
+            new AntPathRequestMatcher("/mensaje/{id}")
     );
 
     @Bean

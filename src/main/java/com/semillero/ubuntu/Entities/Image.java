@@ -28,7 +28,7 @@ public class Image {
     private Publicacion publication;
 
     private Image(){}
-    private Image(String secure_url, String format, String created_at, String public_id, Integer width, Integer height){
+    public Image(String secure_url, String format, String created_at, String public_id, Integer width, Integer height){
         this.secure_url = secure_url;
         this.format = format;
         this.created_at = created_at;
