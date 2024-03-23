@@ -2,6 +2,7 @@ package com.semillero.ubuntu.Services.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.semillero.ubuntu.Exceptions.ImageException;
 import com.semillero.ubuntu.Services.CloudinaryImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -21,7 +22,7 @@ public class CloudinaryImageServiceImpl implements CloudinaryImageService {
         try {
             return cloudinary.uploader().upload(file.getBytes(), Map.of());
         } catch (Exception e){
-            throw new RuntimeException("Image uploading fail!");
+            throw new ImageException("Image uploading fail!");
         }
     }
 
@@ -32,7 +33,7 @@ public class CloudinaryImageServiceImpl implements CloudinaryImageService {
         try {
             cloudinary.uploader().destroy(public_id, ObjectUtils.emptyMap());
         } catch (Exception e){
-            throw new RuntimeException("Error deleting image!");
+            throw new ImageException("Error deleting image!");
         }
     }
 

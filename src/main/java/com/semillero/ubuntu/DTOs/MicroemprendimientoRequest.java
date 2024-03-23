@@ -49,6 +49,6 @@ public class MicroemprendimientoRequest {
     @NotEmpty(message = "La lista de imágenes no puede estar vacía")
     private List<MultipartFile> images;
 
-    @NotNull(message = "El usuario no puede ser nulo")
-    private Long idUsuario;
+    @NotNull(message = "El email del usuario no puede estar vacío")
+    private String email;
 }

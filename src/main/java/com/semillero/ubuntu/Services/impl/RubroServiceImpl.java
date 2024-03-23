@@ -1,6 +1,8 @@
 package com.semillero.ubuntu.Services.impl;
 
+import com.semillero.ubuntu.DTOs.AdminRequest;
 import com.semillero.ubuntu.DTOs.RubroDTO;
+import com.semillero.ubuntu.DTOs.RubroResponse;
 import com.semillero.ubuntu.Entities.Rubro;
 import com.semillero.ubuntu.Repositories.RubroRepository;
 import com.semillero.ubuntu.Services.RubroService;
@@ -20,14 +22,14 @@ public class RubroServiceImpl implements RubroService {
     private final RubroRepository rubroRepository;
 
     @Override
-    public List<RubroDTO> getRubrosOrderByCantMicroemprendimientos() {
-        List<Object[]> resultados = rubroRepository.getRubrosOrderByCantMicroemprendimientos();
-        return Mapper.objectToRubroDTO(resultados);
+    public List<RubroDTO> getAllRubros() {
+        List<Rubro> rubrosList = rubroRepository.findAll();
+        return MapperUtil.toDTOList(rubrosList, RubroDTO.class);
     }
 
     @Override
-    public List<RubroDTO> estadisticasPorUsuario(Long idUsuario) {
-        List<Object[]> resultados = rubroRepository.estadisticasPorUsuario(idUsuario);
+    public List<RubroResponse> estadisticasPorUsuario(AdminRequest adminRequest) {
+        List<Object[]> resultados = rubroRepository.estadisticasPorUsuario(adminRequest.getEmail());
         return Mapper.objectToRubroDTO(resultados);
     }
 }

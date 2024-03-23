@@ -1,6 +1,7 @@
 package com.semillero.ubuntu.Services;
 
 import com.semillero.ubuntu.DTOs.MicroemprendimientoRequest;
+import com.semillero.ubuntu.DTOs.AdminRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface MicroemprendimientoService {
@@ -10,6 +11,6 @@ public interface MicroemprendimientoService {
     ResponseEntity<?> findByRubro(Long idRubro);
     ResponseEntity<?> findById(Long idMicroemprendimiento);
     void hideMicroemprendimiento(Long idMicroemprendimiento);
-    ResponseEntity<?> estadisticas(Long idUsuario);
-    ResponseEntity<?> findByUser(Long idUsuario);
+    ResponseEntity<?> estadisticas(AdminRequest adminRequest);
+    ResponseEntity<?> findByUser(AdminRequest adminRequest);
 }

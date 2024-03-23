@@ -35,28 +35,40 @@ public class ImagePublicacionDataLoader implements CommandLineRunner {
             imageRepository.save(img2);
             imageRepository.save(img3);
 
+
             Usuario user1=usuarioRepository.findById(1L).orElseThrow(()-> new EntityNotFoundException("No user was found with that id"));
             Usuario user2=usuarioRepository.findById(2L).orElseThrow(()-> new EntityNotFoundException("No user was found with that id"));
 
-            Publicacion publi1=new Publicacion(1L," Inversiones Éticas: Más que ganancias",
-                    "Las decisiones financieras han trascendido la mera maximización del rendimiento. Actualmente, muchos inversores desean que sus decisiones reflejen sus valores éticos y morales, dando lugar a las inversiones éticas o sostenibles.\n" +
-                            "\n" +
-                            "Estas no solo evitan sectores polémicos como el tabaco o las armas; buscan respaldar empresas y proyectos que beneficien positivamente a la sociedad y al medio ambiente. Estas empresas suelen adherirse a altos estándares de responsabilidad social, considerando tanto a accionistas como a las comunidades en las que operan.\n" +
-                            "\n" +
-                            "El atractivo de las inversiones éticas radica en la posibilidad de generar un impacto positivo con el dinero invertido. Apoyando a empresas pioneras en energías renovables, que fomentan la igualdad de género o que practican la equidad laboral, los inversores no solo buscan ganancias, sino también cambios beneficiosos en el mundo.\n" +
-                            "\n" +
-                            "Contrario a lo que algunos podrían pensar, las inversiones éticas pueden ofrecer rendimientos competitivos. La demanda de soluciones sostenibles está en aumento, y las empresas que lideran en este ámbito suelen tener una ventaja competitiva a largo plazo.\n" +
-                            "\n" +
-                            "No obstante, es esencial investigar adecuadamente. No todas las empresas que se promocionan como \"sostenibles\" cumplen con estos criterios. Certificaciones, como los Principios de Inversión Responsable de las Naciones Unidas, son útiles para discernir el compromiso real de una empresa con la sostenibilidad.\n" +
-                            "\n" +
-                            "En conclusión, las inversiones éticas ofrecen la oportunidad de unir capital y valores. Al buscar un impacto positivo más allá de los rendimientos, contribuimos a un futuro más equitativo y sostenible.",
-                    false, LocalDate.now(), Arrays.asList(img1, img2),user1,0);
-            Publicacion publi2=new Publicacion(2L, "Inversiones éticas: más que ganancias",
-                    "Las decisiones financieras han trascendido la mera maximización del rendimiento. Actualmente, muchos inversores desean que sus decisiones reflejen sus valores éticos y morales, dando lugar a las inversiones éticas o sostenibles.",
-                    false, LocalDate.now(), Arrays.asList(img3), user2, 0);
-            Publicacion publi3=new Publicacion(3L, "Inversiones éticas: más que ganancias",
-                    "Las decisiones financieras han trascendido la mera maximización del rendimiento. Actualmente, muchos inversores desean que sus decisiones reflejen sus valores éticos y morales, dando lugar a las inversiones éticas o sostenibles.",
-                    false, LocalDate.now(), Arrays.asList(img1,img2,img3), user1, 0);
+            Publicacion publi1= Publicacion.builder()
+                    .id(1L)
+                    .titulo("Inversiones Éticas: Más que ganancias")
+                    .descripcion("Las decisiones financieras han trascendido la mera maximización del rendimiento. Actualmente, muchos inversores desean que sus decisiones reflejen sus valores éticos y morales, dando lugar a las inversiones éticas o sostenibles.")
+                    .isDeleted(false)
+                    .fechaCreacion(LocalDate.now())
+                    .usuarioCreador(user1)
+                    .cantVistas(2)
+                    .build();
+            publi1.addImage(img1);
+            Publicacion publi2= Publicacion.builder()
+                    .id(2L)
+                    .titulo("Inversiones Éticas: Más que ganancias")
+                    .descripcion("Las decisiones financieras han trascendido la mera maximización del rendimiento. Actualmente, muchos inversores desean que sus decisiones reflejen sus valores éticos y morales, dando lugar a las inversiones éticas o sostenibles.")
+                    .isDeleted(false)
+                    .fechaCreacion(LocalDate.now())
+                    .usuarioCreador(user2)
+                    .cantVistas(0)
+                    .build();
+            publi1.addImage(img2);
+            Publicacion publi3= Publicacion.builder()
+                    .id(3L)
+                    .titulo("Inversiones Éticas: Más que ganancias")
+                    .descripcion("Las decisiones financieras han trascendido la mera maximización del rendimiento. Actualmente, muchos inversores desean que sus decisiones reflejen sus valores éticos y morales, dando lugar a las inversiones éticas o sostenibles.")
+                    .isDeleted(false)
+                    .fechaCreacion(LocalDate.now())
+                    .usuarioCreador(user1)
+                    .cantVistas(0)
+                    .build();
+            publi1.addImage(img3);
 
             publicacionRepository.save(publi1);
             publicacionRepository.save(publi2);

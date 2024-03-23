@@ -1,6 +1,5 @@
 package com.semillero.ubuntu.DTOs;
 
-import com.semillero.ubuntu.Entities.Pais;
 import com.semillero.ubuntu.Entities.Provincia;
 import com.semillero.ubuntu.Entities.Rubro;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,7 @@ public class MicroemprendimientoResponse {
     private String nombre;
     private Rubro rubro;
     private String subrubro;
-    private Pais pais;
+    private PaisDTO pais;
     private Provincia provincia;
     private String ciudad;
     private String descripcion;

@@ -16,9 +16,9 @@ import java.util.List;
 @Builder
 @Entity
 @Data
-/* Por alguna razon estas dos anotaciones siguientes afectan el verPublicacion, puede ser por el @Builder */
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+/* Por alguna razon estas dos anotaciones siguientes afectan el verPublicacion, puede ser por el @Builder */
 @Table(name = "publicacion")
 public class Publicacion {
 
@@ -41,6 +41,7 @@ public class Publicacion {
 
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL,
             orphanRemoval = true, targetEntity = Image.class, fetch = FetchType.LAZY)
+    @Builder.Default
     private final List<Image> images = new ArrayList<>();
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)     //Sujeto a cambios (Puede que la relación sea al revés)
@@ -49,6 +50,7 @@ public class Publicacion {
 
     @Column(name="cant-vistas", nullable = false)
     private int cantVistas;
+
     public void addImage(Image image) {
 
         if (this.getImages().size() < 3){

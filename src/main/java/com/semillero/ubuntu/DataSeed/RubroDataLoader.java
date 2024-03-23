@@ -15,12 +15,12 @@ public class RubroDataLoader implements CommandLineRunner {
         loadRubroData();
     }
 
-    private void loadRubroData() {
+    public void loadRubroData() {
         if (rubroRepository.count() == 0) {
-            Rubro rubro1 = new Rubro(1L, "Economía social/ Desarrollo local/ Inclusión financiera");
-            Rubro rubro2 = new Rubro(2L, "Agroecología/ Orgánicos/ Alimentación saludables");
-            Rubro rubro3 = new Rubro(3L, "Conservación/ Regeneración/ Servicios ecosistémicos");
-            Rubro rubro4 = new Rubro(4L, "Empresas/ Organismos de impacto/ Economía circular");
+            Rubro rubro1 = new Rubro(1L, "Economía social/Desarrollo local/Inclusión financiera");
+            Rubro rubro2 = new Rubro(2L, "Agroecología/Orgánicos/Alimentación saludables");
+            Rubro rubro3 = new Rubro(3L, "Conservación/Regeneración/Servicios ecosistémicos");
+            Rubro rubro4 = new Rubro(4L, "Empresas/Organismos de impacto/Economía circular");
             rubroRepository.save(rubro1);
             rubroRepository.save(rubro2);
             rubroRepository.save(rubro3);
