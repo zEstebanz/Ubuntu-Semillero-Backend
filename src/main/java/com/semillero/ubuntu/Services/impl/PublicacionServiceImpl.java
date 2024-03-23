@@ -22,8 +22,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -117,6 +119,7 @@ public class PublicacionServiceImpl implements PublicacionService {
     public PublicationResponse editarPublicacion(Long id, PublicationEditRequest publicationEdit){
 
         Publicacion publicacion = findPublication(id);
+        List<String> publicationImgId = publicacion.getImages().stream().map(Image::getPublic_id).toList();
         validateEditRequest(publicacion, publicationEdit);
 
         if (publicationEdit.id_imageToReplace().size() != 0) {
@@ -126,6 +129,11 @@ public class PublicacionServiceImpl implements PublicacionService {
                     .map(img -> imageRepository.findById(img).orElseThrow(()-> new EntityNotFoundException("You are trying to delete a photo that does not belong to you or does not exist")))
                     .toList();
             List<String> publicIdToDelete = getImage.stream().map(Image::getPublic_id).toList();
+            for (String idDelete : publicIdToDelete){
+                if (!publicationImgId.contains(idDelete)){
+                    throw new ImageException("One of the ids provided does not correspond to an associated image");
+                }
+            }
             getImage.forEach(img -> publicacion.getImages().remove(img));
             getImage.forEach(imageRepository::delete);
             publicacionRepository.save(publicacion);
