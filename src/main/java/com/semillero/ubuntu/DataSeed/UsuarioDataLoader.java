@@ -17,7 +17,7 @@ public class UsuarioDataLoader implements CommandLineRunner {
         loadUsuarioData();
     }
 
-    private void loadUsuarioData() {
+    public void loadUsuarioData() {
         if (usuarioRepository.count() == 0) {
             Usuario usuario1 = new Usuario(1L,"Ubuntu", "Semillero", "ubuntusemillero@gmail.com", false, Rol.ADMINISTRADOR);
             Usuario usuario2 = new Usuario(2L,"Flor", "Fernandez", "florenciafernandez0301@gmail.com", false, Rol.INVERSOR);

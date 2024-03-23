@@ -7,6 +7,7 @@ import com.semillero.ubuntu.Repositories.*;
 import com.semillero.ubuntu.Services.UtilsMicroemprendimiento;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,7 @@ public class UtilsMicroemprendimientoImpl implements UtilsMicroemprendimiento {
 
     private final ImageRepository imageRepository;
     private final long maxSize = 3 * 1024 * 1024;
+    private long totalSize = 0;
 
     @Override
     public Usuario findUsuario(String email) {

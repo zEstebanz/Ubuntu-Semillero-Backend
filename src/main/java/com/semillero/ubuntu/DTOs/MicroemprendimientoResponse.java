@@ -1,6 +1,5 @@
 package com.semillero.ubuntu.DTOs;
 
-import com.semillero.ubuntu.Entities.Pais;
 import com.semillero.ubuntu.Entities.Provincia;
 import com.semillero.ubuntu.Entities.Rubro;
 import lombok.AllArgsConstructor;

@@ -5,7 +5,6 @@ import com.semillero.ubuntu.Entities.Image;
 import com.semillero.ubuntu.Entities.Microemprendimiento;
 import com.semillero.ubuntu.Entities.Publicacion;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

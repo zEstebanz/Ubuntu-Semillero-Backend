@@ -66,7 +66,6 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/microemprendimientos/admin/estadisticasGenerales"),
             //RUBROS ROUTES
             new AntPathRequestMatcher("/rubros/admin/estadisticasPorUsuario")
-
     );
 
     @Bean

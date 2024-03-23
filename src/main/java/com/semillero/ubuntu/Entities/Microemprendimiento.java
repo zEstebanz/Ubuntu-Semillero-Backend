@@ -41,10 +41,10 @@ public class Microemprendimiento {
     @Column(name="ciudad", nullable = false)
     private String ciudad;
 
-    @Column(name="descripcion", nullable = false)
+    @Column(name="descripcion", nullable = false, length = 300)
     private String descripcion;
 
-    @Column(name="masinfo", nullable = false)
+    @Column(name="masinfo", nullable = false, length = 300)
     private String masInfo;
 
     @Column(name="deleted", nullable = false)
@@ -58,7 +58,6 @@ public class Microemprendimiento {
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "id_microemprendimiento", nullable = false) //sacar esto
     private List<Mensaje> mensajes;
 
     @ManyToOne(fetch = FetchType.LAZY)
