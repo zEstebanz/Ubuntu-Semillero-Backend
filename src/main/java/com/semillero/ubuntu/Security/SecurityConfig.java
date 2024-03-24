@@ -35,8 +35,8 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/email"),
             //MICROEMPRENDIMIENTOS ROUTES
             new AntPathRequestMatcher("/microemprendimientos/findByName"),
-            new AntPathRequestMatcher("/microemprendimientos/findByRubro/{id}"),
-            new AntPathRequestMatcher("/microemprendimientos/findById/{id}"),
+            new AntPathRequestMatcher("/microemprendimientos/findByRubro/{idRubro}"),
+            new AntPathRequestMatcher("/microemprendimientos/findById/{idMicroemprendimiento}"),
             //MENSAJE ROUTES
             new AntPathRequestMatcher("/mensaje/create")
     );
@@ -63,13 +63,11 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/image/create"),
             //MICROEMPRENDIMIENTOS ROUTES
             new AntPathRequestMatcher("/microemprendimientos/admin/create"),
-            new AntPathRequestMatcher("/microemprendimientos/admin/edit/{id}"),
-            new AntPathRequestMatcher("/microemprendimientos/admin/hide/{id}"),
+            new AntPathRequestMatcher("/microemprendimientos/admin/edit/{idMicroemprendimiento}"),
+            new AntPathRequestMatcher("/microemprendimientos/admin/hide/{idMicroemprendimiento}"),
             new AntPathRequestMatcher("/microemprendimientos/admin/findByUser"),
             new AntPathRequestMatcher("/microemprendimientos/admin/estadisticasGenerales"),
             //RUBROS ROUTES
-            new AntPathRequestMatcher("/rubros/get-all"),
-            new AntPathRequestMatcher("/rubros/admin/estadisticasPorUsuario/{idUsuario}"),
             new AntPathRequestMatcher("/rubros/admin/estadisticasPorUsuario"),
             //MENSAJE ROUTES
             new AntPathRequestMatcher("/mensaje"),
