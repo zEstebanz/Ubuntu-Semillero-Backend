@@ -17,17 +17,6 @@ public interface MicroemprendimientoRepository extends JpaRepository<Microempren
     List<Microemprendimiento> findByNameMicroemprendimiento(@Param("nombre") String nombre);
     List<Microemprendimiento> findByRubroAndDeletedFalse(Rubro rubro);
     Optional<Microemprendimiento> findByIdAndDeletedFalse(Long id);
-    @Query(value = "SELECT " +
-            "COUNT(*) AS totalMicroemprendimientos," +
-            "COUNT(CASE WHEN gestionado = true THEN 1 END) AS gestionados," +
-            "COUNT(CASE WHEN gestionado = false THEN 1 END) AS noGestionados " +
-            "FROM microemprendimiento " +
-            "WHERE deleted = false " +
-            "AND id_usuario = ?1", nativeQuery = true)
-    List<Object[]> estadisticas(@Param("idUsuario") Long idUsuario);
-
-    List<Microemprendimiento> findAllByUsuarioIdAndDeletedFalse(Long idUsuario);
-
     @Query("SELECT COUNT(m) FROM Microemprendimiento m WHERE m.fechaCreacion >= :fechaInicio AND m.fechaCreacion <= :fechaFin")
     long countByFechaCreacionBetween(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
     @Query("SELECT COUNT(m) AS totalMicroemprendimientos, " +
