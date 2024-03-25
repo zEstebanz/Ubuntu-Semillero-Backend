@@ -1,5 +1,6 @@
 package com.semillero.ubuntu.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.semillero.ubuntu.Entities.Provincia;
 import com.semillero.ubuntu.Entities.Rubro;
 import lombok.AllArgsConstructor;
@@ -27,5 +28,6 @@ public class MicroemprendimientoResponse {
     private Boolean deleted;
     private Boolean gestionado;
     private List<String> images;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaCreacion;
 }

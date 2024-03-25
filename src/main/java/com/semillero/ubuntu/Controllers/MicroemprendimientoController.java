@@ -18,7 +18,7 @@ public class MicroemprendimientoController {
     public ResponseEntity<?> crearMicroemprendimiento(@Valid @ModelAttribute MicroemprendimientoRequest microemprendimientoRequest) {
         return ResponseEntity.ok(microemprendimientoService.createMicroemprendimiento(microemprendimientoRequest));
     }
-    @PutMapping("/admin/edit/{id}")
+    @PutMapping("/admin/edit/{idMicroemprendimiento}")
     public ResponseEntity<?> editMicroemprendimiento(@Valid @PathVariable Long idMicroemprendimiento, @ModelAttribute MicroemprendimientoRequest microemprendimientoRequest) {
         return ResponseEntity.ok(microemprendimientoService.editMicroemprendimiento(idMicroemprendimiento, microemprendimientoRequest));
     }
@@ -26,15 +26,15 @@ public class MicroemprendimientoController {
     public ResponseEntity<?> findByNameMicroemprendimiento(@RequestParam("query") String query) {
         return ResponseEntity.ok(microemprendimientoService.findByNameMicroemprendimiento(query));
     }
-    @GetMapping("/findByRubro/{id}")
-    public ResponseEntity<?> findByRubro(@PathVariable("id") Long idRubro) {
+    @GetMapping("/findByRubro/{idRubro}")
+    public ResponseEntity<?> findByRubro(@PathVariable Long idRubro) {
         return ResponseEntity.ok(microemprendimientoService.findByRubro(idRubro));
     }
-    @GetMapping("/findById/{id}")
-    public ResponseEntity<?> findById(@PathVariable("idMicroemprendimiento") Long idMicroemprendimiento) {
+    @GetMapping("/findById/{idMicroemprendimiento}")
+    public ResponseEntity<?> findById(@PathVariable Long idMicroemprendimiento) {
         return ResponseEntity.ok(microemprendimientoService.findById(idMicroemprendimiento));
     }
-    @PutMapping("/admin/hide/{id}")
+    @PutMapping("/admin/hide/{idMicroemprendimiento}")
     public ResponseEntity<?> hideMicroemprendimiento(@Valid @PathVariable Long idMicroemprendimiento) {
         microemprendimientoService.hideMicroemprendimiento(idMicroemprendimiento);
         return ResponseEntity.ok().body("Microemprendimiento ocultado exitosamente");
