@@ -61,7 +61,7 @@ public class MicroemprendimientoDataLoader implements CommandLineRunner {
     private List<Map> crearImagenes() {
         return Arrays.asList(
                 Map.of(
-                        "secure_url", "https://res.cloudinary.com/dvoxzrkzs/image/upload/v1711151302/cfedv9xifayd7wyvahnv.jpg",
+                        "secure_url", "https://res.cloudinary.com/dvoxzrkzs/image/upload/v1711397426/f5ovc4dtqn00blpt7rx0.jpg",
                         "format", "jpg",
                         "created_at", "2024-03-22T23:48:22Z",
                         "public_id", "cfedv9xifayd7wyvahnv",
