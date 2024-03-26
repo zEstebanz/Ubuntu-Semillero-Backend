@@ -22,9 +22,9 @@ public class MicroemprendimientoController {
     public ResponseEntity<?> editMicroemprendimiento(@Valid @PathVariable Long idMicroemprendimiento, @ModelAttribute MicroemprendimientoRequest microemprendimientoRequest) {
         return ResponseEntity.ok(microemprendimientoService.editMicroemprendimiento(idMicroemprendimiento, microemprendimientoRequest));
     }
-    @GetMapping("/findByName")
-    public ResponseEntity<?> findByNameMicroemprendimiento(@RequestParam("query") String query) {
-        return ResponseEntity.ok(microemprendimientoService.findByNameMicroemprendimiento(query));
+    @GetMapping("/findAll")
+    public ResponseEntity<?> findAllMicroemprendimientos() {
+        return ResponseEntity.ok(microemprendimientoService.findAllMicroemprendimientos());
     }
     @GetMapping("/findByRubro/{idRubro}")
     public ResponseEntity<?> findByRubro(@PathVariable Long idRubro) {

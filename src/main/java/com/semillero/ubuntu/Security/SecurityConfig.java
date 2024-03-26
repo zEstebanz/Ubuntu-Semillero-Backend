@@ -34,7 +34,7 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/rubros/get-all"),
             new AntPathRequestMatcher("/email"),
             //MICROEMPRENDIMIENTOS ROUTES
-            new AntPathRequestMatcher("/microemprendimientos/findByName"),
+            new AntPathRequestMatcher("/microemprendimientos/findAll"),
             new AntPathRequestMatcher("/microemprendimientos/findByRubro/{idRubro}"),
             new AntPathRequestMatcher("/microemprendimientos/findById/{idMicroemprendimiento}"),
             //MENSAJE ROUTES

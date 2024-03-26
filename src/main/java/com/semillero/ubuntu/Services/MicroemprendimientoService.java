@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 public interface MicroemprendimientoService {
     ResponseEntity<?> createMicroemprendimiento(MicroemprendimientoRequest microemprendimientoRequest);
     ResponseEntity<?> editMicroemprendimiento(Long idMicroemprendimiento, MicroemprendimientoRequest microemprendimientoRequest);
-    ResponseEntity<?> findByNameMicroemprendimiento(String query);
+    ResponseEntity<?> findAllMicroemprendimientos();
     ResponseEntity<?> findByRubro(Long idRubro);
     ResponseEntity<?> findById(Long idMicroemprendimiento);
     void hideMicroemprendimiento(Long idMicroemprendimiento);

@@ -114,12 +114,9 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     }
     @Override
     @Transactional
-    public ResponseEntity<?> findByNameMicroemprendimiento(String query) {
-        if (query == null || query.isEmpty() || query.isBlank()) {
-            throw new MicroemprendimientoException("Escriba un nombre");
-        }
+    public ResponseEntity<?> findAllMicroemprendimientos() {
         List<Microemprendimiento> microemprendimientoList =
-                microemprendimientoRepository.findByNameMicroemprendimiento(query);
+                microemprendimientoRepository.findAllByDeletedFalse();
         if (microemprendimientoList.isEmpty()) {
             throw new MicroemprendimientoException("No se encontraron microemprendimientos");
         }
