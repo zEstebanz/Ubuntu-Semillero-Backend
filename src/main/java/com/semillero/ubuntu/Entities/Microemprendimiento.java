@@ -57,7 +57,7 @@ public class Microemprendimiento {
     @JoinColumn(name = "id_microemprendimiento")
     private List<Image> images = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "microemprendimiento")
     private List<Mensaje> mensajes;
 
     @ManyToOne(fetch = FetchType.LAZY)
