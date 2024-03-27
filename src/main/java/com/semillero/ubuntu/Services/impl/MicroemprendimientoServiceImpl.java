@@ -33,7 +33,7 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     @Transactional
     public ResponseEntity<?> createMicroemprendimiento(MicroemprendimientoRequest microemprendimientoRequest) {
         Usuario usuario = utilsMicroemprendimiento.findUsuario(microemprendimientoRequest.getEmail());
-        utilsMicroemprendimiento.validationImage(microemprendimientoRequest);
+        utilsMicroemprendimiento.validationImage(microemprendimientoRequest.getImages());
 
         Microemprendimiento newMicroemprendimiento = new Microemprendimiento();
         newMicroemprendimiento.setNombre(microemprendimientoRequest.getNombre());
@@ -72,7 +72,7 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     @Transactional
     public ResponseEntity<?> editMicroemprendimiento(Long idMicroemprendimiento, MicroemprendimientoRequest microemprendimientoRequest) {
         Usuario usuario = utilsMicroemprendimiento.findUsuario(microemprendimientoRequest.getEmail());
-        utilsMicroemprendimiento.validationImage(microemprendimientoRequest);
+        utilsMicroemprendimiento.validationImage(microemprendimientoRequest.getImages());
 
         Microemprendimiento editMicroemprendimiento = microemprendimientoRepository.findById(idMicroemprendimiento)
                         .orElseThrow( () -> new EntityNotFoundException("Microemprendimiento not found with id: " + idMicroemprendimiento));

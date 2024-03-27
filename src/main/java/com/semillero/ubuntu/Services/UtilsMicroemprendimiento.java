@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface UtilsMicroemprendimiento {
     Usuario findUsuario(String email);
-    void validationImage(MicroemprendimientoRequest microemprendimientoRequest);
+    void validationImage(List<MultipartFile> listImages);
     Rubro findRubro(Long idRubro);
     Pais findPais(Long idPais);
     Provincia findProvincia(Long idProvincia);

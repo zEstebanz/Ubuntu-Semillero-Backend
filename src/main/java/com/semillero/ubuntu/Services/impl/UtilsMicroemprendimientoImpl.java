@@ -38,13 +38,13 @@ public class UtilsMicroemprendimientoImpl implements UtilsMicroemprendimiento {
                         + email));
     }
     @Override
-    public void validationImage(MicroemprendimientoRequest microemprendimientoRequest) {
-        for (MultipartFile img : microemprendimientoRequest.getImages()){
-            if (img.getSize() > maxSize){
+    public void validationImage(List<MultipartFile> listImages) {
+        for (MultipartFile images : listImages){
+            if (images.getSize() > maxSize){
                 throw new ImageException("El archivo no puede pesar más de 3mb");
             }
         }
-        if(microemprendimientoRequest.getImages().size() == 0 || microemprendimientoRequest.getImages().size() > 3) {
+        if(listImages.size() == 0 || listImages.size() > 3) {
             throw new ImageException("Debes agregar 1 imágen como mínimo y 3 como máximo");
         }
     }
