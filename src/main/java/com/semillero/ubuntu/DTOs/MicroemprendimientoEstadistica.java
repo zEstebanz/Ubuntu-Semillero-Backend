@@ -11,6 +11,4 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MicroemprendimientoEstadistica {
     private Long total;
-    private Long gestionadas;
-    private Long noGestionadas;
 }

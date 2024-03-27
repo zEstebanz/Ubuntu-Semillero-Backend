@@ -29,6 +29,9 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     private final MicroemprendimientoRepository microemprendimientoRepository;
 
     private final UtilsMicroemprendimiento utilsMicroemprendimiento;
+    private LocalDate fecha = LocalDate.now();
+    private Integer mes = fecha.getMonthValue();
+    private Integer anio = fecha.getYear();
     @Override
     @Transactional
     public ResponseEntity<?> createMicroemprendimiento(MicroemprendimientoRequest microemprendimientoRequest) {
@@ -151,7 +154,7 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     }
     @Override
     public ResponseEntity<?> estadisticas(AdminRequest adminRequest) {
-        List<Object[]> resultados = microemprendimientoRepository.estadisticas(adminRequest.getEmail());
+        List<Object[]> resultados = microemprendimientoRepository.estadisticas(adminRequest.getEmail(), anio, mes);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Mapper.objectToEstadisticaDTO(resultados));
     }

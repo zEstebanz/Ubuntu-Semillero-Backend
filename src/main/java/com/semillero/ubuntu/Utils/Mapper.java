@@ -84,9 +84,7 @@ public class Mapper {
     public static List<MicroemprendimientoEstadistica> objectToEstadisticaDTO(List<Object[]> resultados){
         return resultados.stream()
                 .map(resultado -> new MicroemprendimientoEstadistica(
-                        (Long) resultado[0],
-                        (Long) resultado[1],
-                        (Long) resultado[2]
+                        (Long) resultado[0]
                 ))
                 .collect(Collectors.toList());
     }
