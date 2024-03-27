@@ -95,7 +95,6 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         editMicroemprendimiento.setCiudad(microemprendimientoRequest.getCiudad());
         editMicroemprendimiento.setDescripcion(microemprendimientoRequest.getDescripcion());
         editMicroemprendimiento.setMasInfo(microemprendimientoRequest.getMasInfo());
-        editMicroemprendimiento.setFechaCreacion((LocalDate.now()));
 
         utilsMicroemprendimiento.deleteInCloud(editMicroemprendimiento.getImages());
         utilsMicroemprendimiento.deleteInBd(editMicroemprendimiento.getImages());
