@@ -38,5 +38,13 @@ public class MensajeController {
          return ResponseEntity.ok(service.editGestionado(id, gestionado));
 
     }
+    @GetMapping("/countNoGestionados")
+    public ResponseEntity countByFechaCreacionAndNoGestionado(){
+        return ResponseEntity.ok(this.service.countByFechaCreacionAndNoGestionado());
+    }
+    @GetMapping("/countGestionados")
+    public ResponseEntity countByFechaCreacionAndGestionado(){
+        return ResponseEntity.ok(this.service.countByFechaCreacionAndGestionado());
+    }
 
 }

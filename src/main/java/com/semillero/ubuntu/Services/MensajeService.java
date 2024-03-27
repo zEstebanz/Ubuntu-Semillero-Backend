@@ -11,5 +11,6 @@ public interface MensajeService {
     List<MensajeResponseDTO> getAll();
     List<MensajeResponseDTO>getAllByGestionado(boolean gestionado);
     MensajeResponseDTO editGestionado(Long id, boolean gestionado) throws EntityNotFoundException;
+    long countByFechaCreacionAndNoGestionado();
 
 }

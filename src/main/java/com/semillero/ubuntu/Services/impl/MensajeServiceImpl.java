@@ -12,6 +12,10 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @Service
@@ -49,6 +53,24 @@ public class MensajeServiceImpl implements MensajeService {
         mensajeToEdit.setGestionado(gestionado);
         Mensaje mensajeEdited=repository.save(mensajeToEdit);
         return Mapper.mensajeToResponse(mensajeEdited);
+    }
+
+    public long countByFechaCreacionAndNoGestionado(){
+        LocalDate fecha = LocalDate.now();
+        Integer mes = fecha.getMonthValue();
+        Integer anio = fecha.getYear();
+
+        long count=this.repository.countByFechaCreacionAndNoGestionado(anio, mes);
+        return count;
+
+    }
+    public long countByFechaCreacionAndGestionado(){
+        LocalDate fecha = LocalDate.now();
+        Integer mes = fecha.getMonthValue();
+        Integer anio = fecha.getYear();
+        long count=this.repository.countByFechaCreacionAndGestionado(anio, mes);
+        return count;
+
     }
 
 
