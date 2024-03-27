@@ -30,7 +30,7 @@ public class MicroemprendimientoController {
     public ResponseEntity<?> findByRubro(@PathVariable Long idRubro) {
         return ResponseEntity.ok(microemprendimientoService.findByRubro(idRubro));
     }
-    @GetMapping("/findById/{idMicroemprendimiento}")
+    @GetMapping("/admin/findById/{idMicroemprendimiento}")
     public ResponseEntity<?> findById(@PathVariable Long idMicroemprendimiento) {
         return ResponseEntity.ok(microemprendimientoService.findById(idMicroemprendimiento));
     }
