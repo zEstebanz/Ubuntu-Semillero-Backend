@@ -84,10 +84,8 @@ public class UtilsMicroemprendimientoImpl implements UtilsMicroemprendimiento {
     }
     @Override
     public void deleteInCloud(List<Image> images) {
-        for (Image image : images) {
-            Long imageId = image.getId();
-            cloudinaryImageService.delete(String.valueOf(imageId));
-        }
+        images.forEach
+                (image -> cloudinaryImageService.delete(String.valueOf(image.getId())));
     }
     @Override
     public void deleteInBd(List<Image> images) {
