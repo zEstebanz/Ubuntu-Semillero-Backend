@@ -9,6 +9,7 @@ import com.semillero.ubuntu.Entities.Image;
 import com.semillero.ubuntu.Entities.Mensaje;
 import com.semillero.ubuntu.Entities.Microemprendimiento;
 import com.semillero.ubuntu.Entities.Publicacion;
+import jakarta.persistence.Tuple;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -88,4 +89,14 @@ public class Mapper {
                 ))
                 .collect(Collectors.toList());
     }
+    public static MensajeEstadisticaDTO tupleToMensajeEstadisticaDTO(Tuple resultado){
+        if (resultado == null) {
+            return new MensajeEstadisticaDTO(0L, 0L);
+        } else {
+            Long cantGestionados = resultado.get("cantGestionados", Long.class);
+            Long cantNoGestionados = resultado.get("cantNoGestionados", Long.class);
+            return new MensajeEstadisticaDTO(cantGestionados, cantNoGestionados);
+        }
+    }
 }
+
