@@ -36,7 +36,7 @@ public class Publicacion {
     @Column(name="baja", nullable = false)
     private Boolean isDeleted;
 
-    @Column(name="fecha-creacion", nullable = false, columnDefinition = "DATE")
+    @Column(name="fechaCreacion", nullable = false, columnDefinition = "DATE")
     private LocalDate fechaCreacion;
 
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL,

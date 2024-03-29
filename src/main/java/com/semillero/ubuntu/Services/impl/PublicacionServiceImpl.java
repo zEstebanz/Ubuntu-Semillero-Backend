@@ -1,13 +1,11 @@
 package com.semillero.ubuntu.Services.impl;
 
-import com.semillero.ubuntu.DTOs.AddImageToPublication;
-import com.semillero.ubuntu.DTOs.PublicacionDTO;
-import com.semillero.ubuntu.DTOs.PublicationEditRequest;
-import com.semillero.ubuntu.DTOs.PublicationResponse;
+import com.semillero.ubuntu.DTOs.*;
 import com.semillero.ubuntu.Entities.Image;
 import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Entities.Usuario;
 import com.semillero.ubuntu.Exceptions.ImageException;
+import com.semillero.ubuntu.Exceptions.PublicacionException;
 import com.semillero.ubuntu.Repositories.ImageRepository;
 import com.semillero.ubuntu.Repositories.PublicacionRepository;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
@@ -22,10 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,32 +37,42 @@ public class PublicacionServiceImpl implements PublicacionService {
 
     /**
      * Trae todas las publicaciones guardadas en la base de datos, incluidas las ocultas
-     * y las mapea en una lista de tipo DTO
+     * y las mapea en una lista de tipo PublicationResponse
      * <p>
      * (Habría que ver si crear otro método getAll pero que el usuario logueado solo pueda ver las que él/ella creó)
+     * <p>
+     * ERROR de Mapeo debido a como estan guardadas las imagenes y como actua un Record junto con el Mapper
      * <p>
      * ROL: SUPER ADMIN
      */
     @Transactional
-    public List<PublicacionDTO> getAll() throws Exception {
+    public List<PublicationResponse> getAll() throws Exception {
         try {
             List<Publicacion> publicaciones = publicacionRepository.findAll();
-            return MapperUtil.toDTOList(publicaciones, PublicacionDTO.class);
+            if (publicaciones.isEmpty()) {
+                throw new PublicacionException("No se encontraron publicaciones");
+            }
+            return MapperUtil.toDTOList(publicaciones, PublicationResponse.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
     /**
-     Trae todas las publicaciones que están disponibles
-     <p>
-     Rol: VISITANTE
+     * Trae todas las publicaciones que están disponibles (isDeleted = False)
+     * <p>
+     *  ERROR de Mapeo debido a como estan guardadas las imagenes y como actua un Record junto con el Mapper
+     * <p>
+     * Rol: VISITANTE
      **/
     @Transactional
-    public List<PublicacionDTO> traerPublisNoOcultas() throws Exception {
+    public List<PublicationResponse> traerPublisNoOcultas() throws Exception {
         try {
             List<Publicacion> publisNoOcultas = publicacionRepository.TraerPublicaciones();
-            return MapperUtil.toDTOList(publisNoOcultas, PublicacionDTO.class);
+            if (publisNoOcultas.isEmpty()) {
+                throw new PublicacionException("No se encontraron publicaciones");
+            }
+            return MapperUtil.toDTOList(publisNoOcultas, PublicationResponse.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -195,13 +201,18 @@ public class PublicacionServiceImpl implements PublicacionService {
     /**
      * Función de ver las últimas 3 publicaciones agregadas por los administradores
      * <p>
+     * ERROR de Mapeo debido a como estan guardadas las imagenes y como actua un Record junto con el Mapper
+     * <p>
      * Esta función se utiliza en el inicio
      **/
     @Transactional
-    public List<PublicacionDTO> traerUltimasTres() throws Exception {
+    public List<PublicationResponse> traerUltimasTres() throws Exception {
         try {
             List<Publicacion> publicaciones = publicacionRepository.TraerUltimasTres();
-            return MapperUtil.toDTOList(publicaciones, PublicacionDTO.class);
+            if (publicaciones.isEmpty()) {
+                throw new PublicacionException("No se encontraron publicaciones");
+            }
+            return MapperUtil.toDTOList(publicaciones, PublicationResponse.class);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

@@ -11,11 +11,11 @@ import java.util.List;
 
 @Repository
 public interface PublicacionRepository extends JpaRepository <Publicacion, Long> {
-    @Query(value = "SELECT * FROM publicacion WHERE baja = 0", nativeQuery = true)
+    @Query(value = "SELECT * FROM publicacion WHERE baja = FALSE", nativeQuery = true)
     List<Publicacion> TraerPublicaciones();
 
     //Traer las 3 publicaciones más recientes y enviarlas a través de un endpoint
-    @Query(value = "SELECT * FROM publicacion ORDER BY fecha-creacion DESC LIMIT 3", nativeQuery = true)
+    @Query(value = "SELECT * FROM publicacion ORDER BY fecha_creacion DESC LIMIT 3", nativeQuery = true)
     List<Publicacion> TraerUltimasTres();
 
     @Query("SELECT COUNT(p) FROM Publicacion p WHERE p.fechaCreacion >= :fechaInicio AND p.fechaCreacion <= :fechaFin")
