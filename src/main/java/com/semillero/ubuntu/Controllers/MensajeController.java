@@ -1,5 +1,6 @@
 package com.semillero.ubuntu.Controllers;
 
+import com.semillero.ubuntu.DTOs.MensajeEstadisticaDTO;
 import com.semillero.ubuntu.DTOs.MensajeRequestDTO;
 import com.semillero.ubuntu.DTOs.MensajeResponseDTO;
 import com.semillero.ubuntu.Services.impl.MensajeServiceImpl;
@@ -37,6 +38,10 @@ public class MensajeController {
     public ResponseEntity<MensajeResponseDTO>editGestionado(@PathVariable Long id, @RequestParam boolean gestionado){
          return ResponseEntity.ok(service.editGestionado(id, gestionado));
 
+    }
+    @GetMapping("/estadistica")
+    public ResponseEntity<MensajeEstadisticaDTO> getEstadistica(){
+        return ResponseEntity.ok(this.service.getEstadistica());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.semillero.ubuntu.Services.impl;
 
+import com.semillero.ubuntu.DTOs.MensajeEstadisticaDTO;
 import com.semillero.ubuntu.DTOs.MensajeRequestDTO;
 import com.semillero.ubuntu.DTOs.MensajeResponseDTO;
 import com.semillero.ubuntu.Entities.Mensaje;
@@ -9,9 +10,12 @@ import com.semillero.ubuntu.Repositories.MicroemprendimientoRepository;
 import com.semillero.ubuntu.Services.MensajeService;
 import com.semillero.ubuntu.Utils.Mapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Tuple;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -51,6 +55,13 @@ public class MensajeServiceImpl implements MensajeService {
         return Mapper.mensajeToResponse(mensajeEdited);
     }
 
-
+    @Override
+    public MensajeEstadisticaDTO getEstadistica(){
+        LocalDate date = LocalDate.now();
+        Integer month = date.getMonthValue();
+        Integer year = date.getYear();
+        Tuple counts=this.repository.countByFechaCreacionAndGestionado(year, month);
+        return Mapper.tupleToMensajeEstadisticaDTO(counts);
+    }
 
 }

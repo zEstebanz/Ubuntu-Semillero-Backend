@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,9 @@ import java.util.List;
 public class RubroServiceImpl implements RubroService {
 
     private final RubroRepository rubroRepository;
-
+    private LocalDate fecha = LocalDate.now();
+    private Integer mes = fecha.getMonthValue();
+    private Integer anio = fecha.getYear();
     @Override
     public List<RubroDTO> getAllRubros() {
         List<Rubro> rubrosList = rubroRepository.findAll();
@@ -29,7 +32,7 @@ public class RubroServiceImpl implements RubroService {
 
     @Override
     public List<RubroResponse> estadisticasPorUsuario(AdminRequest adminRequest) {
-        List<Object[]> resultados = rubroRepository.estadisticasPorUsuario(adminRequest.getEmail());
+        List<Object[]> resultados = rubroRepository.estadisticasPorUsuario(adminRequest.getEmail(), anio, mes);
         return Mapper.objectToRubroDTO(resultados);
     }
 }

@@ -12,11 +12,9 @@ import org.springframework.stereotype.Component;
 public class UsuarioDataLoader implements CommandLineRunner {
 
      private final UsuarioRepository usuarioRepository;
-     private final ImagePublicacionDataLoader imagePublicacionDataLoader;
     @Override
     public void run(String... args) throws Exception {
         loadUsuarioData();
-        imagePublicacionDataLoader.loadImageAndPublicacionData();
     }
 
     public void loadUsuarioData() {

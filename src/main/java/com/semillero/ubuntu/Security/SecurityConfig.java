@@ -72,7 +72,9 @@ public class SecurityConfig {
             //MENSAJE ROUTES
             new AntPathRequestMatcher("/mensaje"),
             new AntPathRequestMatcher("/mensaje/gestionado"),
-            new AntPathRequestMatcher("/mensaje/{id}")
+            new AntPathRequestMatcher("/mensaje/{id}"),
+            new AntPathRequestMatcher("/mensaje/estadistica")
+
     );
 
     @Bean

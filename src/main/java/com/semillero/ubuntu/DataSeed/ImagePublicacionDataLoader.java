@@ -21,7 +21,7 @@ public class ImagePublicacionDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //loadImageAndPublicacionData();
+        loadImageAndPublicacionData();
     }
     public void loadImageAndPublicacionData(){
         if(publicacionRepository.count()==0){

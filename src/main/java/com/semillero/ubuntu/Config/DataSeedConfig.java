@@ -1,9 +1,6 @@
 package com.semillero.ubuntu.Config;
 
-import com.semillero.ubuntu.DataSeed.MicroemprendimientoDataLoader;
-import com.semillero.ubuntu.DataSeed.PaisProvinciaDataLoader;
-import com.semillero.ubuntu.DataSeed.RubroDataLoader;
-import com.semillero.ubuntu.DataSeed.UsuarioDataLoader;
+import com.semillero.ubuntu.DataSeed.*;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,14 +10,18 @@ public class DataSeedConfig implements SmartInitializingSingleton {
     private final RubroDataLoader rubroDataLoader;
     private final UsuarioDataLoader usuarioDataLoader;
     private final MicroemprendimientoDataLoader microemprendimientoDataLoader;
+    private final ImagePublicacionDataLoader imagePublicacionDataLoader;
     public DataSeedConfig(PaisProvinciaDataLoader paisProvinciaDataLoader,
                           RubroDataLoader rubroDataLoader,
                           UsuarioDataLoader usuarioDataLoader,
-                          MicroemprendimientoDataLoader microemprendimientoDataLoader) {
+                          MicroemprendimientoDataLoader microemprendimientoDataLoader,
+                          ImagePublicacionDataLoader imagePublicacionDataLoader)
+    {
         this.paisProvinciaDataLoader = paisProvinciaDataLoader;
         this.rubroDataLoader = rubroDataLoader;
         this.usuarioDataLoader = usuarioDataLoader;
         this.microemprendimientoDataLoader = microemprendimientoDataLoader;
+        this.imagePublicacionDataLoader= imagePublicacionDataLoader;
     }
     @Override
     public void afterSingletonsInstantiated() {
@@ -28,5 +29,6 @@ public class DataSeedConfig implements SmartInitializingSingleton {
         rubroDataLoader.loadRubroData();
         usuarioDataLoader.loadUsuarioData();
         microemprendimientoDataLoader.loadMicroemprendimientoWithImages();
+        imagePublicacionDataLoader.loadImageAndPublicacionData();
     }
 }
