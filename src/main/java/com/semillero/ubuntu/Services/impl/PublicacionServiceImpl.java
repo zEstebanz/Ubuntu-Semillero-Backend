@@ -22,10 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +41,7 @@ public class PublicacionServiceImpl implements PublicacionService {
     /**
      * Trae todas las publicaciones guardadas en la base de datos, incluidas las ocultas
      * y las mapea en una lista de tipo DTO
+     * Cambiar DTO a PublicationResponse
      * <p>
      * (Habría que ver si crear otro método getAll pero que el usuario logueado solo pueda ver las que él/ella creó)
      * <p>
@@ -59,6 +59,7 @@ public class PublicacionServiceImpl implements PublicacionService {
 
     /**
      Trae todas las publicaciones que están disponibles
+     Cambiar DTO a Response
      <p>
      Rol: VISITANTE
      **/
@@ -194,6 +195,7 @@ public class PublicacionServiceImpl implements PublicacionService {
 
     /**
      * Función de ver las últimas 3 publicaciones agregadas por los administradores
+     * Cambiar DTO a PublicationResponse
      * <p>
      * Esta función se utiliza en el inicio
      **/

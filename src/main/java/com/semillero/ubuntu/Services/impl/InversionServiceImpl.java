@@ -4,12 +4,12 @@ import com.semillero.ubuntu.DTOs.CalculoInversionDTO;
 import com.semillero.ubuntu.DTOs.InversionDTO;
 import com.semillero.ubuntu.DTOs.RecibirInversionDTO;
 import com.semillero.ubuntu.Entities.Inversion;
-import com.semillero.ubuntu.Entities.Usuario;
 import com.semillero.ubuntu.Repositories.InversionRepository;
+import com.semillero.ubuntu.Repositories.MicroemprendimientoRepository;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Services.InversionService;
 import com.semillero.ubuntu.Utils.MapperUtil;
-import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,8 @@ public class InversionServiceImpl implements InversionService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    //Repositorio Microemprendimiento
+    @Autowired
+    private MicroemprendimientoRepository microemprendimientoRepository;
 
     /**
      * Funcion para calcular la inversion
@@ -64,18 +65,19 @@ public class InversionServiceImpl implements InversionService {
     @Override
     public void guardarInversion(CalculoInversionDTO calculoInversionDTO) throws Exception {
         try {
-            //Busqueda de Microemprendimiento
+
+            /*
             Usuario usuarioInversor = usuarioRepository.findById(calculoInversionDTO.getUsuarioId())
                     .orElseThrow( () -> new EntityNotFoundException("User not found with id: " + calculoInversionDTO.getUsuarioId()));
+             */
             Inversion inversion = Inversion.builder()
                     .costosGestion(calculoInversionDTO.getCostosGestion())
                     .descripcion(calculoInversionDTO.getDescripcion())
-                    .montoAportado(calculoInversionDTO.getMontoAportado())
                     .cuotas(calculoInversionDTO.getCuotas())
                     .nivelRiesgo(calculoInversionDTO.getNivelRiesgo())
                     .tasaRetorno(calculoInversionDTO.getTasaRetorno())
                     //Asociacion Con usuario
-                    .usuarioInversor(usuarioInversor)
+                    //.usuarioInversor(usuarioInversor)
                     //Asociacion con Microemprendimiento
                     .build();
             inversionRepository.save(inversion);
