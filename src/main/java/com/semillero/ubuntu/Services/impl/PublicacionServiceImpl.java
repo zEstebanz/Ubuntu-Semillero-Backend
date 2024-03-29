@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,8 @@ public class PublicacionServiceImpl implements PublicacionService {
             if (publicaciones.isEmpty()) {
                 throw new PublicacionException("No se encontraron publicaciones");
             }
-            return MapperUtil.toDTOList(publicaciones, PublicationResponse.class);
+            return publicaciones.stream()
+                    .map(img -> Mapper.publicationToPublicationResponse(img, img.getImages())).collect(Collectors.toList());
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -72,7 +74,8 @@ public class PublicacionServiceImpl implements PublicacionService {
             if (publisNoOcultas.isEmpty()) {
                 throw new PublicacionException("No se encontraron publicaciones");
             }
-            return MapperUtil.toDTOList(publisNoOcultas, PublicationResponse.class);
+            return publisNoOcultas.stream()
+                    .map(img -> Mapper.publicationToPublicationResponse(img, img.getImages())).collect(Collectors.toList());
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -212,7 +215,8 @@ public class PublicacionServiceImpl implements PublicacionService {
             if (publicaciones.isEmpty()) {
                 throw new PublicacionException("No se encontraron publicaciones");
             }
-            return MapperUtil.toDTOList(publicaciones, PublicationResponse.class);
+            return publicaciones.stream()
+                    .map(img -> Mapper.publicationToPublicationResponse(img, img.getImages())).collect(Collectors.toList());
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
