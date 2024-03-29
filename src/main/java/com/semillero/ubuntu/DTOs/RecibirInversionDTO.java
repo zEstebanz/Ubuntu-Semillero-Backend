@@ -7,5 +7,4 @@ public class RecibirInversionDTO {
     Double montoAporte;
     Integer cuotas;
     Long idMicro;
-    Integer var;
 }

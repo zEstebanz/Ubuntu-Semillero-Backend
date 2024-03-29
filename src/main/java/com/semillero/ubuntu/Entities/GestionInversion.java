@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "inversiones")
-public class Inversion {
+@Table(name = "GestionInversion")
+public class GestionInversion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,6 +43,7 @@ public class Inversion {
     @Column(nullable = false)
     private Double tasaRetorno;
 
+    //El nivel de Riesgo se puede calcular segun el nivel o segun el factor que se ingrese, consultar.
     @Column(nullable = false)
     private NivelRiesgo nivelRiesgo;
 
@@ -57,5 +58,8 @@ public class Inversion {
     @JoinColumn(name = "usuario_id")
     private Usuario usuarioInversor;
     */
+
+    @Column(nullable = false)
+    private Boolean Activo;
 
 }
