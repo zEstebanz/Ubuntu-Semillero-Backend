@@ -32,7 +32,7 @@ public class GestionInversionController {
         }
     }
 
-    @PostMapping("/admin/crearInversion")
+    @PostMapping("/admin/create")
     public ResponseEntity<?> crearGestion(@RequestBody GestionInversionDTO gestionInversionDTO) {   //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(gestionInversionServiceImpl.crearGestion(gestionInversionDTO));
@@ -41,7 +41,7 @@ public class GestionInversionController {
         }
     }
 
-    @PutMapping("/admin/editarGestion/{id}")
+    @PutMapping("/admin/edit/{id}")
     public ResponseEntity<?> editarGestion(@RequestParam Long id, @RequestBody GestionInversionDTO gestionInversionDTO) {   //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(gestionInversionServiceImpl.editarGestion(id, gestionInversionDTO));
