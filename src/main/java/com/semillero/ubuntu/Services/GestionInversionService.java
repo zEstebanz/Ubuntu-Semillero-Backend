@@ -13,6 +13,6 @@ public interface GestionInversionService {
 
     GestionInversionDTO crearGestion(GestionInversionDTO gestionInversionDTO) throws Exception;
 
-    //Por ahora solo le paso el id como parametro aparte
+    //Por ahora solo le paso el id de Gestion como parametro aparte
     GestionInversionDTO editarGestion(Long id, GestionInversionDTO gestionInversionDTO) throws Exception;
 }
