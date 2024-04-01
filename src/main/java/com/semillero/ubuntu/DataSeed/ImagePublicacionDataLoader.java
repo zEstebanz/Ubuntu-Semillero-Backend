@@ -56,7 +56,8 @@ public class ImagePublicacionDataLoader implements CommandLineRunner {
                     .usuarioCreador(user2)
                     .cantVistas(0)
                     .build();
-            publi1.addImage(img2);
+            publi2.addImage(img2);
+            publi2.addImage(img1);
             Publicacion publi3= Publicacion.builder()
                     .id(3L)
                     .titulo("Inversiones Éticas: Más que ganancias")
@@ -66,7 +67,9 @@ public class ImagePublicacionDataLoader implements CommandLineRunner {
                     .usuarioCreador(user1)
                     .cantVistas(0)
                     .build();
-            publi1.addImage(img3);
+            publi3.addImage(img3);
+            publi3.addImage(img2);
+            publi3.addImage(img1);
 
             publicacionRepository.save(publi1);
             publicacionRepository.save(publi2);
