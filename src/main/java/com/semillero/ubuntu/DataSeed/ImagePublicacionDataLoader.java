@@ -28,6 +28,9 @@ public class ImagePublicacionDataLoader implements CommandLineRunner {
             Image img1=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1711129609/bboysq4bwc0koucf2dmh.jpg","jpg", "2024-03-20T16:15:08Z","bboysq4bwc0koucf2dmh",1080,675);
             Image img2=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1711129609/bboysq4bwc0koucf2dmh.jpg","jpg","2024-03-22T16:45:47Z", "bboysq4bwc0koucf2dmh",628,375);
             Image img3=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1711129609/bboysq4bwc0koucf2dmh.jpg","jpg","2024-03-22T16:50:13Z", "bboysq4bwc0koucf2dmh",621,414);
+            Image img4=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1711129609/bboysq4bwc0koucf2dmh.jpg","jpg","2024-03-22T16:50:13Z", "bboysq4bwc0koucf2dmh",600,410);
+            Image img5=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1711129609/bboysq4bwc0koucf2dmh.jpg","jpg","2024-03-22T16:55:13Z", "bboysq4bwc0koucf2dmh",700,500);
+            Image img6=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1711129609/bboysq4bwc0koucf2dmh.jpg","jpg","2024-03-22T16:50:13Z", "bboysq4bwc0koucf2dmh",689,300);
 
             imageRepository.save(img1);
             imageRepository.save(img2);
@@ -47,6 +50,8 @@ public class ImagePublicacionDataLoader implements CommandLineRunner {
                     .cantVistas(2)
                     .build();
             publi1.addImage(img1);
+            publi1.addImage(img4);
+            publi1.addImage(img5);
             Publicacion publi2= Publicacion.builder()
                     .id(2L)
                     .titulo("Inversiones Éticas: Más que ganancias")
@@ -57,7 +62,9 @@ public class ImagePublicacionDataLoader implements CommandLineRunner {
                     .cantVistas(0)
                     .build();
             publi2.addImage(img2);
-            publi2.addImage(img1);
+            publi2.addImage(img6);
+
+
             Publicacion publi3= Publicacion.builder()
                     .id(3L)
                     .titulo("Inversiones Éticas: Más que ganancias")
@@ -68,12 +75,13 @@ public class ImagePublicacionDataLoader implements CommandLineRunner {
                     .cantVistas(0)
                     .build();
             publi3.addImage(img3);
-            publi3.addImage(img2);
-            publi3.addImage(img1);
+
 
             publicacionRepository.save(publi1);
             publicacionRepository.save(publi2);
             publicacionRepository.save(publi3);
+
+
 
         }
     }
