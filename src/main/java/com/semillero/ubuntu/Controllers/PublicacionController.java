@@ -75,6 +75,15 @@ public class PublicacionController {
         }
     }
 
+    @GetMapping("admin/ultimasDiez")
+    public ResponseEntity<?> traerUltimasDiez() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.traerUltimasDiez());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
+        }
+    }
+
     @PutMapping("/add-image")
     public ResponseEntity<PublicationResponse> addImageToPublication(@RequestBody AddImageToPublication addImage){
 

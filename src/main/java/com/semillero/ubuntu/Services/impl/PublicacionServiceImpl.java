@@ -38,11 +38,9 @@ public class PublicacionServiceImpl implements PublicacionService {
 
     /**
      * Trae todas las publicaciones guardadas en la base de datos, incluidas las ocultas
-     * y las mapea en una lista de tipo PublicationResponse
+     * y las mapea en una lista de tipo PublicationResponse.
      * <p>
      * (Habría que ver si crear otro método getAll pero que el usuario logueado solo pueda ver las que él/ella creó)
-     * <p>
-     * ERROR de Mapeo debido a como estan guardadas las imagenes y como actua un Record junto con el Mapper
      * <p>
      * ROL: SUPER ADMIN
      */
@@ -61,9 +59,7 @@ public class PublicacionServiceImpl implements PublicacionService {
     }
 
     /**
-     * Trae todas las publicaciones que están disponibles (isDeleted = False)
-     * <p>
-     *  ERROR de Mapeo debido a como estan guardadas las imagenes y como actua un Record junto con el Mapper
+     * Trae todas las publicaciones que están disponibles (isDeleted = False).
      * <p>
      * Rol: VISITANTE
      **/
@@ -76,13 +72,15 @@ public class PublicacionServiceImpl implements PublicacionService {
             }
             return publisNoOcultas.stream()
                     .map(img -> Mapper.publicationToPublicationResponse(img, img.getImages())).collect(Collectors.toList());
+        } catch (PublicacionException e) {
+            throw e;
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw new RuntimeException("Error al obtener las publicaciones no ocultas", e);
         }
     }
 
     /**
-     Función de creación de Publicaciones utilizando @Builder para asignar los valores de una forma más sencilla y directa
+     Función de creación de Publicaciones utilizando @Builder para asignar los valores de una forma más sencilla y directa.
      <p>
      Actualización: ahora recibe el Deleted por si el administrador arma la publicacion pero no la quiere mostrar todavia
      <p>
@@ -120,7 +118,7 @@ public class PublicacionServiceImpl implements PublicacionService {
 
     /**
      Función de actualización de Publicación donde el adiministrador realiza cambios en la publicación
-     previamente creada
+     previamente creada.
      <p>
      Rol: ADMINISTRADOR
      **/
@@ -167,22 +165,24 @@ public class PublicacionServiceImpl implements PublicacionService {
     }
 
     /**
-     Función donde se da de baja la publicación
+     Función donde se da de baja la publicación.
      <p>
      Rol: ADMINISTRADOR
      **/
     @Transactional
     public void bajaLogica(Long id) {
-
         Publicacion publicacion = findPublication(id);
-        publicacion.setIsDeleted(!publicacion.getIsDeleted());
-        publicacionRepository.save(publicacion);
-
+        if (publicacion != null) {
+            publicacion.setIsDeleted(!publicacion.getIsDeleted());
+            publicacionRepository.save(publicacion);
+        } else {
+            throw new PublicacionException("No se encontro la publicacion " + id);      //Por las dudas pongo un Exception en caso de que falle el primero
+        }
     }
 
     /**
      Función de ver publicaciones en más detalle (haciendo clic en 'ver más') aumentando las vistas de la
-     publicación
+     publicación.
      <p>
      (Ver como modelar la lógica de esta funcionalidad, si creando otro endpoint o verificando el rol del usuario
      logueado con el token, charlar con el front sobre como implementan la lógica. Ver si aumenta la vista una vez por
@@ -193,23 +193,18 @@ public class PublicacionServiceImpl implements PublicacionService {
      **/
     @Transactional
     public void verPubliVisitante(Long id) throws EntityNotFoundException {
-
             Publicacion publicacion = findPublication(id);
-            int sumaVista = publicacion.getCantVistas();
-            sumaVista++;
-            publicacion.setCantVistas(sumaVista);
+            publicacion.setCantVistas(publicacion.getCantVistas() + 1);
             publicacionRepository.save(publicacion);
     }
 
     /**
-     * Función de ver las últimas 3 publicaciones agregadas por los administradores
-     * <p>
-     * ERROR de Mapeo debido a como estan guardadas las imagenes y como actua un Record junto con el Mapper
+     * Función de ver las últimas 3 publicaciones agregadas por los administradores.
      * <p>
      * Esta función se utiliza en el inicio
      **/
     @Transactional
-    public List<PublicationResponse> traerUltimasTres() throws Exception {
+    public List<PublicationResponse> traerUltimasTres() throws PublicacionException {
         try {
             List<Publicacion> publicaciones = publicacionRepository.TraerUltimasTres();
             if (publicaciones.isEmpty()) {
@@ -217,8 +212,32 @@ public class PublicacionServiceImpl implements PublicacionService {
             }
             return publicaciones.stream()
                     .map(img -> Mapper.publicationToPublicationResponse(img, img.getImages())).collect(Collectors.toList());
+        } catch (PublicacionException e) {
+            throw e;
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw new RuntimeException("Error al obtener las ultimas tres publicaciones", e);
+        }
+    }
+
+    /**
+     * Función para ver las estadísticas de las vistas por publicación filtradas por las últimas diez ingresadas.
+     * <p>
+     * Rol: ADMINISTRADOR
+     * <p>
+     * Notas: Revisar si el mapeo se realiza correctamente ya que no son necesarias las fotos
+     **/
+    @Transactional
+    public List<PublicacionEstadistica> traerUltimasDiez() throws PublicacionException {
+        try {
+            List<Publicacion> publicaciones = publicacionRepository.TraerUltimasDiez();
+            if (publicaciones.isEmpty()) {
+                throw new PublicacionException("No se encontraron publicaciones");
+            }
+            return MapperUtil.toDTOList(publicaciones, PublicacionEstadistica.class);
+        } catch (PublicacionException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al obtener las ultimas diez publicaciones", e);
         }
     }
 

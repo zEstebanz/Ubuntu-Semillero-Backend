@@ -57,6 +57,7 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/publicaciones/admin/edit/{id}"),
             new AntPathRequestMatcher("/publicaciones/admin/baja/{id}"),
             new AntPathRequestMatcher("/publicaciones/add-image"),
+            new AntPathRequestMatcher("/publicaciones/admin/ultimasDiez"),
             //IMAGE ROUTES
             new AntPathRequestMatcher("/image/delete/{id}"),
             new AntPathRequestMatcher("/image/create"),
