@@ -1,9 +1,6 @@
 package com.semillero.ubuntu.Controllers;
 
-import com.semillero.ubuntu.DTOs.AddImageToPublication;
-import com.semillero.ubuntu.DTOs.PublicacionDTO;
-import com.semillero.ubuntu.DTOs.PublicationEditRequest;
-import com.semillero.ubuntu.DTOs.PublicationResponse;
+import com.semillero.ubuntu.DTOs.*;
 import com.semillero.ubuntu.Entities.Publicacion;
 import com.semillero.ubuntu.Services.impl.PublicacionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,9 +73,9 @@ public class PublicacionController {
     }
 
     @GetMapping("admin/ultimasDiez")
-    public ResponseEntity<?> traerUltimasDiez() {
+    public ResponseEntity<?> traerUltimasDiez(@RequestBody AdminRequest adminRequest) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.traerUltimasDiez());
+            return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.traerUltimasDiez(adminRequest));
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
         }

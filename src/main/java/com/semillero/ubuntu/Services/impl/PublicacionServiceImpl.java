@@ -227,11 +227,11 @@ public class PublicacionServiceImpl implements PublicacionService {
      * Notas: Revisar si el mapeo se realiza correctamente ya que no son necesarias las fotos
      **/
     @Transactional
-    public List<PublicacionEstadistica> traerUltimasDiez() throws PublicacionException {
+    public List<PublicacionEstadistica> traerUltimasDiez(AdminRequest adminRequest) throws PublicacionException {
         try {
-            List<Publicacion> publicaciones = publicacionRepository.TraerUltimasDiez();
+            List<Publicacion> publicaciones = publicacionRepository.TraerUltimasDiez(adminRequest.getEmail());
             if (publicaciones.isEmpty()) {
-                throw new PublicacionException("No se encontraron publicaciones");
+                throw new PublicacionException("No se encontraron publicaciones asociadas al usuario " + adminRequest.getEmail());
             }
             return MapperUtil.toDTOList(publicaciones, PublicacionEstadistica.class);
         } catch (PublicacionException e) {

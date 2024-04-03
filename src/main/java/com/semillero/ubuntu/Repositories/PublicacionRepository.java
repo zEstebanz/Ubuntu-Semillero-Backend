@@ -21,7 +21,7 @@ public interface PublicacionRepository extends JpaRepository <Publicacion, Long>
     @Query("SELECT COUNT(p) FROM Publicacion p WHERE p.fechaCreacion >= :fechaInicio AND p.fechaCreacion <= :fechaFin")
     long countByFechaCreacionBetween(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
 
-    @Query(value = "SELECT * FROM publicacion ORDER BY fecha_creacion DESC LIMIT 10", nativeQuery = true)
-    List<Publicacion> TraerUltimasDiez();
+    @Query(value = "SELECT * FROM publicacion p WHERE p.id_usuario.email =: email ORDER BY p.fecha_creacion DESC LIMIT 10", nativeQuery = true)
+    List<Publicacion> TraerUltimasDiez(@Param("email") String email);
 
 }
