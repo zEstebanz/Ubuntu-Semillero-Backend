@@ -72,7 +72,7 @@ public class PublicacionController {
         }
     }
 
-    @GetMapping("admin/ultimasDiez")
+    @PostMapping("admin/ultimasDiez")
     public ResponseEntity<?> traerUltimasDiez(@RequestBody AdminRequest adminRequest) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(publicacionServiceImpl.traerUltimasDiez(adminRequest));
