@@ -7,7 +7,7 @@ import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Services.EmailService;
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
-import jakarta.activation.FileDataSource;
+import jakarta.activation.URLDataSource;
 import jakarta.mail.BodyPart;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -74,6 +75,7 @@ public class EmailServiceImpl implements EmailService {
 
         try {
 
+            String img = "https://res.cloudinary.com/dvoxzrkzs/image/upload/v1712243784/ylskm5imguiqdn302v9y.png";
             MimeMessage message = getMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF_8_ENCODING");
             helper.setPriority(1);
@@ -96,8 +98,7 @@ public class EmailServiceImpl implements EmailService {
 
             // Add Ubuntu IMG
             BodyPart imageBodyPart = new MimeBodyPart();
-            String imagePath = System.getProperty("user.home") + "/Downloads/ubuntu.png";
-            DataSource dataSource = new FileDataSource(imagePath);
+            DataSource dataSource = new URLDataSource(new URL(img));
             imageBodyPart.setDataHandler(new DataHandler(dataSource));
             imageBodyPart.setHeader("Content-ID", "image");
             mimeMultipart.addBodyPart(imageBodyPart);
