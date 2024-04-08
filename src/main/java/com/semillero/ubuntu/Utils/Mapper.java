@@ -1,10 +1,7 @@
 package com.semillero.ubuntu.Utils;
 
 import com.semillero.ubuntu.DTOs.*;
-import com.semillero.ubuntu.DTOs.ImageDto;
-import com.semillero.ubuntu.DTOs.MensajeResponseDTO;
-import com.semillero.ubuntu.DTOs.MicroemprendimientoResponse;
-import com.semillero.ubuntu.DTOs.PublicationResponse;
+import com.semillero.ubuntu.Entities.DTOs.*;
 import com.semillero.ubuntu.Entities.Image;
 import com.semillero.ubuntu.Entities.Mensaje;
 import com.semillero.ubuntu.Entities.Microemprendimiento;

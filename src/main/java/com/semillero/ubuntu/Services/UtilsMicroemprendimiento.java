@@ -1,6 +1,5 @@
 package com.semillero.ubuntu.Services;
 
-import com.semillero.ubuntu.DTOs.MicroemprendimientoRequest;
 import com.semillero.ubuntu.Entities.*;
 import org.springframework.web.multipart.MultipartFile;
 

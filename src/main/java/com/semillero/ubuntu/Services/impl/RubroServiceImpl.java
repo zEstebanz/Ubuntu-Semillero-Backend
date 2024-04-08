@@ -8,12 +8,10 @@ import com.semillero.ubuntu.Repositories.RubroRepository;
 import com.semillero.ubuntu.Services.RubroService;
 import com.semillero.ubuntu.Utils.Mapper;
 import com.semillero.ubuntu.Utils.MapperUtil;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

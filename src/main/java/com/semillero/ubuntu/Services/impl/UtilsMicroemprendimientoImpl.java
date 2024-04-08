@@ -1,6 +1,5 @@
 package com.semillero.ubuntu.Services.impl;
 
-import com.semillero.ubuntu.DTOs.MicroemprendimientoRequest;
 import com.semillero.ubuntu.Entities.*;
 import com.semillero.ubuntu.Exceptions.ImageException;
 import com.semillero.ubuntu.Repositories.*;

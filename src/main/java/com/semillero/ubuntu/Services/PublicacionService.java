@@ -1,6 +1,9 @@
 package com.semillero.ubuntu.Services;
 
-import com.semillero.ubuntu.DTOs.*;
+import com.semillero.ubuntu.DTOs.AddImageToPublication;
+import com.semillero.ubuntu.DTOs.PublicacionDTO;
+import com.semillero.ubuntu.DTOs.PublicationEditRequest;
+import com.semillero.ubuntu.DTOs.PublicationResponse;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
