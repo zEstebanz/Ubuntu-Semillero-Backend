@@ -17,12 +17,13 @@ public class Mapper {
         List<String> getUrl = images.stream().map(Image::getSecure_url).toList();
 
         return new PublicationResponse(
-                publicacion.getTitulo(),
-                publicacion.getDescripcion(),
-                publicacion.getIsDeleted(),
-                publicacion.getUsuarioCreador().getId(),
-                getUrl
-        );
+                        publicacion.getTitulo(),
+                        publicacion.getDescripcion(),
+                        publicacion.getIsDeleted(),
+                        publicacion.getUsuarioCreador().getId(),
+                        publicacion.getFechaCreacion(),
+                        getUrl
+                );
     }
     public static MicroemprendimientoResponse microemprendimientoToResponse(Microemprendimiento microemprendimiento, List<Image> images){
 
