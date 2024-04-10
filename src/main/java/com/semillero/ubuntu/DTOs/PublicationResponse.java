@@ -2,6 +2,7 @@ package com.semillero.ubuntu.DTOs;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public record PublicationResponse(
         Long id,
@@ -10,6 +11,6 @@ public record PublicationResponse(
         Boolean isDeleted,
         Long idUsuario,
         LocalDate fechaCreacion,
-        List<String> images
+        Map<Long,String> images
 ) {
 }

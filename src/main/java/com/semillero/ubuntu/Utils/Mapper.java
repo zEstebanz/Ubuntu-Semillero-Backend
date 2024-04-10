@@ -8,13 +8,15 @@ import com.semillero.ubuntu.Entities.Publicacion;
 import jakarta.persistence.Tuple;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Mapper {
 
     public static PublicationResponse publicationToPublicationResponse(Publicacion publicacion, List<Image> images){
 
-        List<String> getUrl = images.stream().map(Image::getSecure_url).toList();
+        Map<Long,String> getUrl = images.stream()
+                .collect(Collectors.toMap(Image::getId, Image::getSecure_url));
 
         return new PublicationResponse(
                         publicacion.getId(),
