@@ -15,6 +15,7 @@ public interface PublicacionService {
     PublicationResponse crearPublicacion(PublicacionDTO publicacionDTO) throws EntityNotFoundException;
     PublicationResponse editarPublicacion(Long id, PublicationEditRequest publicationEdit);
     void bajaLogica(Long id);
+    PublicationResponse findById(Long id);
     void verPubliVisitante(Long id) throws EntityNotFoundException;
     List<PublicationResponse> traerUltimasTres() throws Exception;
     PublicationResponse addImage(AddImageToPublication ids);

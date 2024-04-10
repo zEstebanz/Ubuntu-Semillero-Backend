@@ -185,6 +185,15 @@ public class PublicacionServiceImpl implements PublicacionService {
         }
     }
 
+    @Override
+    public PublicationResponse findById(Long id) {
+
+        Publicacion findPublication = publicacionRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Publiction not found with ID: " + id));
+
+        return Mapper.publicationToPublicationResponse(findPublication, findPublication.getImages());
+    }
+
     /**
      Función de ver publicaciones en más detalle (haciendo clic en 'ver más') aumentando las vistas de la
      publicación.

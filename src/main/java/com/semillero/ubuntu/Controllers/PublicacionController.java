@@ -27,6 +27,12 @@ public class PublicacionController {
         }
     }
 
+    @GetMapping("/admin/findById/{id}")
+    public ResponseEntity<PublicationResponse> findById(@PathVariable("id") Long id) {  //Administrador
+
+        return ResponseEntity.ok(publicacionServiceImpl.findById(id));
+    }
+
     @GetMapping("/permitidas")
     public ResponseEntity<?> getAllPublisPermitidas() { //Visitante
         try {
