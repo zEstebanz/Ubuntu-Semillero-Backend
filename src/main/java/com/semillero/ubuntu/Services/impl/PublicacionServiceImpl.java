@@ -39,12 +39,7 @@ public class PublicacionServiceImpl implements PublicacionService {
 
     /**
      * Trae todas las publicaciones guardadas en la base de datos, incluidas las ocultas
-<<<<<<< HEAD
      * y las mapea en una lista de tipo PublicationResponse.
-=======
-     * y las mapea en una lista de tipo DTO
-     * Cambiar DTO a PublicationResponse
->>>>>>> feature-inversion
      * <p>
      * (Habría que ver si crear otro método getAll pero que el usuario logueado solo pueda ver las que él/ella creó)
      * <p>
@@ -65,16 +60,13 @@ public class PublicacionServiceImpl implements PublicacionService {
     }
 
     /**
-<<<<<<< HEAD
      * Trae todas las publicaciones que están disponibles (isDeleted = False).
      * <p>
      * Rol: VISITANTE
-=======
      Trae todas las publicaciones que están disponibles
      Cambiar DTO a Response
      <p>
      Rol: VISITANTE
->>>>>>> feature-inversion
      **/
     @Transactional
     public List<PublicationResponse> traerPublisNoOcultas() throws Exception {
@@ -212,12 +204,7 @@ public class PublicacionServiceImpl implements PublicacionService {
     }
 
     /**
-<<<<<<< HEAD
      * Función de ver las últimas 3 publicaciones agregadas por los administradores.
-=======
-     * Función de ver las últimas 3 publicaciones agregadas por los administradores
-     * Cambiar DTO a PublicationResponse
->>>>>>> feature-inversion
      * <p>
      * Esta función se utiliza en el inicio
      **/

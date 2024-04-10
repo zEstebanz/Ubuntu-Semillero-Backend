@@ -9,6 +9,7 @@ public class GestionInversionDTO {
     Double max;
     Double min;
     Double tasaRetorno;
+    Integer cuotas;
     NivelRiesgo nivelRiesgo;
     Boolean Activo;
     //Relacion Microemprendimiento

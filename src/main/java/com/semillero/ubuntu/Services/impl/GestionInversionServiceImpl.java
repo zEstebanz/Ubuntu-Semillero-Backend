@@ -48,8 +48,8 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             Microemprendimiento micro = microemprendimientoRepository.findById(recibirInversionDTO.getIdMicro())
                     .orElseThrow( () -> new EntityNotFoundException("No se encontro el emprendimiento con id: " + recibirInversionDTO.getIdMicro()) );
 
-            double montoAporte = recibirInversionDTO.getMontoAporte();
             //Verifico si el monto aportado se encuentra entre el maximo y el minimo
+            double montoAporte = recibirInversionDTO.getMontoAporte();
             if (montoAporte <= gestion.getMin() || montoAporte >= gestion.getMax()) {
                 throw new IllegalArgumentException("Se debe ingresar un valor entre " + gestion.getMin() + " y " +  gestion.getMax());
             }
@@ -85,7 +85,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
                     .factorRiesgo(factorRiesgo)
                     .tasaRetorno(gestion.getTasaRetorno())
                     .nivelRiesgo(gestion.getNivelRiesgo())
-
+                    //Puede que haya que cambiar la descripcion utilizada
                     .descripcion(micro.getDescripcion())
                     .nombreMicro(micro.getNombre())
 
@@ -107,8 +107,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
                     .costosGestion(gestionInversionDTO.getCostosGestion())
                     //Elijo la descripcion del micro por ahora, si es necesario que gestion tenga una aparte cambiar
                     .descripcion(micro.getDescripcion())
-                    //No se entiende realmente este campo
-                    .cuotas(0)
+                    .cuotas(gestionInversionDTO.getCuotas())
                     .max(gestionInversionDTO.getMax())
                     .min(gestionInversionDTO.getMin())
                     .tasaRetorno(gestionInversionDTO.getTasaRetorno())
