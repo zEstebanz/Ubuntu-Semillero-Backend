@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record PublicationResponse(
+        Long id,
         String titulo,
         String descripcion,
         Boolean isDeleted,

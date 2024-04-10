@@ -17,6 +17,7 @@ public class Mapper {
         List<String> getUrl = images.stream().map(Image::getSecure_url).toList();
 
         return new PublicationResponse(
+                        publicacion.getId(),
                         publicacion.getTitulo(),
                         publicacion.getDescripcion(),
                         publicacion.getIsDeleted(),
