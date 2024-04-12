@@ -142,7 +142,7 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         Microemprendimiento microemprendimiento = microemprendimientoRepository.findByIdAndDeletedFalse(idMicroemprendimiento)
                 .orElseThrow(() -> new EntityNotFoundException("Microemprendimiento not found with id: "+ idMicroemprendimiento));
         return ResponseEntity.status(HttpStatus.OK)
-                .body(MapperUtil.mapToDto(microemprendimiento, MicroemprendimientoResponse.class));
+                .body(Mapper.microemprendimientoToResponse(microemprendimiento, microemprendimiento.getImages()));
     }
     @Transactional
     @Override
