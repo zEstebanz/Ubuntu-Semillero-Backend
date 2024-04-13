@@ -37,7 +37,9 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/microemprendimientos/findAll"),
             new AntPathRequestMatcher("/microemprendimientos/findByRubro/{idRubro}"),
             //MENSAJE ROUTES
-            new AntPathRequestMatcher("/mensaje/create")
+            new AntPathRequestMatcher("/mensaje/create"),
+            //GESTIONINVERSION ROUTES
+            new AntPathRequestMatcher("/gestionInversion/calcularInversion")
     );
 
     RequestMatcher adminUrls = new OrRequestMatcher(
@@ -74,7 +76,11 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/mensaje"),
             new AntPathRequestMatcher("/mensaje/gestionado"),
             new AntPathRequestMatcher("/mensaje/{id}"),
-            new AntPathRequestMatcher("/mensaje/estadistica")
+            new AntPathRequestMatcher("/mensaje/estadistica"),
+            //GESTIONINVERSION ROUTES
+            new AntPathRequestMatcher("/gestionInversion/admin/create"),
+            new AntPathRequestMatcher("/gestionInversion/admin/edit"),
+            new AntPathRequestMatcher("/gestionInversion/admin/getAll") //Esta en teoria no se utiliza
 
     );
 

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("GestionInversion")
+@RequestMapping("gestionInversion")
 public class GestionInversionController {
     @Autowired
     private GestionInversionServiceImpl gestionInversionServiceImpl;
@@ -41,10 +41,20 @@ public class GestionInversionController {
         }
     }
 
-    @PutMapping("/admin/edit/{id}")
-    public ResponseEntity<?> editarGestion(@RequestParam Long id, @RequestBody GestionInversionDTO gestionInversionDTO) {   //Administrador
+    @PutMapping("/admin/edit")
+    public ResponseEntity<?> editarGestion(@RequestBody GestionInversionDTO gestionInversionDTO) {   //Administrador
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(gestionInversionServiceImpl.editarGestion(id, gestionInversionDTO));
+            return ResponseEntity.status(HttpStatus.OK).body(gestionInversionServiceImpl.editarGestion(gestionInversionDTO));
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @PutMapping("/admin/logic/{idMicro}")
+    public ResponseEntity<?> logicaGestion(@RequestParam Long idMicro) {
+        try {
+            gestionInversionServiceImpl.logicaGestion(idMicro);
+            return ResponseEntity.status(HttpStatus.OK).body("Baja Logica correcta");
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
