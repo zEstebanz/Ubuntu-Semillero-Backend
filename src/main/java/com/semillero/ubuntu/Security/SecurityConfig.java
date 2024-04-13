@@ -80,8 +80,8 @@ public class SecurityConfig {
             //GESTIONINVERSION ROUTES
             new AntPathRequestMatcher("/gestionInversion/admin/create"),
             new AntPathRequestMatcher("/gestionInversion/admin/edit"),
-            new AntPathRequestMatcher("/gestionInversion/admin/getAll") //Esta en teoria no se utiliza
-
+            new AntPathRequestMatcher("/gestionInversion/admin/getAll"), //Esta en teoria no se utiliza
+            new AntPathRequestMatcher("/gestionInversion/admin/logic/{idMicro}")
     );
 
     @Bean
