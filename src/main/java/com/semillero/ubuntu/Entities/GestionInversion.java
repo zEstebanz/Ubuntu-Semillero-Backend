@@ -60,6 +60,6 @@ public class GestionInversion {
     */
 
     @Column(nullable = false)
-    private Boolean Activo;
+    private Boolean inactivo;
 
 }

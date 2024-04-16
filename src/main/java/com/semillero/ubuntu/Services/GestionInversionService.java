@@ -17,4 +17,6 @@ public interface GestionInversionService {
     GestionInversionDTO editarGestion(GestionInversionDTO gestionInversionDTO) throws Exception;
 
     void logicaGestion(Long idMicro) throws Exception;
+
+    GestionInversionDTO getInversion(Long idMicro) throws Exception;
 }

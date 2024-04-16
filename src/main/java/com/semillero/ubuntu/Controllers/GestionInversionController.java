@@ -59,4 +59,13 @@ public class GestionInversionController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
+
+    @GetMapping("/admin/{idMicro}")
+    public ResponseEntity<?> getInversion(@PathVariable Long idMicro) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(gestionInversionServiceImpl.getInversion(idMicro));
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
 }

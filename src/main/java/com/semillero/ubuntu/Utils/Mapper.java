@@ -107,6 +107,7 @@ public class Mapper {
                 .nivelRiesgo(gestion.getNivelRiesgo())
                 .notasAdicionales(gestion.getNotasAdicionales())
                 .idMicro(idMicro)
+                .inactivo(gestion.getInactivo())
                 .build();
     }
 }

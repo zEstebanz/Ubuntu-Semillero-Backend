@@ -13,7 +13,7 @@ public class GestionInversionDTO {
     Double tasaRetorno;
     Integer cuotas;
     NivelRiesgo nivelRiesgo;
-    Boolean Activo;
+    Boolean inactivo;
     //Relacion Microemprendimiento
     Long idMicro;
     String notasAdicionales;

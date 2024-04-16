@@ -8,7 +8,6 @@ import com.semillero.ubuntu.Entities.Microemprendimiento;
 import com.semillero.ubuntu.Enums.NivelRiesgo;
 import com.semillero.ubuntu.Repositories.GestionInversionRepository;
 import com.semillero.ubuntu.Repositories.MicroemprendimientoRepository;
-import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Services.GestionInversionService;
 import com.semillero.ubuntu.Utils.Mapper;
 import com.semillero.ubuntu.Utils.MapperUtil;
@@ -24,9 +23,6 @@ import java.util.Map;
 public class GestionInversionServiceImpl implements GestionInversionService {
     @Autowired
     private GestionInversionRepository gestionInversionRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private MicroemprendimientoRepository microemprendimientoRepository;
@@ -57,6 +53,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             }
 
             //El tema de como calcular o recibir la cantidad de cuotas puede cambiar, por ahora solo recibe las cuotas que el usuario ingresa
+            //Puede ser que haya que mapearlas tambien en un array
             Integer cuotas = recibirInversionDTO.getCuotas();
             if (cuotas <= 0) {
                 throw new IllegalArgumentException("Se deben ingresar un numero de cuotas");
@@ -112,13 +109,15 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             GestionInversion gestionInversion = GestionInversion.builder()
                     .costosGestion(gestionInversionDTO.getCostosGestion())
                     .notasAdicionales(gestionInversionDTO.getNotasAdicionales())
+                    //El tema de como calcular o recibir la cantidad de cuotas puede cambiar, por ahora solo recibe las cuotas que el usuario ingresa
+                    //Puede ser que haya que mapearlas tambien en un array
                     .cuotas(gestionInversionDTO.getCuotas())
                     .max(gestionInversionDTO.getMax())
                     .min(gestionInversionDTO.getMin())
                     .tasaRetorno(gestionInversionDTO.getTasaRetorno())
                     .nivelRiesgo(gestionInversionDTO.getNivelRiesgo())
                     .microemprendimiento(micro)
-                    .Activo(gestionInversionDTO.getActivo())
+                    .inactivo(gestionInversionDTO.getInactivo())
                     .build();
 
             try {
@@ -155,9 +154,13 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             gestion.setCostosGestion(gestionInversionDTO.getCostosGestion());
             gestion.setMax(gestionInversionDTO.getMax());
             gestion.setMin(gestionInversionDTO.getMin());
+            //El tema de como calcular o recibir la cantidad de cuotas puede cambiar, por ahora solo recibe las cuotas que el usuario ingresa
+            //Puede ser que haya que mapearlas tambien en un array
+            gestion.setCuotas(gestion.getCuotas());
             gestion.setTasaRetorno(gestionInversionDTO.getTasaRetorno());
             gestion.setNivelRiesgo(gestionInversionDTO.getNivelRiesgo());
-            gestion.setActivo(gestionInversionDTO.getActivo());
+            gestion.setInactivo(gestionInversionDTO.getInactivo());
+            gestion.setNotasAdicionales(gestionInversionDTO.getNotasAdicionales());
             try {
                 gestionInversionRepository.save(gestion);
             } catch (Exception e) {
@@ -198,7 +201,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             GestionInversion gestion = gestionInversionRepository.buscarPorMicroId(idMicro)
                     .orElseThrow( () -> new EntityNotFoundException("Gestion no encontrada con id de Micro: " + idMicro));
             //Asignamos el valor opuesto de la var Activa
-            gestion.setActivo(!gestion.getActivo());
+            gestion.setInactivo(!gestion.getInactivo());
             gestionInversionRepository.save(gestion);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -206,9 +209,22 @@ public class GestionInversionServiceImpl implements GestionInversionService {
     }
 
     /**
-     * Funcion que busca y trae la gestion asociada a la inversion (En construccion)
+     * Funcion que busca y trae la gestion asociada a la inversion (En revision)
      *<p>
      * Rol: ADMIN
+     * <p>
+     *  Notas: Es necesario que la logica tambien contemple la posibilidad de que no exista
+     *  la gestion asi el admin puede crearla, entonces hay que ver el manejo de errores en el front y evitar un exception
+     *  que no permita ver la gestion
      * **/
-
+    public GestionInversionDTO getInversion(Long idMicro) throws Exception {
+        try {
+            //La busqueda se realiza con el idMicro, exigiendo que si existe el Gestionador de Inversiones, este debe estar asignado al Micro correspondiente
+            GestionInversion gestion = gestionInversionRepository.buscarPorMicroId(idMicro)
+                    .orElseThrow( () -> new EntityNotFoundException("Gestion no encontrada con id de Micro: " + idMicro + ". Desea crear una?"));
+            return Mapper.respuestaGestionInversion(gestion, idMicro);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 }

@@ -81,7 +81,8 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/gestionInversion/admin/create"),
             new AntPathRequestMatcher("/gestionInversion/admin/edit"),
             new AntPathRequestMatcher("/gestionInversion/admin/getAll"), //Esta en teoria no se utiliza
-            new AntPathRequestMatcher("/gestionInversion/admin/logic/{idMicro}")
+            new AntPathRequestMatcher("/gestionInversion/admin/logic/{idMicro}"),
+            new AntPathRequestMatcher("/gestionInversion/admin/{idMicro}")
     );
 
     @Bean
