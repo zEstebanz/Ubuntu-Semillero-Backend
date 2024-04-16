@@ -1,8 +1,10 @@
 package com.semillero.ubuntu.DTOs;
 
 import com.semillero.ubuntu.Enums.NivelRiesgo;
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 public class GestionInversionDTO {
     Double costosGestion;
@@ -14,4 +16,5 @@ public class GestionInversionDTO {
     Boolean Activo;
     //Relacion Microemprendimiento
     Long idMicro;
+    String notasAdicionales;
 }

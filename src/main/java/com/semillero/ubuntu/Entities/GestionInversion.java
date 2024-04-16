@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "GestionInversion")
+@Table(name = "gestion_inversion")
 public class GestionInversion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +26,8 @@ public class GestionInversion {
     @Column(nullable = false)
     private Double costosGestion;
 
-    @Column(nullable = false)
-    private String descripcion;
+    @Column(length = 300)
+    private String notasAdicionales;
 
     //Puede que haya que agregar una cantidad fija de cuotas a recibir
     @Column(nullable = false)

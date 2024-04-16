@@ -24,8 +24,8 @@ public class CalculoInversionDTO {
     Double factorRiesgo;
     Double tasaRetorno;
     NivelRiesgo nivelRiesgo;
+    String notasAdicionales;
     //Atributos Microemprendimiento
-    String descripcion;
     String nombreMicro;
 
 }

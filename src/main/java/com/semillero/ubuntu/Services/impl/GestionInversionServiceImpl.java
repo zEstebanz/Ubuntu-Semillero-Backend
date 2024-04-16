@@ -10,6 +10,7 @@ import com.semillero.ubuntu.Repositories.GestionInversionRepository;
 import com.semillero.ubuntu.Repositories.MicroemprendimientoRepository;
 import com.semillero.ubuntu.Repositories.UsuarioRepository;
 import com.semillero.ubuntu.Services.GestionInversionService;
+import com.semillero.ubuntu.Utils.Mapper;
 import com.semillero.ubuntu.Utils.MapperUtil;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -86,8 +87,8 @@ public class GestionInversionServiceImpl implements GestionInversionService {
                     .factorRiesgo(factorRiesgo)
                     .tasaRetorno(gestion.getTasaRetorno())
                     .nivelRiesgo(gestion.getNivelRiesgo())
-                    //Puede que haya que cambiar la descripcion utilizada
-                    .descripcion(micro.getDescripcion())
+                    .notasAdicionales(gestion.getNotasAdicionales())
+
                     .nombreMicro(micro.getNombre())
 
                     .build();
@@ -104,10 +105,13 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             Microemprendimiento micro = microemprendimientoRepository.findById(gestionInversionDTO.getIdMicro())
                     .orElseThrow(() -> new EntityNotFoundException("No se encontro el emprendimiento con id: " + gestionInversionDTO.getIdMicro()));
 
+            if (gestionInversionDTO.getMax() <= gestionInversionDTO.getMin()) {
+                throw new IllegalArgumentException("El minimo debe ser menor al maximo");
+            }
+
             GestionInversion gestionInversion = GestionInversion.builder()
                     .costosGestion(gestionInversionDTO.getCostosGestion())
-                    //Elijo la descripcion del micro por ahora, si es necesario que gestion tenga una aparte cambiar
-                    .descripcion(micro.getDescripcion())
+                    .notasAdicionales(gestionInversionDTO.getNotasAdicionales())
                     .cuotas(gestionInversionDTO.getCuotas())
                     .max(gestionInversionDTO.getMax())
                     .min(gestionInversionDTO.getMin())
@@ -122,7 +126,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             } catch (Exception e) {
                 throw new RuntimeException("Error al guardar la gestión del microemprendimiento " + gestionInversionDTO.getIdMicro(), e);
             }
-            return MapperUtil.mapToDto(gestionInversion, GestionInversionDTO.class);
+            return Mapper.respuestaGestionInversion(gestionInversion, gestionInversionDTO.getIdMicro());
     }
 
     /**
@@ -143,6 +147,11 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             if (!micro.getId().equals(gestionInversionDTO.getIdMicro())) {
                 throw new IllegalArgumentException("El id de microemprendimiento no coincide con la gestión a editar");
             }
+
+            if (gestionInversionDTO.getMax() <= gestionInversionDTO.getMin()) {
+                throw new IllegalArgumentException("El minimo debe ser menor al maximo");
+            }
+
             gestion.setCostosGestion(gestionInversionDTO.getCostosGestion());
             gestion.setMax(gestionInversionDTO.getMax());
             gestion.setMin(gestionInversionDTO.getMin());
@@ -154,7 +163,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             } catch (Exception e) {
                 throw new RuntimeException("Error al guardar la gestión del microemprendimiento " + gestionInversionDTO.getIdMicro(), e);
             }
-            return MapperUtil.mapToDto(gestion, GestionInversionDTO.class);
+            return Mapper.respuestaGestionInversion(gestion, gestionInversionDTO.getIdMicro());
         } catch (EntityNotFoundException | IllegalArgumentException e) { //Atrapo los errores surgidos en los argumentos
             throw e;
         }
@@ -164,7 +173,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
     }
 
     /**
-     * Funcion que busca y trae todas las gestiones creadas
+     * Funcion que busca y trae todas las gestiones creadas (Error de Mapeo, arreglar)
      *<p>
      * Rol: SUPER ADMIN
      * **/
@@ -180,7 +189,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
  /**
   * Funcion que se encarga de activar o desactivar el Gestionador de Inversiones asignado al Microemprendimiento
   * <p>
-  *  Rol: ADMINISTRADOR
+  *  Rol: ADMIN
   **/
     @Override
     public void logicaGestion(Long idMicro) throws Exception {
@@ -195,4 +204,11 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             throw new Exception(e.getMessage());
         }
     }
+
+    /**
+     * Funcion que busca y trae la gestion asociada a la inversion (En construccion)
+     *<p>
+     * Rol: ADMIN
+     * **/
+
 }

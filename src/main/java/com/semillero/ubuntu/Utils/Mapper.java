@@ -1,10 +1,7 @@
 package com.semillero.ubuntu.Utils;
 
 import com.semillero.ubuntu.DTOs.*;
-import com.semillero.ubuntu.Entities.Image;
-import com.semillero.ubuntu.Entities.Mensaje;
-import com.semillero.ubuntu.Entities.Microemprendimiento;
-import com.semillero.ubuntu.Entities.Publicacion;
+import com.semillero.ubuntu.Entities.*;
 import jakarta.persistence.Tuple;
 
 import java.util.List;
@@ -97,6 +94,20 @@ public class Mapper {
             Long cantNoGestionados = resultado.get("cantNoGestionados", Long.class);
             return new MensajeEstadisticaDTO(cantGestionados, cantNoGestionados);
         }
+    }
+
+    //Mappers de Gestion Inversion
+    public static GestionInversionDTO respuestaGestionInversion (GestionInversion gestion, Long idMicro) {
+        return GestionInversionDTO.builder()
+                .costosGestion(gestion.getCostosGestion())
+                .max(gestion.getMax())
+                .min(gestion.getMin())
+                .tasaRetorno(gestion.getTasaRetorno())
+                .cuotas(gestion.getCuotas())
+                .nivelRiesgo(gestion.getNivelRiesgo())
+                .notasAdicionales(gestion.getNotasAdicionales())
+                .idMicro(idMicro)
+                .build();
     }
 }
 

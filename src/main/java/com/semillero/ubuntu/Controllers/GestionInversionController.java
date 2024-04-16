@@ -51,10 +51,10 @@ public class GestionInversionController {
     }
 
     @PutMapping("/admin/logic/{idMicro}")
-    public ResponseEntity<?> logicaGestion(@RequestParam Long idMicro) {
+    public ResponseEntity<?> logicaGestion(@PathVariable Long idMicro) {
         try {
             gestionInversionServiceImpl.logicaGestion(idMicro);
-            return ResponseEntity.status(HttpStatus.OK).body("Baja Logica correcta");
+            return ResponseEntity.status(HttpStatus.OK).body("Logica correcta");
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
