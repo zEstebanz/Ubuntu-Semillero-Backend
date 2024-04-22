@@ -1,15 +1,15 @@
 package com.semillero.ubuntu.ChatBot.Services.Impl;
 
-import com.semillero.ubuntu.ChatBot.DTOs.InitialQuestionRequest;
-import com.semillero.ubuntu.ChatBot.DTOs.QuestionResponse;
-import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionRequest;
-import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.InitialQuestionRequest;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.QuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.SecondaryQuestionRequest;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.SecondaryQuestionResponse;
 import com.semillero.ubuntu.ChatBot.Entities.Answer;
 import com.semillero.ubuntu.ChatBot.Entities.Question;
 import com.semillero.ubuntu.ChatBot.Repositories.AnswerRepository;
 import com.semillero.ubuntu.ChatBot.Repositories.QuestionRepository;
 import com.semillero.ubuntu.ChatBot.Services.QuestionService;
-import com.semillero.ubuntu.ChatBot.mappers.Mapper;
+import com.semillero.ubuntu.ChatBot.mappers.MapperChatbot;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class QuestionServiceImpl implements QuestionService {
         Question newQuestion = Question.createInitialQuestion(question.text(),question.type());
         questionRepository.save(newQuestion);
 
-        return Mapper.questionToResponse(newQuestion);
+        return MapperChatbot.questionToResponse(newQuestion);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class QuestionServiceImpl implements QuestionService {
         findAnswer.addSecondaryQuestion(newQuestion);
         questionRepository.save(newQuestion);
 
-        return Mapper.answerToSecondaryQuestion(findAnswer);
+        return MapperChatbot.answerToSecondaryQuestion(findAnswer);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class QuestionServiceImpl implements QuestionService {
         List<Question> list = questionRepository.getQuestionsNotActive();
 
         return list.stream()
-                .map(Mapper::questionToResponse)
+                .map(MapperChatbot::questionToResponse)
                 .toList();
     }
 
@@ -57,7 +57,7 @@ public class QuestionServiceImpl implements QuestionService {
     public QuestionResponse findById(Long id) {
 
         Question question = findQuestion(id);
-        return Mapper.questionToResponse(question);
+        return MapperChatbot.questionToResponse(question);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.setActive(false);
         questionRepository.save(question);
 
-        return Mapper.questionToResponse(question);
+        return MapperChatbot.questionToResponse(question);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.setActive(true);
         questionRepository.save(question);
 
-        return Mapper.questionToResponse(question);
+        return MapperChatbot.questionToResponse(question);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.updateQuestionText(text);
         questionRepository.save(question);
 
-        return Mapper.questionToResponse(question);
+        return MapperChatbot.questionToResponse(question);
     }
 
     private Question findQuestion(Long id){

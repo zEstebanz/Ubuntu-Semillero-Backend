@@ -1,4 +1,4 @@
-package com.semillero.ubuntu.ChatBot.Exceptions;
+package com.semillero.ubuntu.ChatBot.Exceptions.chatbot;
 
 public class InvalidQuestionText extends RuntimeException{
     public InvalidQuestionText(String message){

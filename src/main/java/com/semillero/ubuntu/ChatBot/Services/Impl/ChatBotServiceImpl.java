@@ -1,12 +1,12 @@
 package com.semillero.ubuntu.ChatBot.Services.Impl;
 
-import com.semillero.ubuntu.ChatBot.DTOs.AnswerPlusSecondaryQuestions;
-import com.semillero.ubuntu.ChatBot.DTOs.QuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.AnswerPlusSecondaryQuestions;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.QuestionResponse;
 import com.semillero.ubuntu.ChatBot.Entities.Answer;
 import com.semillero.ubuntu.ChatBot.Repositories.AnswerRepository;
 import com.semillero.ubuntu.ChatBot.Repositories.QuestionRepository;
 import com.semillero.ubuntu.ChatBot.Services.ChatBotService;
-import com.semillero.ubuntu.ChatBot.mappers.Mapper;
+import com.semillero.ubuntu.ChatBot.mappers.MapperChatbot;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class ChatBotServiceImpl implements ChatBotService {
         var initialQuestions = questionRepository.getActiveInitialQuestions();
 
         return initialQuestions.stream()
-                .map(Mapper::questionToResponse)
+                .map(MapperChatbot::questionToResponse)
                 .collect(Collectors.toList());
     }
 
@@ -38,7 +38,7 @@ public class ChatBotServiceImpl implements ChatBotService {
 
         List<QuestionResponse> secondaryQuestions = answer.getSecondaryQuestions()
                 .stream()
-                .map(Mapper::questionToResponse)
+                .map(MapperChatbot::questionToResponse)
                 .filter(QuestionResponse::active)
                 .toList();
 

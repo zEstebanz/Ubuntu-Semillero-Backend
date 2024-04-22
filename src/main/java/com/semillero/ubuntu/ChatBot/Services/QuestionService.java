@@ -1,9 +1,9 @@
 package com.semillero.ubuntu.ChatBot.Services;
 
-import com.semillero.ubuntu.ChatBot.DTOs.InitialQuestionRequest;
-import com.semillero.ubuntu.ChatBot.DTOs.QuestionResponse;
-import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionRequest;
-import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.InitialQuestionRequest;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.QuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.SecondaryQuestionRequest;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.SecondaryQuestionResponse;
 
 import java.util.List;
 

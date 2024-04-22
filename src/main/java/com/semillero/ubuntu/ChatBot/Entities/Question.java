@@ -1,8 +1,8 @@
 package com.semillero.ubuntu.ChatBot.Entities;
 
 import com.semillero.ubuntu.ChatBot.Enums.QuestionType;
-import com.semillero.ubuntu.ChatBot.Exceptions.AddAnswerException;
-import com.semillero.ubuntu.ChatBot.Exceptions.InvalidQuestionType;
+import com.semillero.ubuntu.ChatBot.Exceptions.chatbot.AddAnswerException;
+import com.semillero.ubuntu.ChatBot.Exceptions.chatbot.InvalidQuestionType;
 import com.semillero.ubuntu.ChatBot.ValueObjects.QuestionText;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;

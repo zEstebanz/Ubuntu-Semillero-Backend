@@ -1,6 +1,9 @@
-package com.semillero.ubuntu.ChatBot.Controllers;
+package com.semillero.ubuntu.ChatBot.Controllers.chatbot;
 
-import com.semillero.ubuntu.ChatBot.DTOs.*;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.InitialQuestionRequest;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.QuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.SecondaryQuestionRequest;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.SecondaryQuestionResponse;
 import com.semillero.ubuntu.ChatBot.Services.Impl.QuestionServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

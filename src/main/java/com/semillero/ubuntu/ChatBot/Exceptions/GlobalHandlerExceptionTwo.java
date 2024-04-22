@@ -1,5 +1,9 @@
 package com.semillero.ubuntu.ChatBot.Exceptions;
 
+import com.semillero.ubuntu.ChatBot.Exceptions.chatbot.AddAnswerException;
+import com.semillero.ubuntu.ChatBot.Exceptions.chatbot.AddSecondaryException;
+import com.semillero.ubuntu.ChatBot.Exceptions.chatbot.InvalidQuestionText;
+import com.semillero.ubuntu.ChatBot.Exceptions.chatbot.InvalidQuestionType;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalHandlerException {
+public class GlobalHandlerExceptionTwo {
 
     @ExceptionHandler(InvalidQuestionText.class)
     public ResponseEntity<Map<String,String>> invalidQuestionTextExceptionHandler(InvalidQuestionText ex){

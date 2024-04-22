@@ -1,15 +1,15 @@
 package com.semillero.ubuntu.ChatBot.Services.Impl;
 
-import com.semillero.ubuntu.ChatBot.DTOs.AnswerRequest;
-import com.semillero.ubuntu.ChatBot.DTOs.AnswerResponse;
-import com.semillero.ubuntu.ChatBot.DTOs.AnswerWithQuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.AnswerRequest;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.AnswerResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.AnswerWithQuestionResponse;
 import com.semillero.ubuntu.ChatBot.Entities.Answer;
 import com.semillero.ubuntu.ChatBot.Entities.Question;
 import com.semillero.ubuntu.ChatBot.Enums.QuestionType;
 import com.semillero.ubuntu.ChatBot.Repositories.AnswerRepository;
 import com.semillero.ubuntu.ChatBot.Repositories.QuestionRepository;
 import com.semillero.ubuntu.ChatBot.Services.AnswerService;
-import com.semillero.ubuntu.ChatBot.mappers.Mapper;
+import com.semillero.ubuntu.ChatBot.mappers.MapperChatbot;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class AnswerServiceImpl implements AnswerService {
         answerRepository.save(newAnswer);
         questionRepository.save(findQuestion);
 
-        return Mapper.answerToAnswerWithQuestionResponse(newAnswer,findQuestion);
+        return MapperChatbot.answerToAnswerWithQuestionResponse(newAnswer,findQuestion);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class AnswerServiceImpl implements AnswerService {
         List<Answer> list = answerRepository.getAllAnswersNotFull();
 
         return list.stream()
-                .map(Mapper::answerToAnswerResponse)
+                .map(MapperChatbot::answerToAnswerResponse)
                 .toList();
     }
 
@@ -55,7 +55,7 @@ public class AnswerServiceImpl implements AnswerService {
 
         Answer answer = findAnswer(id);
 
-        return Mapper.answerToAnswerResponse(answer);
+        return MapperChatbot.answerToAnswerResponse(answer);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class AnswerServiceImpl implements AnswerService {
         answer.updateAnswerText(text);
         answerRepository.save(answer);
 
-        return Mapper.answerToAnswerResponse(answer);
+        return MapperChatbot.answerToAnswerResponse(answer);
     }
 
     private Answer findAnswer(Long id){

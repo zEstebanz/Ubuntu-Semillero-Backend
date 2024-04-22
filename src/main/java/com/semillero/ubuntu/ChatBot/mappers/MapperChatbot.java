@@ -1,15 +1,15 @@
 package com.semillero.ubuntu.ChatBot.mappers;
 
-import com.semillero.ubuntu.ChatBot.DTOs.AnswerResponse;
-import com.semillero.ubuntu.ChatBot.DTOs.AnswerWithQuestionResponse;
-import com.semillero.ubuntu.ChatBot.DTOs.QuestionResponse;
-import com.semillero.ubuntu.ChatBot.DTOs.SecondaryQuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.AnswerResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.AnswerWithQuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.QuestionResponse;
+import com.semillero.ubuntu.ChatBot.DTOs.chatbot.SecondaryQuestionResponse;
 import com.semillero.ubuntu.ChatBot.Entities.Answer;
 import com.semillero.ubuntu.ChatBot.Entities.Question;
 
 import java.util.List;
 
-public class Mapper {
+public class MapperChatbot {
 
     public static QuestionResponse questionToResponse(Question question){
 
@@ -47,7 +47,7 @@ public class Mapper {
     public static SecondaryQuestionResponse answerToSecondaryQuestion(Answer answer){
         List<QuestionResponse> secondaryQuestions=answer.getSecondaryQuestions()
                 .stream()
-                .map(Mapper::questionToResponse)
+                .map(MapperChatbot::questionToResponse)
                 .toList();
         return new SecondaryQuestionResponse(
                 answer.getId(),

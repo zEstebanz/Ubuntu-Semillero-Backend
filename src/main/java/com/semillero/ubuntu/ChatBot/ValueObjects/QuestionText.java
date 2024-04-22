@@ -1,6 +1,6 @@
 package com.semillero.ubuntu.ChatBot.ValueObjects;
 
-import com.semillero.ubuntu.ChatBot.Exceptions.InvalidQuestionText;
+import com.semillero.ubuntu.ChatBot.Exceptions.chatbot.InvalidQuestionText;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
