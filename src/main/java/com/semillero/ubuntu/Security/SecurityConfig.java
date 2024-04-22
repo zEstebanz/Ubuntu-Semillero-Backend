@@ -39,7 +39,10 @@ public class SecurityConfig {
             //MENSAJE ROUTES
             new AntPathRequestMatcher("/mensaje/create"),
             //GESTIONINVERSION ROUTES
-            new AntPathRequestMatcher("/gestionInversion/calcularInversion")
+            new AntPathRequestMatcher("/gestionInversion/calcularInversion"),
+            //CHATBOT ROUTES
+            new AntPathRequestMatcher("/faq/initials"),
+            new AntPathRequestMatcher("/faq/answer/{id}")
     );
 
     RequestMatcher adminUrls = new OrRequestMatcher(
@@ -82,7 +85,19 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/gestionInversion/admin/edit"),
             new AntPathRequestMatcher("/gestionInversion/admin/getAll"), //Esta en teoria no se utiliza
             new AntPathRequestMatcher("/gestionInversion/admin/logic/{idMicro}"),
-            new AntPathRequestMatcher("/gestionInversion/admin/{idMicro}")
+            new AntPathRequestMatcher("/gestionInversion/admin/{idMicro}"),
+            //ANSWER ROUTES
+            new AntPathRequestMatcher("/answer/create"),
+            new AntPathRequestMatcher("/answer/answersNotFull"),
+            new AntPathRequestMatcher("/answer/{id}"),
+            //QUESTION ROUTES
+            new AntPathRequestMatcher("/question/initial"),
+            new AntPathRequestMatcher("/question/secondary"),
+            new AntPathRequestMatcher("/question/questionsNotActive"),
+            new AntPathRequestMatcher("/question/{id}"),
+            new AntPathRequestMatcher("/question/hide/{id}"),
+            new AntPathRequestMatcher("/question/show/{id}"),
+            new AntPathRequestMatcher("/question/text/{id}")
     );
 
     @Bean
