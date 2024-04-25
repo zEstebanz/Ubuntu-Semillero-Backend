@@ -40,6 +40,7 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/mensaje/create"),
             //GESTIONINVERSION ROUTES
             new AntPathRequestMatcher("/gestionInversion/calcularInversion"),
+            new AntPathRequestMatcher("/gestionInversion/{idMicro}"),
             //CHATBOT ROUTES
             new AntPathRequestMatcher("/faq/initials"),
             new AntPathRequestMatcher("/faq/answer/{id}")

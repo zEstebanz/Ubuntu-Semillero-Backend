@@ -110,5 +110,15 @@ public class Mapper {
                 .inactivo(gestion.getInactivo())
                 .build();
     }
+
+    public static InversionVisitanteDTO respuestaInversionVisitante (GestionInversion gestion, Long idMicro) {
+        return InversionVisitanteDTO.builder()
+                .min(gestion.getMin())
+                .max(gestion.getMax())
+                .cuotas(gestion.getCuotas())
+                .inactivo(gestion.getInactivo())
+                .idMicro(idMicro)
+                .build();
+    }
 }
 

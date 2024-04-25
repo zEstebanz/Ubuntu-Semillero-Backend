@@ -2,6 +2,7 @@ package com.semillero.ubuntu.Services;
 
 import com.semillero.ubuntu.DTOs.CalculoInversionDTO;
 import com.semillero.ubuntu.DTOs.GestionInversionDTO;
+import com.semillero.ubuntu.DTOs.InversionVisitanteDTO;
 import com.semillero.ubuntu.DTOs.RecibirInversionDTO;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface GestionInversionService {
     void logicaGestion(Long idMicro) throws Exception;
 
     GestionInversionDTO getInversion(Long idMicro) throws Exception;
+
+    InversionVisitanteDTO getInversionVisitante(Long idMicro) throws Exception;
 }

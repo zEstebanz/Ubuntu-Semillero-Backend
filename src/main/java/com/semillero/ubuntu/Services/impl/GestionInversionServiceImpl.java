@@ -2,6 +2,7 @@ package com.semillero.ubuntu.Services.impl;
 
 import com.semillero.ubuntu.DTOs.CalculoInversionDTO;
 import com.semillero.ubuntu.DTOs.GestionInversionDTO;
+import com.semillero.ubuntu.DTOs.InversionVisitanteDTO;
 import com.semillero.ubuntu.DTOs.RecibirInversionDTO;
 import com.semillero.ubuntu.Entities.GestionInversion;
 import com.semillero.ubuntu.Entities.Microemprendimiento;
@@ -109,7 +110,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             GestionInversion gestionInversion = GestionInversion.builder()
                     .costosGestion(gestionInversionDTO.getCostosGestion())
                     .notasAdicionales(gestionInversionDTO.getNotasAdicionales())
-                    //El tema de como calcular o recibir la cantidad de cuotas puede cambiar, por ahora solo recibe las cuotas que el usuario ingresa
+                    //El tema de como calcular o recibir la cantidad de cuotas puede cambiar, por ahora solo recibe las cuotas que el admin ingresa
                     //Puede ser que haya que mapearlas tambien en un array
                     .cuotas(gestionInversionDTO.getCuotas())
                     .max(gestionInversionDTO.getMax())
@@ -154,7 +155,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             gestion.setCostosGestion(gestionInversionDTO.getCostosGestion());
             gestion.setMax(gestionInversionDTO.getMax());
             gestion.setMin(gestionInversionDTO.getMin());
-            //El tema de como calcular o recibir la cantidad de cuotas puede cambiar, por ahora solo recibe las cuotas que el usuario ingresa
+            //El tema de como calcular o recibir la cantidad de cuotas puede cambiar, por ahora solo recibe las cuotas que el admin ingresa
             //Puede ser que haya que mapearlas tambien en un array
             gestion.setCuotas(gestion.getCuotas());
             gestion.setTasaRetorno(gestionInversionDTO.getTasaRetorno());
@@ -221,8 +222,27 @@ public class GestionInversionServiceImpl implements GestionInversionService {
         try {
             //La busqueda se realiza con el idMicro, exigiendo que si existe el Gestionador de Inversiones, este debe estar asignado al Micro correspondiente
             GestionInversion gestion = gestionInversionRepository.buscarPorMicroId(idMicro)
-                    .orElseThrow( () -> new EntityNotFoundException("Gestion no encontrada con id de Micro: " + idMicro + ". Desea crear una?"));
+                    .orElseThrow( () -> new EntityNotFoundException("Gestion no encontrada con id de Micro: " + idMicro + "." +
+                            "Razones: No se encontro la gestion o no existe"));
             return Mapper.respuestaGestionInversion(gestion, idMicro);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Funcion que busca y trae el gestionador de inversiones asociado al microemprendimiento para que el visitante
+     * pueda ingresar los valores
+     * <p>
+     * Rol: VISITANTE
+     * **/
+    @Override
+    public InversionVisitanteDTO getInversionVisitante(Long idMicro) throws Exception {
+        try {
+            //La busqueda se realiza con el idMicro, exigiendo que si existe el Gestionador de Inversiones, este debe estar asignado al Micro correspondiente
+            GestionInversion gestion = gestionInversionRepository.buscarPorMicroId(idMicro)
+                    .orElseThrow( () -> new EntityNotFoundException("Gestion no encontrada con id de Micro: " + idMicro));
+            return Mapper.respuestaInversionVisitante(gestion, idMicro);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

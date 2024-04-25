@@ -51,7 +51,7 @@ public class GestionInversionController {
     }
 
     @PutMapping("/admin/logic/{idMicro}")
-    public ResponseEntity<?> logicaGestion(@PathVariable Long idMicro) {
+    public ResponseEntity<?> logicaGestion(@PathVariable Long idMicro) {    //Administrador
         try {
             gestionInversionServiceImpl.logicaGestion(idMicro);
             return ResponseEntity.status(HttpStatus.OK).body("Logica correcta");
@@ -61,9 +61,18 @@ public class GestionInversionController {
     }
 
     @GetMapping("/admin/{idMicro}")
-    public ResponseEntity<?> getInversion(@PathVariable Long idMicro) {
+    public ResponseEntity<?> getInversion(@PathVariable Long idMicro) {     //Administrador
         try {
             return ResponseEntity.status(HttpStatus.OK).body(gestionInversionServiceImpl.getInversion(idMicro));
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @GetMapping("/{idMicro}")
+    public ResponseEntity<?>getInversionVisitante(@PathVariable Long idMicro) {     //Visitante
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(gestionInversionServiceImpl.getInversionVisitante(idMicro));
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
