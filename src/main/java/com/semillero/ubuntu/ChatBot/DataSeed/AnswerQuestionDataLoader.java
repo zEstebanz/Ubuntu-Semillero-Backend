@@ -79,6 +79,12 @@ public class AnswerQuestionDataLoader implements CommandLineRunner {
             answer2.addSecondaryQuestion(question7);
             answer2.addSecondaryQuestion(question8);
 
+            // TRUE
+            answer5.updateIsFull(true);
+            answer6.updateIsFull(true);
+            answer7.updateIsFull(true);
+            answer8.updateIsFull(true);
+
             // Guardar nuevamente preguntas con relaciones actualizadas
             questionRepository.save(question1);
             questionRepository.save(question2);
