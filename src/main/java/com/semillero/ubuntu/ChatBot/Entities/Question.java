@@ -19,6 +19,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Embedded
+    @AttributeOverride(name = "text", column = @Column(length = 150))
     private QuestionText text;
     private Boolean active;
     @Enumerated(EnumType.STRING)
@@ -27,7 +28,7 @@ public class Question {
     @JoinColumn(name = "id_answer")
     private Answer answer;
 
-    private Question(){}
+    public Question(){}
 
     private Question(QuestionText text, Boolean active, QuestionType type){
         this.text = text;

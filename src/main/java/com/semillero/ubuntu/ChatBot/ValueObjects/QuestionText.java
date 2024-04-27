@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public record QuestionText(String text) {
     private static final int MIN_LENGTH = 6;
-    private static final int MAX_LENGTH = 45;
+    private static final int MAX_LENGTH = 150;
 
     public QuestionText{
         validateText(text);

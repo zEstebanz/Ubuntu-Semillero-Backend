@@ -20,13 +20,14 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Embedded
+    @AttributeOverride(name = "text", column = @Column(length = 400))
     private AnswerText text;
     private Boolean isFull;
     @OneToMany
     @JoinColumn(name = "id_secondary")
     private final List<Question> secondaryQuestions = new ArrayList<>();
 
-    private Answer(){}
+    public Answer(){}
 
     private Answer(AnswerText text, Boolean isFull){
         this.text = text;
@@ -39,7 +40,7 @@ public class Answer {
     }
 
     public void addSecondaryQuestion(Question question){
-        if (this.secondaryQuestions.size() < 3 && question.getType().equals(QuestionType.SECONDARY) && !this.isFull){
+        if (this.secondaryQuestions.size() < 4 && question.getType().equals(QuestionType.SECONDARY) && !this.isFull){
             this.secondaryQuestions.add(question);
             updateIsFullStatus();
         } else {
@@ -48,7 +49,7 @@ public class Answer {
     }
 
     private void updateIsFullStatus() {
-        this.isFull = this.secondaryQuestions.size() >= 3;
+        this.isFull = this.secondaryQuestions.size() >= 4;
     }
 
     public void updateIsFull(boolean isFull){
