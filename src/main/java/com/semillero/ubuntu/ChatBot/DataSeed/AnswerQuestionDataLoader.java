@@ -43,11 +43,7 @@ public class AnswerQuestionDataLoader implements CommandLineRunner {
             Answer answer8= Answer.createAnswer("Impulsamos modelos de negocio responsables, innovadores y sostenibles que promueven la eficiencia de recursos y reducen residuos.");
 
 
-            answer2.addSecondaryQuestion(question5);
-            answer2.addSecondaryQuestion(question6);
-            answer2.addSecondaryQuestion(question7);
-            answer2.addSecondaryQuestion(question8);
-
+            // Guardar respuestas
             answerRepository.save(answer1);
             answerRepository.save(answer2);
             answerRepository.save(answer3);
@@ -57,15 +53,7 @@ public class AnswerQuestionDataLoader implements CommandLineRunner {
             answerRepository.save(answer7);
             answerRepository.save(answer8);
 
-           question1.addAnswer(answer1);
-           question2.addAnswer(answer2);
-           question3.addAnswer(answer3);
-           question4.addAnswer(answer4);
-           question5.addAnswer(answer5);
-           question6.addAnswer(answer6);
-           question7.addAnswer(answer7);
-           question8.addAnswer(answer8);
-
+            // Guardar preguntas
             questionRepository.save(question1);
             questionRepository.save(question2);
             questionRepository.save(question3);
@@ -75,7 +63,41 @@ public class AnswerQuestionDataLoader implements CommandLineRunner {
             questionRepository.save(question7);
             questionRepository.save(question8);
 
+            // Establecer relaciones entre preguntas y respuestas
+            question1.addAnswer(answer1);
+            question2.addAnswer(answer2);
+            question3.addAnswer(answer3);
+            question4.addAnswer(answer4);
+            question5.addAnswer(answer5);
+            question6.addAnswer(answer6);
+            question7.addAnswer(answer7);
+            question8.addAnswer(answer8);
 
+            // Establecer preguntas secundarias para la respuesta correspondiente
+            answer2.addSecondaryQuestion(question5);
+            answer2.addSecondaryQuestion(question6);
+            answer2.addSecondaryQuestion(question7);
+            answer2.addSecondaryQuestion(question8);
+
+            // Guardar nuevamente preguntas con relaciones actualizadas
+            questionRepository.save(question1);
+            questionRepository.save(question2);
+            questionRepository.save(question3);
+            questionRepository.save(question4);
+            questionRepository.save(question5);
+            questionRepository.save(question6);
+            questionRepository.save(question7);
+            questionRepository.save(question8);
+
+            // Guardar nuevamente respuestas con relaciones actualizadas
+            answerRepository.save(answer1);
+            answerRepository.save(answer2);
+            answerRepository.save(answer3);
+            answerRepository.save(answer4);
+            answerRepository.save(answer5);
+            answerRepository.save(answer6);
+            answerRepository.save(answer7);
+            answerRepository.save(answer8);
         }
     }
 
