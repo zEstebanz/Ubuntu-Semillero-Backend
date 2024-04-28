@@ -35,7 +35,7 @@ public class AnswerQuestionDataLoader implements CommandLineRunner {
 
             Answer answer1= Answer.createAnswer("Impulsamos el desarrollo de finanzas de impacto, liderando la transición hacia un modelo financiero sostenible.. Estamos emocionados de ayudarte a encontrar oportunidades de inversión que no solo generen ganancias, sino que también promuevan un impacto positivo en el medio ambiente y la sociedad.");
             Answer answer2= Answer.createAnswer("Ofrecemos oportunidades de inversión en economía social, desarrollo local, inclusión financiera y sostenibilidad ambiental. Desde agroecología hasta economía circular, nuestro enfoque abarca diversas áreas para generar impacto positivo y retorno financiero.");
-            Answer answer3= Answer.createAnswer("Al ver el perfil de cada emprendedor, encontrarás un botón para CONECTAR con ellos.");
+            Answer answer3= Answer.createAnswer("Al ver cada microemprendimiento, encontrarás un botón para CONTACTAR con el.");
             Answer answer4= Answer.createAnswer("Mandanos un mail a ubuntusemillero@gmail.com con una descripción detallada de tu emprendimiento y fotos que resalten tu trabajo. Nos encantaría conocer más sobre lo que haces y cómo podemos colaborar juntos. ¡Esperamos ver tu información pronto!");
             Answer answer5= Answer.createAnswer("Promovemos el crecimiento económico equitativo, fortaleciendo comunidades y brindando acceso justo a servicios financieros");
             Answer answer6= Answer.createAnswer("Fomentamos la producción sostenible de alimentos, priorizando la salud del ecosistema y ofreciendo opciones nutritivas.");
