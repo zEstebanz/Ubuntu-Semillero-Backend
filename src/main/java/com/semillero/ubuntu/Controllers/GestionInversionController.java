@@ -14,14 +14,12 @@ public class GestionInversionController {
     @Autowired
     private GestionInversionServiceImpl gestionInversionServiceImpl;
 
-    @GetMapping("/admin/getAll")
-    public ResponseEntity<?> getAllgestionesInversion() {   //Administrador
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(gestionInversionServiceImpl.getAll());
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
-    }
+    /**
+     * Es importante recordar que si el microemprendimiento esta oculto los endpoints del gestionador siguen funcionando,
+     * por esta razon el alcance es modelado de tal forma que si se oculta un microemprendimiento,
+     * tambien se oculta la funcionalidad del gestionador
+    **/
+
 
     @PostMapping("/calcularInversion") //El de ambas entidades se encuentra en el DTO
     public ResponseEntity<?> calcularInversion(@RequestBody RecibirInversionDTO recibirInversionDTO) {  //Visitante

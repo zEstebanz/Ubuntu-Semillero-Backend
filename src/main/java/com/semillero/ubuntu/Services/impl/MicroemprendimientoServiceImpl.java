@@ -13,6 +13,7 @@ import com.semillero.ubuntu.Utils.MapperUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,10 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
     private final MicroemprendimientoRepository microemprendimientoRepository;
 
     private final UtilsMicroemprendimiento utilsMicroemprendimiento;
+
+    @Autowired
+    private final GestionInversionRepository gestionInversionRepository;
+
     private LocalDate fecha = LocalDate.now();
     private Integer mes = fecha.getMonthValue();
     private Integer anio = fecha.getYear();
@@ -150,6 +156,14 @@ public class MicroemprendimientoServiceImpl implements MicroemprendimientoServic
         Microemprendimiento microemprendimiento = microemprendimientoRepository.findById(idMicroemprendimiento)
                 .orElseThrow( () -> new EntityNotFoundException("Microemprendimiento not found with id: " + idMicroemprendimiento));
         microemprendimiento.setDeleted(true);
+
+        //Si existe un gestionador del microemprendimiento tambien se oculta
+        Optional<GestionInversion> gestionInversionOptional = gestionInversionRepository.buscarPorMicroId(idMicroemprendimiento);
+        gestionInversionOptional.ifPresent(gestionInversion -> {
+            gestionInversion.setInactivo(true);
+            gestionInversionRepository.save(gestionInversion);
+        });
+
         microemprendimientoRepository.save(microemprendimiento);
     }
     @Override

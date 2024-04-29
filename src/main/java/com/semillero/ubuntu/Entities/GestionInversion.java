@@ -33,7 +33,6 @@ public class GestionInversion {
     @Column(nullable = false)
     private Integer cuotas;
 
-    //Puede que tanto max como min esten como numeros hardcodeados, sean un elemento a configurar por el administrador o formen parte de micro
     @Column(nullable = false)
     private Double max;
 

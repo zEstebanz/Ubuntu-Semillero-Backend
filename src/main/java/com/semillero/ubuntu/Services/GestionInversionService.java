@@ -8,13 +8,11 @@ import com.semillero.ubuntu.DTOs.RecibirInversionDTO;
 import java.util.List;
 
 public interface GestionInversionService {
-    CalculoInversionDTO calcularInversion(RecibirInversionDTO recibirInversionDTO) throws Exception;
+    CalculoInversionDTO calcularInversion(RecibirInversionDTO recibirInversionDTO);
 
-    List<GestionInversionDTO> getAll() throws Exception;
+    GestionInversionDTO crearGestion(GestionInversionDTO gestionInversionDTO);
 
-    GestionInversionDTO crearGestion(GestionInversionDTO gestionInversionDTO) throws Exception;
-
-    //Por ahora solo le paso el id de Gestion como parametro aparte
+    //Le paso el id de Gestion como parametro dentro del DTO
     GestionInversionDTO editarGestion(GestionInversionDTO gestionInversionDTO) throws Exception;
 
     void logicaGestion(Long idMicro) throws Exception;

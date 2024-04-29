@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class GestionInversionServiceImpl implements GestionInversionService {
@@ -38,7 +39,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
      * Rol: VISITANTE (No se implementa un usuario inversor todavia)
      * **/
     @Override
-    public CalculoInversionDTO calcularInversion(RecibirInversionDTO recibirInversionDTO) throws Exception {
+    public CalculoInversionDTO calcularInversion(RecibirInversionDTO recibirInversionDTO) {
         //Puedo usar un try catch si es necesario
             //Verifico si existen tanto la gestion como el microemprendimiento
             //La busqueda se realiza con el idMicro, exigiendo que si existe el Gestionador de Inversiones, este debe estar asignado al Micro correspondiente
@@ -60,7 +61,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
                 throw new IllegalArgumentException("Se deben ingresar un numero de cuotas");
             }
 
-            //Mapeo del factor de riesgo, por ahora esta hardcodeado
+            //Mapeo del factor de riesgo hardcodeado (Si es necesario cambiar los valores hay que cambiar este codigo)
             Map<NivelRiesgo, Double> factoresRiesgo = Map.of(
                 NivelRiesgo.BAJO, 1.2,
                 NivelRiesgo.MEDIO, 1.5,
@@ -94,12 +95,10 @@ public class GestionInversionServiceImpl implements GestionInversionService {
 /**
  * Funcion que guarda la gestion de inversiones asignada a cierto microemprendimiento
  * <p>
- * Puede que haya que reinterpretar esta funcion (y la entidad en su totalidad)
- * <p>
  * Rol: ADMIN
  **/
     @Override
-    public GestionInversionDTO crearGestion(GestionInversionDTO gestionInversionDTO) throws Exception {
+    public GestionInversionDTO crearGestion(GestionInversionDTO gestionInversionDTO) {
             Microemprendimiento micro = microemprendimientoRepository.findById(gestionInversionDTO.getIdMicro())
                     .orElseThrow(() -> new EntityNotFoundException("No se encontro el emprendimiento con id: " + gestionInversionDTO.getIdMicro()));
 
@@ -110,7 +109,8 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             GestionInversion gestionInversion = GestionInversion.builder()
                     .costosGestion(gestionInversionDTO.getCostosGestion())
                     .notasAdicionales(gestionInversionDTO.getNotasAdicionales())
-                    //El tema de como calcular o recibir la cantidad de cuotas puede cambiar, por ahora solo recibe las cuotas que el admin ingresa
+                    //El tema de como calcular o recibir la cantidad de cuotas puede cambiar,
+                    // por ahora solo recibe la cant. maxima de cuotas que el admin ingresa
                     //Puede ser que haya que mapearlas tambien en un array
                     .cuotas(gestionInversionDTO.getCuotas())
                     .max(gestionInversionDTO.getMax())
@@ -155,7 +155,8 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             gestion.setCostosGestion(gestionInversionDTO.getCostosGestion());
             gestion.setMax(gestionInversionDTO.getMax());
             gestion.setMin(gestionInversionDTO.getMin());
-            //El tema de como calcular o recibir la cantidad de cuotas puede cambiar, por ahora solo recibe las cuotas que el admin ingresa
+            //El tema de como calcular o recibir la cantidad de cuotas puede cambiar,
+            // por ahora solo recibe la cant. maxima de cuotas que el admin ingresa
             //Puede ser que haya que mapearlas tambien en un array
             gestion.setCuotas(gestion.getCuotas());
             gestion.setTasaRetorno(gestionInversionDTO.getTasaRetorno());
@@ -176,22 +177,11 @@ public class GestionInversionServiceImpl implements GestionInversionService {
        }
     }
 
-    /**
-     * Funcion que busca y trae todas las gestiones creadas (Error de Mapeo, arreglar)
-     *<p>
-     * Rol: SUPER ADMIN
-     * **/
-    @Override
-    public List<GestionInversionDTO> getAll() throws Exception {
-        try {
-        List<GestionInversion> inversiones = gestionInversionRepository.findAll();
-        return MapperUtil.toDTOList(inversiones, GestionInversionDTO.class);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-    }
  /**
   * Funcion que se encarga de activar o desactivar el Gestionador de Inversiones asignado al Microemprendimiento
+  * <p>
+  *     Recordar que si el microemprendimiento esta oculto (borrado segun negocio) el gestionador tambien se oculta pero no desaparece
+  *     (se puede llegar a el a traves de un endpoint)
   * <p>
   *  Rol: ADMIN
   **/
@@ -201,7 +191,7 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             //La busqueda se realiza con el idMicro, exigiendo que si existe el Gestionador de Inversiones, este debe estar asignado al Micro correspondiente
             GestionInversion gestion = gestionInversionRepository.buscarPorMicroId(idMicro)
                     .orElseThrow( () -> new EntityNotFoundException("Gestion no encontrada con id de Micro: " + idMicro));
-            //Asignamos el valor opuesto de la var Activa
+            //Asignamos el valor opuesto de la var Inactivo
             gestion.setInactivo(!gestion.getInactivo());
             gestionInversionRepository.save(gestion);
         } catch (Exception e) {
@@ -213,18 +203,18 @@ public class GestionInversionServiceImpl implements GestionInversionService {
      * Funcion que busca y trae la gestion asociada a la inversion (En revision)
      *<p>
      * Rol: ADMIN
-     * <p>
-     *  Notas: Es necesario que la logica tambien contemple la posibilidad de que no exista
-     *  la gestion asi el admin puede crearla, entonces hay que ver el manejo de errores en el front y evitar un exception
-     *  que no permita ver la gestion
      * **/
+    @Override
     public GestionInversionDTO getInversion(Long idMicro) throws Exception {
         try {
             //La busqueda se realiza con el idMicro, exigiendo que si existe el Gestionador de Inversiones, este debe estar asignado al Micro correspondiente
-            GestionInversion gestion = gestionInversionRepository.buscarPorMicroId(idMicro)
-                    .orElseThrow( () -> new EntityNotFoundException("Gestion no encontrada con id de Micro: " + idMicro + "." +
-                            "Razones: No se encontro la gestion o no existe"));
-            return Mapper.respuestaGestionInversion(gestion, idMicro);
+            Optional<GestionInversion> buscarGestion = gestionInversionRepository.buscarPorMicroId(idMicro);
+            if (buscarGestion.isPresent()) {
+                GestionInversion gestion = buscarGestion.get();
+                return Mapper.respuestaGestionInversion(gestion, idMicro);
+            } else {
+                return null; //Devuelve null, si es necesario un objeto vacio o formulario vacio cambiar
+            }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
