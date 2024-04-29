@@ -26,7 +26,7 @@ public class ImagePublicacionDataLoader implements CommandLineRunner {
     public void loadImageAndPublicacionData(){
         if(publicacionRepository.count()==0){
             Image img1=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1713370551/optghflzzfzi5vqobw6y.jpg","jpg", "2024-04-17T16:15:51Z","optghflzzfzi5vqobw6y",1200,600);
-            Image img2=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1712248319/odekwyanggbisimwybyr.jpg","jpg","2024-04-04T16:31:59Z", "odekwyanggbisimwybyr",304,166);
+            Image img2=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1714354431/vbeikylmygoguthj26xl.jpg","jpg","2024-04-29T01:33:51Z", "vbeikylmygoguthj26xl",1134,664);
             Image img3=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1712248452/yrucybwgamam4wtxj3mn.jpg","jpg","2024-04-04T16:34:12Z", "yrucybwgamam4wtxj3mn",1706,960);
             Image img4=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1712248526/vusloil5ybdi0tc3jas4.jpg","jpg","2024-04-04T16:35:26Z", "vusloil5ybdi0tc3jas4",1200,1200);
             Image img5=new Image("https://res.cloudinary.com/dvoxzrkzs/image/upload/v1712248584/beqtssv6x078fn1fk87j.jpg","jpg","2024-04-04T16:36:24Z", "beqtssv6x078fn1fk87j",900,596);
