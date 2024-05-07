@@ -11,13 +11,11 @@ import com.semillero.ubuntu.Repositories.GestionInversionRepository;
 import com.semillero.ubuntu.Repositories.MicroemprendimientoRepository;
 import com.semillero.ubuntu.Services.GestionInversionService;
 import com.semillero.ubuntu.Utils.Mapper;
-import com.semillero.ubuntu.Utils.MapperUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -70,9 +68,9 @@ public class GestionInversionServiceImpl implements GestionInversionService {
             double factorRiesgo = factoresRiesgo.getOrDefault(gestion.getNivelRiesgo(), 1.0);
 
             double totalAporte = montoAporte + gestion.getCostosGestion();
-            double montoCuota = totalAporte / recibirInversionDTO.getCuotas();
             double retornoEsperado = montoAporte * gestion.getTasaRetorno() * factorRiesgo;
             double gananciaTotal = retornoEsperado - totalAporte;
+            double montoCuota = retornoEsperado / recibirInversionDTO.getCuotas();
 
             //Mapeo de Valores manual
             return CalculoInversionDTO.builder()
